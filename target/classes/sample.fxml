@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
@@ -12,150 +12,181 @@
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Menú">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #2a295c;">
-                     <children>
-                        <AnchorPane fx:id="draggable" layoutX="18.0" layoutY="65.0" onDragEntered="#test" onMouseDragged="#test" prefHeight="174.0" prefWidth="564.0" styleClass="custom-dashed-border" stylesheets="@custom-dashed-border.css">
-                           <children>
-                              <Label layoutX="77.0" layoutY="24.0" prefHeight="72.0" prefWidth="411.0" text="Arrastre y suelte aquí la imagen del menú que &#10;desea cargar" textAlignment="CENTER" textFill="WHITE">
-                                 <font>
-                                    <Font name="Segoe UI" size="20.0" />
-                                 </font>
-                              </Label>
-                              <Button fx:id="btn1" layoutX="200.0" layoutY="120.0" mnemonicParsing="false" onAction="#Button1Action" prefHeight="40.0" prefWidth="176.0" text="O seleccione la imagen" textFill="#2a295c">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="12.0" />
-                                 </font></Button>
-                           </children>
-                        </AnchorPane>
-                        <Label layoutX="18.0" layoutY="14.0" text="Cargar Menú" textFill="WHITE">
-                           <font>
-                              <Font name="Segoe UI Bold" size="30.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="btn2" layoutX="50.0" layoutY="291.0" mnemonicParsing="false" onAction="#ButtonUploadAction" prefHeight="59.0" prefWidth="500.0" text="Subir menú" textAlignment="CENTER" textFill="#2a295c">
-                           <font>
-                              <Font name="Segoe UI Bold" size="20.0" />
-                           </font>
-                           <effect>
-                              <InnerShadow blurType="ONE_PASS_BOX" choke="0.01" height="52.88" radius="26.125" width="53.62">
-                                 <color>
-                                    <Color red="0.16470588743686676" green="0.16078431904315948" blue="0.3607843220233917" />
-                                 </color></InnerShadow>
-                           </effect></Button>
-                        <Label layoutX="18.0" layoutY="254.0" text="Imagen seleccionada:" textFill="WHITE" underline="true">
-                           <font>
-                              <Font name="Segoe UI" size="15.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="archivocargado" layoutX="167.0" layoutY="254.0" text="No ha seleccionado ninguna imagen" textFill="WHITE">
-                           <font>
-                              <Font name="Segoe UI" size="15.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab text="Reservas">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #2a295c;">
-                     <children>
-                        <Label layoutX="14.0" layoutY="14.0" text="Administrar disponibilidad" textFill="WHITE">
-                           <font>
-                              <Font name="Segoe UI Bold" size="25.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="lunes_val" layoutX="50.0" layoutY="60.0" prefHeight="35.0" prefWidth="250.0" promptText="Lunes" />
-                        <TextField fx:id="martes_val" layoutX="50.0" layoutY="106.0" prefHeight="35.0" prefWidth="250.0" promptText="Martes" />
-                        <TextField fx:id="miercoles_val" layoutX="50.0" layoutY="151.0" prefHeight="35.0" prefWidth="250.0" promptText="Miércoles" />
-                        <TextField fx:id="jueves_val" layoutX="50.0" layoutY="197.0" prefHeight="35.0" prefWidth="250.0" promptText="Jueves" />
-                        <TextField fx:id="viernes_val" layoutX="50.0" layoutY="247.0" prefHeight="35.0" prefWidth="250.0" promptText="Viernes" />
-                        <Button fx:id="btn3" layoutX="15.0" layoutY="299.0" mnemonicParsing="false" onAction="#modifyDispo" prefHeight="50.0" prefWidth="285.0" text="Cambiar disponibilidad" textFill="#2a295c">
-                           <font>
-                              <Font name="Segoe UI Bold" size="13.0" />
-                           </font>
-                           <effect>
-                              <InnerShadow blurType="ONE_PASS_BOX" height="26.93" radius="12.965" width="26.93">
-                                 <color>
-                                    <Color red="0.16470588743686676" green="0.16078431904315948" blue="0.3607843220233917" />
-                                 </color>
-                              </InnerShadow>
-                           </effect></Button>
-                        <Line endX="100.0" endY="140.0" layoutX="239.0" layoutY="215.0" startX="100.0" startY="-192.0" stroke="WHITE" />
-                        <Button fx:id="btn4" layoutX="415.0" layoutY="255.0" mnemonicParsing="false" onAction="#getexcel" prefHeight="50.0" prefWidth="110.0" text="Descargar" textFill="#2a295c">
-                           <font>
-                              <Font name="Segoe UI Bold" size="12.0" />
-                           </font>
-                           <effect>
-                              <InnerShadow blurType="ONE_PASS_BOX" height="29.9" radius="14.45" width="29.9">
-                                 <color>
-                                    <Color red="0.16470588743686676" green="0.16078431904315948" blue="0.3607843220233917" />
-                                 </color>
-                              </InnerShadow>
-                           </effect></Button>
-                        <Label layoutX="374.0" layoutY="77.0" text="Descargar Excel &#10;de reservas" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font name="Segoe UI Bold" size="25.0" />
-                           </font>
-                        </Label>
-                        <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/monday.png" />
-                           </image></ImageView>
-                        <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/tuesday.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/wednesday.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/thursday.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/friday.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="80.0" fitWidth="30.0" layoutX="455.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/microsoft_excel.png" />
-                           </image>
-                        </ImageView>
-                     </children></AnchorPane>
-            </content>
-          </Tab>
-            <Tab fx:id="coment" onSelectionChanged="#testtab" text="Comentarios">
+           <Tab text="Menú">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <ListView fx:id="listastar" layoutX="21.0" layoutY="89.0" prefHeight="243.0" prefWidth="75.0" />
-                        <Label layoutX="21.0" layoutY="14.0" text="Calificaciones y comentarios">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <ListView fx:id="listacoment" layoutX="105.0" layoutY="89.0" prefHeight="242.0" prefWidth="448.0" />
-                        <Label layoutX="24.0" layoutY="68.0" text="Calificacion">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="105.0" layoutY="68.0" text="Comentarios">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children></AnchorPane>
+                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
+                    <children>
+                       <AnchorPane fx:id="draggable" layoutX="18.0" layoutY="65.0" onDragEntered="#test" onMouseDragged="#test" prefHeight="174.0" prefWidth="564.0" styleClass="custom-dashed-border" stylesheets="@custom-dashed-border.css">
+                          <children>
+                             <Label layoutX="77.0" layoutY="24.0" prefHeight="72.0" prefWidth="411.0" text="Arrastre y suelte aquí la imagen del menú que &#10;desea cargar" textAlignment="CENTER">
+                                <font>
+                                   <Font name="Segoe UI" size="20.0" />
+                                </font>
+                             </Label>
+                             <ImageView fitHeight="53.0" fitWidth="33.0" layoutX="188.0" layoutY="127.0" onMouseClicked="#Button1Action" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                   <Image url="@images/upload.png" />
+                                </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                             </ImageView>
+                             <Label layoutX="229.0" layoutY="136.0" onMouseClicked="#Button1Action" text="O seleccione una imagen">
+                                <font>
+                                   <Font name="Segoe UI Bold" size="12.0" />
+                                </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                             </Label>
+                          </children>
+                       </AnchorPane>
+                       <Label layoutX="18.0" layoutY="14.0" text="Cargar Menú">
+                          <font>
+                             <Font name="Segoe UI Bold" size="30.0" />
+                          </font>
+                       </Label>
+                       <Label layoutX="18.0" layoutY="254.0" text="Imagen seleccionada:" underline="true">
+                          <font>
+                             <Font name="Segoe UI" size="15.0" />
+                          </font>
+                       </Label>
+                       <Label fx:id="archivocargado" layoutX="167.0" layoutY="254.0" text="No ha seleccionado ninguna imagen">
+                          <font>
+                             <Font name="Segoe UI" size="15.0" />
+                          </font>
+                       </Label>
+                       <ImageView fitHeight="59.0" fitWidth="53.0" layoutX="29.0" layoutY="291.0" onMouseClicked="#ButtonUploadAction" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/checkmark.png" />
+                          </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                       </ImageView>
+                       <Label layoutX="89.0" layoutY="306.0" onMouseClicked="#ButtonUploadAction" text="Cargar menú">
+                          <font>
+                             <Font name="Segoe UI Bold" size="20.0" />
+                          </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                       </Label>
+                    </children>
+                 </AnchorPane>
               </content>
-            </Tab>
+           </Tab>
+           <Tab text="Reservas">
+              <content>
+                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
+                    <children>
+                       <Label layoutX="14.0" layoutY="14.0" text="Administrar disponibilidad">
+                          <font>
+                             <Font name="Segoe UI Bold" size="20.0" />
+                          </font>
+                       </Label>
+                       <TextField fx:id="lunes_val" layoutX="50.0" layoutY="60.0" prefHeight="35.0" prefWidth="250.0" promptText="Lunes" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="martes_val" layoutX="50.0" layoutY="106.0" prefHeight="35.0" prefWidth="250.0" promptText="Martes" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="miercoles_val" layoutX="50.0" layoutY="151.0" prefHeight="35.0" prefWidth="250.0" promptText="Miércoles" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="jueves_val" layoutX="50.0" layoutY="197.0" prefHeight="35.0" prefWidth="250.0" promptText="Jueves" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="viernes_val" layoutX="50.0" layoutY="247.0" prefHeight="35.0" prefWidth="250.0" promptText="Viernes" style="-fx-background-radius: 0px;" />
+                       <Line endX="100.0" endY="140.0" layoutX="239.0" layoutY="215.0" startX="100.0" startY="-192.0" />
+                       <Label layoutX="374.0" layoutY="77.0" text="Descargar Excel &#10;de reservas" textAlignment="CENTER">
+                          <font>
+                             <Font name="Segoe UI Bold" size="25.0" />
+                          </font>
+                       </Label>
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/monday.png" />
+                          </image></ImageView>
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/tuesday.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/wednesday.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/thursday.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/friday.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fitHeight="62.0" fitWidth="51.0" layoutX="445.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/microsoft_excel.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fitHeight="57.0" fitWidth="35.0" layoutX="420.0" layoutY="247.0" onMouseClicked="#getexcel" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/download.png" />
+                          </image>
+                          <cursor>
+                             <Cursor fx:constant="HAND" />
+                          </cursor>
+                       </ImageView>
+                       <Label layoutX="461.0" layoutY="255.0" onMouseClicked="#getexcel" text="Descargar">
+                          <font>
+                             <Font name="Segoe UI Bold" size="15.0" />
+                          </font>
+                          <cursor>
+                             <Cursor fx:constant="HAND" />
+                          </cursor>
+                       </Label>
+                       <ImageView fitHeight="99.0" fitWidth="42.0" layoutX="44.0" layoutY="303.0" onMouseClicked="#modifyDispo" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/change.png" />
+                          </image>
+                          <cursor>
+                             <Cursor fx:constant="HAND" />
+                          </cursor>
+                       </ImageView>
+                       <Label layoutX="93.0" layoutY="314.0" onMouseClicked="#modifyDispo" text="Cambiar disponibilidad">
+                          <font>
+                             <Font name="Segoe UI Bold" size="15.0" />
+                          </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                       </Label>
+                    </children></AnchorPane>
+              </content>
+           </Tab>
+           <Tab fx:id="coment" onSelectionChanged="#testtab" text="Comentarios">
+              <content>
+                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
+                    <children>
+                       <ListView fx:id="listastar" layoutX="21.0" layoutY="89.0" prefHeight="250.0" prefWidth="95.0" />
+                       <Label layoutX="21.0" layoutY="14.0" text="Calificaciones y comentarios">
+                          <font>
+                             <Font name="Segoe UI Bold" size="25.0" />
+                          </font>
+                       </Label>
+                       <ListView fx:id="listacoment" layoutX="124.0" layoutY="89.0" prefHeight="250.0" prefWidth="456.0" />
+                       <Label layoutX="20.0" layoutY="68.0" prefHeight="19.0" prefWidth="85.0" text="Calificación">
+                          <font>
+                             <Font name="Segoe UI Bold" size="15.0" />
+                          </font>
+                       </Label>
+                       <Label layoutX="124.0" layoutY="68.0" prefHeight="19.0" prefWidth="91.0" text="Comentarios">
+                          <font>
+                             <Font name="Segoe UI Bold" size="15.0" />
+                          </font>
+                       </Label>
+                    </children></AnchorPane>
+              </content>
+           </Tab>
         </tabs>
       </TabPane>
    </center>
