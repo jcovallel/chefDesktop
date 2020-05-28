@@ -49,9 +49,13 @@ public class Controller {
     public String imagepath="vacio397";
     public static Boolean entrando=true;
 
+    private static final String ip = "35.239.78.54";
+    private static final String puerto = "8080";
+    private static String urlRaiz = "http://" + ip + ":" + puerto;
+
     public void testtab() throws ClientProtocolException, IOException{
         if(entrando){
-            String getEndpoint = "http://35.239.78.54:8080/chef/review/";
+            String getEndpoint = urlRaiz + "/chef/review/";
 
             CloseableHttpClient httpclient = HttpClients.createDefault();
 
@@ -171,7 +175,7 @@ public class Controller {
                 public void run() {
                     //Do post (read, from link below)
                     CloseableHttpClient httpClient = HttpClients.createDefault();
-                    HttpPost uploadFile = new HttpPost("http://35.239.78.54:8080/chef/uploadmenu");
+                    HttpPost uploadFile = new HttpPost(urlRaiz + "/chef/uploadmenu");
 
                     MultipartEntityBuilder builder = MultipartEntityBuilder.create();
                     builder.addTextBody("field1", "yes", ContentType.TEXT_PLAIN);
@@ -236,7 +240,7 @@ public class Controller {
     }
 
     public void modifyDispo(ActionEvent event) throws ClientProtocolException, IOException {
-        String putEndpoint = "http://35.239.78.54:8080/chef/disponibilidad/";
+        String putEndpoint = urlRaiz + "/chef/disponibilidad/";
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
@@ -296,7 +300,7 @@ public class Controller {
     }
 
     public void getexcel(ActionEvent event) throws ClientProtocolException, IOException{
-        String getEndpoint = "http://35.239.78.54:8080/chef/download_excel";
+        String getEndpoint = urlRaiz + "/chef/download_excel";
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
