@@ -3,12 +3,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.event.ActionEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -35,4 +40,25 @@ import java.util.stream.Collectors;
 
 
 public class LogIn {
+
+    @FXML
+    private TextField txtUsuario;
+
+    @FXML
+    private PasswordField txtPass;
+
+    @FXML
+    private Button btnAceptar;
+
+    @FXML
+    public void btnAceptarActionPerformed(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.initModality(Modality.NONE);
+        stage.setScene(scene);
+        stage.show();
+        Stage myStage = (Stage) this.btnAceptar.getScene().getWindow();
+        myStage.close();
+    }
 }

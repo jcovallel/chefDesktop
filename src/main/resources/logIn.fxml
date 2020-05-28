@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="LogIn"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogIn">
+   <children>
+      <TextField fx:id="txtUsuario" layoutX="164.0" layoutY="160.0" prefHeight="40.0" prefWidth="272.0" promptText="Usuario" />
+      <PasswordField fx:id="txtPass" layoutX="164.0" layoutY="224.0" prefHeight="40.0" prefWidth="272.0" promptText="Contraseña" />
+      <Text layoutX="212.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar sesión">
+         <font>
+            <Font name="SansSerif Regular" size="30.0" />
+         </font></Text>
+      <Button fx:id="btnAceptar" layoutX="355.0" layoutY="303.0" onAction="#btnAceptarActionPerformed" mnemonicParsing="false" prefHeight="40.0" prefWidth="81.0" text="Aceptar" />
+   </children>
 </AnchorPane>
