@@ -16,7 +16,7 @@
          <font>
             <Font name="Segoe UI Bold" size="35.0" />
          </font></Text>
-      <Button fx:id="btnAceptar" ellipsisString="" layoutX="300.0" layoutY="302.0" mnemonicParsing="false" onAction="#btnAceptarActionPerformed" prefHeight="60.0" prefWidth="272.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="Aceptar" textFill="#2a295c">
+      <Button fx:id="btnAceptar" ellipsisString="" layoutX="451.0" layoutY="315.0" mnemonicParsing="false" onAction="#btnAceptarActionPerformed" prefHeight="47.0" prefWidth="121.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="Aceptar" textFill="#2a295c">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
