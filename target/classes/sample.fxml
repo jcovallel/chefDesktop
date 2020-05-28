@@ -9,34 +9,37 @@
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Menu">
+          <Tab text="Menú">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #2a295c;">
                      <children>
                         <AnchorPane fx:id="draggable" layoutX="18.0" layoutY="65.0" onDragEntered="#test" onMouseDragged="#test" prefHeight="174.0" prefWidth="564.0" styleClass="custom-dashed-border" stylesheets="@custom-dashed-border.css">
                            <children>
-                              <Label layoutX="178.0" layoutY="24.0" text="Arrastre y suelte aqui&#10;la imagen del menu que &#10;desea cargar" textAlignment="CENTER">
+                              <Label layoutX="178.0" layoutY="24.0" text="Arrastre y suelte aquí&#10;la imagen del menú que &#10;desea cargar" textAlignment="CENTER" textFill="WHITE">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font name="Segoe UI" size="20.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="btn1" layoutX="213.0" layoutY="123.0" mnemonicParsing="false" onAction="#Button1Action" text="O seleccione la imagen" textAlignment="CENTER" />
+                              <Button fx:id="btn1" layoutX="208.0" layoutY="120.0" mnemonicParsing="false" onAction="#Button1Action" prefHeight="40.0" prefWidth="160.0" text="O seleccione la imagen" textAlignment="CENTER" />
                            </children>
                         </AnchorPane>
-                        <Label layoutX="14.0" layoutY="14.0" text="Cargar Menu">
+                        <Label layoutX="18.0" layoutY="14.0" text="Cargar Menú" textFill="WHITE">
                            <font>
-                              <Font size="25.0" />
+                              <Font name="Segoe UI Bold" size="30.0" />
                            </font>
                         </Label>
-                        <Button fx:id="btn2" layoutX="262.0" layoutY="303.0" mnemonicParsing="false" onAction="#ButtonUploadAction" text="Subir menu" textAlignment="CENTER" />
+                        <Button fx:id="btn2" layoutX="17.0" layoutY="294.0" mnemonicParsing="false" onAction="#ButtonUploadAction" prefHeight="58.0" prefWidth="567.0" text="Subir menú" textAlignment="CENTER">
+                           <font>
+                              <Font name="SansSerif Bold" size="15.0" />
+                           </font></Button>
                         <Label layoutX="18.0" layoutY="254.0" text="Imagen seleccionada:" underline="true">
                            <font>
-                              <Font size="15.0" />
+                              <Font name="SansSerif Regular" size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="archivocargado" layoutX="164.0" layoutY="254.0" text="No ha seleccionado ninguna imagen">
+                        <Label fx:id="archivocargado" layoutX="167.0" layoutY="254.0" text="No ha seleccionado ninguna imagen">
                            <font>
-                              <Font size="15.0" />
+                              <Font name="SansSerif Regular" size="15.0" />
                            </font>
                         </Label>
                      </children>
@@ -49,43 +52,18 @@
                      <children>
                         <Label layoutX="14.0" layoutY="14.0" text="Administrar disponibilidad">
                            <font>
-                              <Font size="25.0" />
+                              <Font name="SansSerif Regular" size="25.0" />
                            </font>
                         </Label>
-                        <Label layoutX="14.0" layoutY="59.0" text="Lunes">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="14.0" layoutY="135.0" text="Miercoles">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="14.0" layoutY="97.0" text="Martes">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="14.0" layoutY="173.0" text="Jueves">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="14.0" layoutY="211.0" text="Viernes">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="lunes_val" layoutX="107.0" layoutY="62.0" />
-                        <TextField fx:id="martes_val" layoutX="107.0" layoutY="100.0" />
-                        <TextField fx:id="miercoles_val" layoutX="107.0" layoutY="138.0" />
-                        <TextField fx:id="jueves_val" layoutX="107.0" layoutY="176.0" />
-                        <TextField fx:id="viernes_val" layoutX="107.0" layoutY="214.0" />
-                        <Button fx:id="btn3" layoutX="112.0" layoutY="274.0" mnemonicParsing="false" onAction="#modifyDispo" text="Cambiar disponibilidad" />
-                        <Line endX="100.0" endY="90.0" layoutX="239.0" layoutY="215.0" startX="100.0" startY="-167.0" />
-                        <Button fx:id="btn4" layoutX="435.0" layoutY="214.0" mnemonicParsing="false" onAction="#getexcel" text="Descargar" />
-                        <Label layoutX="365.0" layoutY="115.0" text="Descargar excel de&#10;reservas" textAlignment="CENTER">
+                        <TextField fx:id="lunes_val" layoutX="20.0" layoutY="60.0" prefHeight="35.0" prefWidth="280.0" promptText="Lunes" />
+                        <TextField fx:id="martes_val" layoutX="20.0" layoutY="106.0" prefHeight="35.0" prefWidth="280.0" promptText="Martes" />
+                        <TextField fx:id="miercoles_val" layoutX="20.0" layoutY="151.0" prefHeight="35.0" prefWidth="280.0" promptText="Miércoles" />
+                        <TextField fx:id="jueves_val" layoutX="20.0" layoutY="197.0" prefHeight="35.0" prefWidth="280.0" promptText="Jueves" />
+                        <TextField fx:id="viernes_val" layoutX="20.0" layoutY="247.0" prefHeight="35.0" prefWidth="280.0" promptText="Viernes" />
+                        <Button fx:id="btn3" layoutX="20.0" layoutY="299.0" mnemonicParsing="false" onAction="#modifyDispo" prefHeight="50.0" prefWidth="280.0" text="Cambiar disponibilidad" />
+                        <Line endX="100.0" endY="140.0" layoutX="239.0" layoutY="215.0" startX="100.0" startY="-192.0" />
+                        <Button fx:id="btn4" layoutX="414.0" layoutY="215.0" mnemonicParsing="false" onAction="#getexcel" prefHeight="50.0" prefWidth="110.0" text="Descargar" />
+                        <Label layoutX="365.0" layoutY="115.0" text="Descargar Excel de&#10;reservas" textAlignment="CENTER">
                            <font>
                               <Font size="25.0" />
                            </font>
@@ -97,13 +75,13 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="listastar" layoutX="21.0" layoutY="89.0" prefHeight="243.0" prefWidth="75.0" />
+                        <ListView fx:id="listastar" layoutX="21.0" layoutY="89.0" onMouseMoved="#onScrollLista" prefHeight="243.0" prefWidth="75.0" />
                         <Label layoutX="21.0" layoutY="14.0" text="Calificaciones y comentarios">
                            <font>
                               <Font size="25.0" />
                            </font>
                         </Label>
-                        <ListView fx:id="listacoment" layoutX="105.0" layoutY="89.0" prefHeight="242.0" prefWidth="448.0" />
+                        <ListView fx:id="listacoment" layoutX="105.0" layoutY="89.0" onMouseMoved="#onScrollLista" prefHeight="242.0" prefWidth="448.0" />
                         <Label layoutX="24.0" layoutY="68.0" text="Calificacion">
                            <font>
                               <Font size="14.0" />
