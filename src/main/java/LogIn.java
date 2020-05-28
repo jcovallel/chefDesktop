@@ -53,6 +53,7 @@ public class LogIn {
     @FXML
     public void btnAceptarActionPerformed(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent admin = FXMLLoader.load(getClass().getResource("admin.fxml"));
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.initModality(Modality.NONE);

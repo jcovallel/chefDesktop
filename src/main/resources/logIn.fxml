@@ -10,21 +10,20 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2a295c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogIn">
    <children>
-      <TextField fx:id="txtUsuario" layoutX="300.0" layoutY="167.0" prefHeight="40.0" prefWidth="272.0" promptText="Usuario" />
-      <PasswordField fx:id="txtPass" layoutX="300.0" layoutY="230.0" prefHeight="40.0" prefWidth="272.0" promptText="Contraseña" />
+      <PasswordField fx:id="txtPass" layoutX="300.0" layoutY="230.0" prefHeight="40.0" prefWidth="272.0" promptText="Contraseña" style="-fx-background-radius: 0px;" />
       <Text fill="WHITE" layoutX="323.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar sesión">
          <font>
             <Font name="Segoe UI Bold" size="35.0" />
          </font></Text>
-      <Button fx:id="btnAceptar" ellipsisString="" layoutX="451.0" layoutY="315.0" mnemonicParsing="false" onAction="#btnAceptarActionPerformed" prefHeight="47.0" prefWidth="121.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="Aceptar" textFill="#2a295c">
+      <Button fx:id="btnAceptar" ellipsisString="" layoutX="451.0" layoutY="315.0" mnemonicParsing="false" onAction="#btnAceptarActionPerformed" prefHeight="47.0" prefWidth="121.0" style="-fx-background-color: white; -fx-background-radius: 0px;" text="Aceptar" textFill="#2a295c">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
          <font>
-            <Font name="Segoe UI Bold" size="18.0" />
+            <Font name="Segoe UI Bold" size="15.0" />
          </font>
          <effect>
-            <InnerShadow blurType="ONE_PASS_BOX" choke="0.22" height="51.4" radius="24.9525" width="50.41">
+            <InnerShadow blurType="ONE_PASS_BOX" height="21.26" radius="10.005" width="20.76">
                <color>
                   <Color red="0.16529999673366547" green="0.16200000047683716" blue="0.36000001430511475" opacity="0.591304361820221" />
                </color>
@@ -47,5 +46,6 @@
                </image>
             </ImageView>
          </children></AnchorPane>
+      <ComboBox layoutX="300.0" layoutY="167.0" prefHeight="40.0" prefWidth="272.0" promptText="Restaurante" style="-fx-background-color: white; -fx-background-radius: 0px;" />
    </children>
 </AnchorPane>
