@@ -1,10 +1,8 @@
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -34,10 +32,16 @@ public class Admin {
     private TextField lunes_val,martes_val,miercoles_val,jueves_val,viernes_val;
 
     @FXML
+    private PasswordField txtNuevoPass, txtNuevoPassAgain;
+
+    @FXML
     private Label archivocargado;
 
     @FXML
     private AnchorPane draggable;
+
+    @FXML
+    private AnchorPane panelConfirmarCuenta;
 
     @FXML
     private ListView listastar,listacoment, listaRestaurante, listaRestauranteComent;
@@ -282,4 +286,24 @@ public class Admin {
         return extension;
     }
 
+    public void cuentaAceptar(MouseEvent event){
+        this.panelConfirmarCuenta.setVisible(true);
+    }
+
+    public void txtNuevoPassActionPerformed(KeyEvent event){
+        if(this.txtNuevoPass.getText().length() > 0){
+            this.txtNuevoPassAgain.setVisible(true);
+        }
+        else{
+            this.txtNuevoPassAgain.setVisible(false);
+        }
+    }
+    public void cerrarPopup(MouseEvent event){
+        this.panelConfirmarCuenta.setVisible(false);
+    }
+
+    //Comparar si los dos pass nuevos son iguales
+    private Boolean compararPass(String pass1, String pass2){
+        return pass1.equals(pass2);
+    }
 }
