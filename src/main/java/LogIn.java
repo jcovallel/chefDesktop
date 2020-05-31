@@ -7,8 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.event.ActionEvent;
@@ -32,11 +35,15 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.swing.*;
+import javax.xml.bind.DatatypeConverter;
+import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.security.*;
 
 
 public class LogIn {
@@ -45,16 +52,68 @@ public class LogIn {
     private TextField txtUsuario;
 
     @FXML
+    private AnchorPane panelUserPassIncorrecto;
+
+    @FXML
     private PasswordField txtPass;
 
     @FXML
     private Button btnAceptar;
 
+    private static final String algoritmoHash = "SHA-256";
+
+    @FXML
+    public void contrasenaOlvidadaActionPerformed(MouseEvent event) throws IOException {
+        show("restorePass.fxml");
+    }
+
     @FXML
     public void btnAceptarActionPerformed(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        Parent admin = FXMLLoader.load(getClass().getResource("admin.fxml"));
-        Scene scene = new Scene(root);
+
+        Integer privilegio = 1;
+
+        switch(privilegio){
+            case 1:
+                show("sample.fxml");
+                break;
+            case 2:
+                show("admin.fxml");
+                break;
+            default:
+
+                this.panelUserPassIncorrecto.setVisible(true);
+                System.out.println("Acceso denegado");
+                break;
+        }
+    }
+
+    //Se cierra el mensaje de usuario o contraseña incorrectos
+    public void btnAceptarUserPassIncorrectoActionPerformed(MouseEvent event){
+        this.panelUserPassIncorrecto.setVisible(false);
+    }
+
+
+    //Esta función hace el resumen matemático (hash) a la contraseña usando el algoritmo SHA-256
+    private String hash(String pass){
+        byte[] bytePass = pass.getBytes();
+        byte[] passHashed;
+        String passHashedValue = "";
+        try{
+            MessageDigest funcionHash = MessageDigest.getInstance(this.algoritmoHash);
+            funcionHash.update(bytePass);
+            passHashed = funcionHash.digest();
+            passHashedValue = DatatypeConverter.printHexBinary(passHashed);
+        }
+        catch (Exception e){
+
+        }
+        return passHashedValue;
+    }
+
+    //Función que muestra una pantalla u otra dependiendo del nivel de privilegios del usuario
+    private void show(String path) throws IOException {
+        Parent parent = FXMLLoader.load(getClass().getResource(path));
+        Scene scene = new Scene(parent);
         Stage stage = new Stage();
         stage.initModality(Modality.NONE);
         stage.setScene(scene);
