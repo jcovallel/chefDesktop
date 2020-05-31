@@ -38,10 +38,13 @@ public class Controller {
     private TextField lunes_val,martes_val,miercoles_val,jueves_val,viernes_val;
 
     @FXML
+    private PasswordField txtNuevoPass, txtNuevoPassAgain;
+
+    @FXML
     private Label archivocargado;
 
     @FXML
-    private AnchorPane draggable;
+    private AnchorPane draggable, panelConfirmarCuenta;
 
     @FXML
     private ListView listastar,listacoment;
@@ -160,6 +163,28 @@ public class Controller {
             event.setDropCompleted(success);
             event.consume();
         });
+    }
+
+    public void txtNuevoPassActionPerformed(KeyEvent event){
+        if(this.txtNuevoPass.getText().length() > 0){
+            this.txtNuevoPassAgain.setVisible(true);
+        }
+        else{
+            this.txtNuevoPassAgain.setVisible(false);
+        }
+    }
+
+    public void cuentaAceptar(MouseEvent event){
+        this.panelConfirmarCuenta.setVisible(true);
+    }
+
+    public void cerrarPopup(MouseEvent event){
+        this.panelConfirmarCuenta.setVisible(false);
+    }
+
+    //Comparar si los dos pass nuevos son iguales
+    private Boolean compararPass(String pass1, String pass2){
+        return pass1.equals(pass2);
     }
 
     public void ButtonUploadAction(ActionEvent event){
