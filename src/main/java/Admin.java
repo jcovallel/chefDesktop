@@ -40,7 +40,7 @@ public class Admin {
     private AnchorPane draggable;
 
     @FXML
-    private ListView listastar,listacoment, listaRestaurante;
+    private ListView listastar,listacoment, listaRestaurante, listaRestauranteComent;
 
     public String imagepath="vacio397";
     public static Boolean entrando=true;
@@ -77,6 +77,16 @@ public class Admin {
                     listastar.getItems().add(myarr.getJSONObject(i).get("estrellas"));
                     listacoment.getItems().add(myarr.getJSONObject(i).get("comentario"));
                 }
+                listaRestauranteComent.getItems().add("Servicios Nutresa");
+                listaRestauranteComent.getItems().add("Protección");
+                listaRestauranteComent.getItems().add("Nacional de Chocolates Bogotá");
+                listaRestauranteComent.getItems().add("Suizo");
+                listaRestauranteComent.getItems().add("Comercial Nutresa");
+                listaRestauranteComent.getItems().add("DHL");
+                listaRestauranteComent.getItems().add("Tecnoquímicas San Nicolás");
+                listaRestauranteComent.getItems().add("Smurfit casino principal");
+                listaRestauranteComent.getItems().add("Smurfit Corrugados");
+                listaRestauranteComent.getItems().add("Unilever");
                 instream.close();
             }
             entrando=false;
@@ -89,10 +99,16 @@ public class Admin {
 
     public void restauranteTab() throws ClientProtocolException, IOException {
         if(entrando){
-            //Este ciclo es sólo para agregar restaurantes de prueba. Debe ser removido eventualmente
-            for(int i = 0; i < 20; i++){
-                listaRestaurante.getItems().add("Restaurante " + Integer.toString(i));
-            }
+            listaRestaurante.getItems().add("Servicios Nutresa");
+            listaRestaurante.getItems().add("Protección");
+            listaRestaurante.getItems().add("Nacional de Chocolates Bogotá");
+            listaRestaurante.getItems().add("Suizo");
+            listaRestaurante.getItems().add("Comercial Nutresa");
+            listaRestaurante.getItems().add("DHL");
+            listaRestaurante.getItems().add("Tecnoquímicas San Nicolás");
+            listaRestaurante.getItems().add("Smurfit casino principal");
+            listaRestaurante.getItems().add("Smurfit Corrugados");
+            listaRestaurante.getItems().add("Unilever");
 
             entrando = false;
         }
@@ -255,106 +271,6 @@ public class Admin {
         }
     }
 
-    public void modifyDispo(ActionEvent event) throws ClientProtocolException, IOException {
-        String putEndpoint = urlRaiz + "/chef/disponibilidad/";
-
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-
-        HttpPut httpPut = new HttpPut(putEndpoint);
-        httpPut.setHeader("Accept", "application/json");
-        httpPut.setHeader("Content-type", "application/json");
-
-        String inputJson = "{\n" + "  \"id\": 0";
-        if(!lunes_val.getText().isEmpty()){
-            inputJson += ",\n  \"Lunes\": "+lunes_val.getText();
-        }
-        if(!martes_val.getText().isEmpty()){
-            inputJson += ",\n  \"Martes\": "+martes_val.getText();
-        }
-        if(!miercoles_val.getText().isEmpty()){
-            inputJson += ",\n  \"Miercoles\": "+miercoles_val.getText();
-        }
-        if(!jueves_val.getText().isEmpty()){
-            inputJson += ",\n  \"Jueves\": "+jueves_val.getText();
-        }
-        if(!viernes_val.getText().isEmpty()){
-            inputJson += ",\n  \"Viernes\": "+viernes_val.getText();
-        }
-        inputJson += "}";
-
-        StringEntity stringEntity = new StringEntity(inputJson);
-        httpPut.setEntity(stringEntity);
-
-        HttpResponse response = httpclient.execute(httpPut);
-
-        BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-
-        //Throw runtime exception if status code isn't 200
-        if (response.getStatusLine().getStatusCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
-        }else{
-            if(!(lunes_val.getText().isEmpty() && martes_val.getText().isEmpty() && miercoles_val.getText().isEmpty() && jueves_val.getText().isEmpty() && viernes_val.getText().isEmpty())){
-                lunes_val.setText("");
-                martes_val.setText("");
-                miercoles_val.setText("");
-                jueves_val.setText("");
-                viernes_val.setText("");
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("");
-                alert.setHeaderText(null);
-                alert.setContentText("Valores cargados correctamente!");
-                alert.showAndWait();
-            }
-        }
-
-        //Create the StringBuffer object and store the response into it.
-        StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = br.readLine()) != null) {
-            System.out.println("Response : \n" + result.append(line));
-        }
-    }
-
-    public void getexcel(ActionEvent event) throws ClientProtocolException, IOException{
-        String getEndpoint = urlRaiz + "/chef/download_excel";
-
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-
-        HttpGet httpget = new HttpGet(getEndpoint);
-
-        HttpResponse response = httpclient.execute(httpget);
-
-        //BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-
-        //Throw runtime exception if status code isn't 200
-        if (response.getStatusLine().getStatusCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
-        }
-
-        HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            BufferedInputStream bis = new BufferedInputStream(entity.getContent());
-            String filePath = "Reservas.xlsx";
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
-            int inByte;
-            while((inByte = bis.read()) != -1) bos.write(inByte);
-            bis.close();
-            bos.close();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("");
-            alert.setHeaderText(null);
-            alert.setContentText("Archivo descargado exitosamente!");
-            alert.showAndWait();
-        }
-
-        //Create the StringBuffer object and store the response into it.
-        /*StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = br.readLine()) != null) {
-            System.out.println("Response : \n"+result.append(line));
-        }*/
-    }
 
     private String getExtension(String fileName){
         String extension = "";
