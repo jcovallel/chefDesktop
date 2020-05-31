@@ -70,13 +70,13 @@ public class LogIn {
     @FXML
     public void btnAceptarActionPerformed(ActionEvent event) throws IOException {
 
-        Integer privilegio = 1;
+        String privilegio = txtPass.getText();
 
         switch(privilegio){
-            case 1:
+            case "uno":
                 show("sample.fxml");
                 break;
-            case 2:
+            case "dos":
                 show("admin.fxml");
                 break;
             default:
