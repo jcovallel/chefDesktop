@@ -6,4 +6,20 @@ public class Calificacion {
         this.calificacion = calificacion;
         this.comentario = comentario;
     }
+
+    public int getCalificacion() {
+        return calificacion;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
 }
