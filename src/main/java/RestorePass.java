@@ -25,10 +25,12 @@ public class RestorePass implements Initializable {
     private TextField txtCorreo;
 
     @FXML
-    private AnchorPane paneCorreoEnviado, paneRestorePass, paneError;
+    private AnchorPane paneCorreoEnviado, paneRestorePass, paneError, parentPane;
 
     @FXML
     private ComboBox<String> comboboxUsuario;
+
+    Helper helper = new Helper();
 
     private String correoDummy = "correo_ok@gmail.com";
 
@@ -39,14 +41,7 @@ public class RestorePass implements Initializable {
 
     public void closePopupRestorePass(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
         this.paneCorreoEnviado.setVisible(false);
-        Parent parent = FXMLLoader.load(getClass().getResource("logIn.fxml"));
-        Scene scene = new Scene(parent);
-        Stage stage = new Stage();
-        stage.initModality(Modality.NONE);
-        stage.setScene(scene);
-        stage.show();
-        Stage myStage = (Stage) this.paneRestorePass.getScene().getWindow();
-        myStage.close();
+        helper.show("logIn.fxml", parentPane);
     }
 
     public void btnAceptarRestorePassActionPerformed(ActionEvent actionEvent) {
