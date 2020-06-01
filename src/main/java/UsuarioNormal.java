@@ -37,95 +37,24 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class Controller{
+public class UsuarioNormal extends Usuario implements Initializable{
     @FXML
     private TextField lunes_val,martes_val,miercoles_val,jueves_val,viernes_val;
-
-    @FXML
-    private PasswordField txtNuevoPass, txtNuevoPassAgain;
 
     @FXML
     private Label archivocargado;
 
     @FXML
-    private AnchorPane draggable, panelConfirmarCuenta;
-
-    @FXML
-    private ListView listastar,listacoment;
-
-    @FXML
-    private TableView<Calificacion> tableCalificacion;
+    private AnchorPane draggable;
 
     public String imagepath="vacio397";
-    public static Boolean entrando=true;
+    private String ip = "35.239.78.54";
+    private String puerto = "8080";
+    private String urlRaiz = "http://" + ip + ":" + puerto;
 
-    private static final String ip = "35.239.78.54";
-    private static final String puerto = "8080";
-    private static String urlRaiz = "http://" + ip + ":" + puerto;
+    Helper helper = new Helper();
 
-    private ObservableList<String> listaCalificaciones = FXCollections.observableArrayList("1", "2", "3");
-
-    public void testtab() throws ClientProtocolException, IOException{
-        if(entrando){
-            String getEndpoint = urlRaiz + "/chef/review/";
-
-            CloseableHttpClient httpclient = HttpClients.createDefault();
-
-            HttpGet httpget = new HttpGet(getEndpoint);
-
-            HttpResponse response = httpclient.execute(httpget);
-
-            //BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-
-            //Throw runtime exception if status code isn't 200
-            if (response.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
-            }
-
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                // A Simple JSON Response Read
-                InputStream instream = entity.getContent();
-                String result = convertStreamToString(instream);
-                // now you have the string representation of the HTML request
-                JSONArray myarr = new JSONArray(result);
-                for (int i=0; i < myarr.length(); i++) {
-                    listastar.getItems().add(myarr.getJSONObject(i).get("estrellas"));
-                    listacoment.getItems().add(myarr.getJSONObject(i).get("comentario"));
-                }
-                instream.close();
-            }
-            entrando=false;
-        }else{
-            listastar.getItems().clear();
-            listacoment.getItems().clear();
-            entrando=true;
-        }
-    }
-
-    private static String convertStreamToString(InputStream is) {
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    }
-
-    public void Button1Action(ActionEvent event){
+    public void ButtonUploadImageAction(MouseEvent event){
         FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.jpeg");
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().add(imageFilter);
@@ -138,7 +67,7 @@ public class Controller{
         }
     }
 
-    public void test(){
+    public void dragImagen(){
         final List<String> validExtensions = Arrays.asList("jpg", "png", "jpeg");
         draggable.setOnDragOver(event -> {
             // On drag over if the DragBoard has files
@@ -174,35 +103,17 @@ public class Controller{
         });
     }
 
-    public void txtNuevoPassActionPerformed(KeyEvent event){
-        if(this.txtNuevoPass.getText().length() > 0){
-            this.txtNuevoPassAgain.setVisible(true);
-        }
-        else{
-            this.txtNuevoPassAgain.setVisible(false);
-        }
-    }
-
     public void cuentaAceptar(MouseEvent event){
-        this.panelConfirmarCuenta.setVisible(true);
+        panelConfirmarCuenta.setVisible(true);
     }
 
-    public void cerrarPopup(MouseEvent event){
-        this.panelConfirmarCuenta.setVisible(false);
+    public void cerrarPopupCuenta(MouseEvent event){
+        panelConfirmarCuenta.setVisible(false);
     }
 
-    //Comparar si los dos pass nuevos son iguales
-    private Boolean compararPass(String pass1, String pass2){
-        return pass1.equals(pass2);
-    }
-
-    public void ButtonUploadAction(ActionEvent event){
+    public void ButtonUploadAction(MouseEvent event){
         if(imagepath.equalsIgnoreCase("vacio397")){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("");
-            alert.setHeaderText(null);
-            alert.setContentText("Aun no ha seleccionado ninguna imagen");
-            alert.showAndWait();
+            helper.showAlert("Aún no se ha seleccionado ninguna imagen", Alert.AlertType.INFORMATION);
         }else {
             new Thread(new Runnable() {
                 @Override
@@ -248,10 +159,7 @@ public class Controller{
                                     public void run() {
                                         imagepath="vacio397";
                                         archivocargado.setText("No ha seleccionado ninguna imagen");
-                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                        alert.setHeaderText(null);
-                                        alert.setContentText("Imagen subida exitosamente!");
-                                        alert.showAndWait();
+                                        helper.showAlert("¡Imagen cargada satisfactoriamente!", Alert.AlertType.CONFIRMATION);
                                     }
                                 });
                             }
@@ -273,7 +181,7 @@ public class Controller{
         }
     }
 
-    public void modifyDispo(ActionEvent event) throws ClientProtocolException, IOException {
+    public void modifyDispo(MouseEvent event) throws IOException {
         String putEndpoint = urlRaiz + "/chef/disponibilidad/";
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -317,11 +225,7 @@ public class Controller{
                 miercoles_val.setText("");
                 jueves_val.setText("");
                 viernes_val.setText("");
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("");
-                alert.setHeaderText(null);
-                alert.setContentText("Valores cargados correctamente!");
-                alert.showAndWait();
+                helper.showAlert("Valores cargados correctamente", Alert.AlertType.CONFIRMATION);
             }
         }
 
@@ -333,7 +237,7 @@ public class Controller{
         }
     }
 
-    public void getexcel(ActionEvent event) throws ClientProtocolException, IOException{
+    public void getexcel(MouseEvent event) throws ClientProtocolException, IOException{
         String getEndpoint = urlRaiz + "/chef/download_excel";
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -359,11 +263,7 @@ public class Controller{
             bis.close();
             bos.close();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("");
-            alert.setHeaderText(null);
-            alert.setContentText("Archivo descargado exitosamente!");
-            alert.showAndWait();
+            helper.showAlert("Archivo descargado exitosamente", Alert.AlertType.CONFIRMATION);
         }
 
         //Create the StringBuffer object and store the response into it.
@@ -384,4 +284,11 @@ public class Controller{
         return extension;
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+
+        listaCalificaciones.add(new Calificacion(3, "Regular"));
+        listaCalificaciones.add(new Calificacion(5, "Bueno"));
+    }
 }
