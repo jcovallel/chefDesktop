@@ -17,7 +17,7 @@
               <content>
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                     <children>
-                       <AnchorPane fx:id="draggable" layoutX="18.0" layoutY="65.0" onDragEntered="#dragImagen" onMouseDragged="#dragImagen" prefHeight="174.0" prefWidth="564.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: segments(5, 5, 5, 5)  line-cap round;">
+                       <AnchorPane fx:id="draggable" layoutX="18.0" layoutY="76.0" onDragEntered="#dragImagen" onMouseDragged="#dragImagen" prefHeight="163.0" prefWidth="564.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: segments(5, 5, 5, 5)  line-cap round;">
                           <children>
                              <Label layoutX="77.0" layoutY="24.0" prefHeight="72.0" prefWidth="411.0" text="Arrastre y suelte aquí la imagen del menú que &#10;desea cargar" textAlignment="CENTER">
                                 <font>
@@ -73,6 +73,15 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                        </Label>
+                        <AnchorPane layoutY="-6.0" prefHeight="66.0" prefWidth="600.0" style="-fx-background-color: #2a295c;">
+                           <children>
+                              <Label layoutX="14.0" layoutY="21.0" text="Calificciones y comentarios" textFill="WHITE">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
                     </children>
                  </AnchorPane>
               </content>
@@ -81,42 +90,37 @@
               <content>
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                     <children>
-                       <Label layoutX="14.0" layoutY="11.0" text="Administrar disponibilidad" textFill="#2a295c">
-                          <font>
-                             <Font name="Segoe UI Bold" size="20.0" />
-                          </font>
-                       </Label>
-                       <TextField fx:id="lunes_val" layoutX="50.0" layoutY="60.0" prefHeight="35.0" prefWidth="250.0" promptText="Lunes" style="-fx-background-radius: 0px;" />
-                       <TextField fx:id="martes_val" layoutX="50.0" layoutY="106.0" prefHeight="35.0" prefWidth="250.0" promptText="Martes" style="-fx-background-radius: 0px;" />
-                       <TextField fx:id="miercoles_val" layoutX="50.0" layoutY="151.0" prefHeight="35.0" prefWidth="250.0" promptText="Miércoles" style="-fx-background-radius: 0px;" />
-                       <TextField fx:id="jueves_val" layoutX="50.0" layoutY="197.0" prefHeight="35.0" prefWidth="250.0" promptText="Jueves" style="-fx-background-radius: 0px;" />
-                       <TextField fx:id="viernes_val" layoutX="50.0" layoutY="247.0" prefHeight="35.0" prefWidth="250.0" promptText="Viernes" style="-fx-background-radius: 0px;" />
-                       <Line endX="100.0" endY="140.0" layoutX="239.0" layoutY="215.0" startX="100.0" startY="-192.0" />
+                       <TextField fx:id="lunes_val" layoutX="50.0" layoutY="66.0" prefHeight="35.0" prefWidth="250.0" promptText="Lunes" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="martes_val" layoutX="50.0" layoutY="112.0" prefHeight="35.0" prefWidth="250.0" promptText="Martes" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="miercoles_val" layoutX="50.0" layoutY="157.0" prefHeight="35.0" prefWidth="250.0" promptText="Miércoles" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="jueves_val" layoutX="50.0" layoutY="203.0" prefHeight="35.0" prefWidth="250.0" promptText="Jueves" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="viernes_val" layoutX="50.0" layoutY="253.0" prefHeight="35.0" prefWidth="250.0" promptText="Viernes" style="-fx-background-radius: 0px;" />
+                       <Line endX="100.0" endY="140.0" layoutX="239.0" layoutY="215.0" startX="100.0" startY="-149.0" />
                        <Label layoutX="374.0" layoutY="77.0" text="Descargar Excel &#10;de reservas" textAlignment="CENTER">
                           <font>
                              <Font name="Segoe UI Bold" size="25.0" />
                           </font>
                        </Label>
-                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/monday.png" />
                           </image></ImageView>
-                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/tuesday.png" />
                           </image>
                        </ImageView>
-                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/wednesday.png" />
                           </image>
                        </ImageView>
-                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="206.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/thursday.png" />
                           </image>
                        </ImageView>
-                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/friday.png" />
                           </image>
@@ -161,6 +165,15 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                        </Label>
+                        <AnchorPane prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #2a295c;">
+                           <children>
+                              <Label layoutX="14.0" layoutY="16.0" text="Administrar disponibilidad" textFill="WHITE">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
                     </children></AnchorPane>
               </content>
            </Tab>
@@ -168,14 +181,18 @@
               <content>
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                     <children>
-                       <Label layoutX="14.0" layoutY="14.0" text="Calificaciones y comentarios" textFill="#2a295c">
-                          <font>
-                             <Font name="Segoe UI Bold" size="20.0" />
-                          </font>
-                       </Label>
-                        <TableView fx:id="tableCalificacion" layoutX="21.0" layoutY="61.0" prefHeight="290.0" prefWidth="560.0" style="-fx-background-radius: 0px;">
+                        <TableView fx:id="tableCalificacion" layoutX="21.0" layoutY="69.0" prefHeight="282.0" prefWidth="560.0" style="-fx-background-radius: 0px;">
                           
                         </TableView>
+                        <AnchorPane prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #2a295c;">
+                           <children>
+                              <Label layoutX="14.0" layoutY="16.0" text="Calificciones y comentarios" textFill="WHITE">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
                     </children></AnchorPane>
               </content>
            </Tab>
@@ -183,12 +200,6 @@
               <content>
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                      <children>
-                        <Line endX="499.0" layoutX="101.0" layoutY="57.0" startX="-100.0" />
-                        <Label layoutX="13.0" layoutY="14.0" text="Usuario x" textFill="#2a295c">
-                           <font>
-                              <Font name="Segoe UI Bold" size="20.0" />
-                           </font>
-                        </Label>
                         <TextField layoutX="57.0" layoutY="136.0" prefHeight="40.0" prefWidth="319.0" promptText="Correo" style="-fx-background-radius: 0px;" />
                         <ImageView fitHeight="26.0" fitWidth="21.0" layoutX="28.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -264,6 +275,15 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
+                        <AnchorPane layoutX="-3.0" prefHeight="60.0" prefWidth="608.0" style="-fx-background-color: #2a295c;">
+                           <children>
+                              <Label layoutX="14.0" layoutY="19.0" text="Usuario x" textFill="WHITE">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
                      </children></AnchorPane>
               </content>
            </Tab>
