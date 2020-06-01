@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2a295c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CambioPass">
+    <children>
+        <PasswordField fx:id="txtPass" layoutX="300.0" layoutY="167.0" prefHeight="40.0" prefWidth="272.0" promptText="Contraseña" style="-fx-background-radius: 0px;" />
+        <Button fx:id="btnAceptar" ellipsisString="" layoutX="451.0" layoutY="315.0" mnemonicParsing="false" onAction="#btnAceptarActionPerformed" prefHeight="47.0" prefWidth="121.0" style="-fx-background-color: white; -fx-background-radius: 0px;" text="Aceptar" textFill="#2a295c">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <font>
+                <Font name="Segoe UI Bold" size="15.0" />
+            </font>
+            <effect>
+                <InnerShadow blurType="ONE_PASS_BOX" height="21.26" radius="10.005" width="20.76">
+                    <color>
+                        <Color red="0.16529999673366547" green="0.16200000047683716" blue="0.36000001430511475" opacity="0.591304361820221" />
+                    </color>
+                </InnerShadow>
+            </effect></Button>
+        <ImageView fitHeight="34.0" fitWidth="27.0" layoutX="266.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@images/password_white.png" />
+            </image></ImageView>
+        <AnchorPane prefHeight="400.0" prefWidth="250.0" style="-fx-background-color: white;">
+            <children>
+                <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="25.0" layoutY="166.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/sodexo.png" />
+                    </image>
+                </ImageView>
+            </children></AnchorPane>
+      <PasswordField fx:id="txtPass1" layoutX="300.0" layoutY="215.0" prefHeight="40.0" prefWidth="272.0" promptText="Repetir contraseña" style="-fx-background-radius: 0px;" />
+      <Label layoutX="320.0" layoutY="34.0" prefHeight="96.0" prefWidth="233.0" text="Cambio de contraseña" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Segoe UI Bold" size="30.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>
