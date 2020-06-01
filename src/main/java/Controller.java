@@ -3,7 +3,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -29,11 +31,13 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class Controller {
+public class Controller{
     @FXML
     private TextField lunes_val,martes_val,miercoles_val,jueves_val,viernes_val;
 
@@ -49,12 +53,17 @@ public class Controller {
     @FXML
     private ListView listastar,listacoment;
 
+    @FXML
+    private TableView<Calificacion> tableCalificacion;
+
     public String imagepath="vacio397";
     public static Boolean entrando=true;
 
     private static final String ip = "35.239.78.54";
     private static final String puerto = "8080";
     private static String urlRaiz = "http://" + ip + ":" + puerto;
+
+    private ObservableList<String> listaCalificaciones = FXCollections.observableArrayList("1", "2", "3");
 
     public void testtab() throws ClientProtocolException, IOException{
         if(entrando){
@@ -374,4 +383,5 @@ public class Controller {
 
         return extension;
     }
+
 }

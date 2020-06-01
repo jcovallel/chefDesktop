@@ -193,17 +193,11 @@
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                      <children>
                         <Line endX="499.0" layoutX="101.0" layoutY="57.0" startX="-100.0" />
-                        <ImageView fitHeight="35.0" fitWidth="26.0" layoutX="43.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/user_black.png" />
-                           </image>
-                        </ImageView>
                         <Label layoutX="27.0" layoutY="22.0" text="Usuario x">
                            <font>
                               <Font name="Segoe UI Bold" size="16.0" />
                            </font>
                         </Label>
-                        <TextField layoutX="75.0" layoutY="86.0" prefHeight="40.0" prefWidth="319.0" promptText="Restaurante" style="-fx-background-radius: 0px;" />
                         <TextField layoutX="75.0" layoutY="135.0" prefHeight="40.0" prefWidth="319.0" promptText="Correo" style="-fx-background-radius: 0px;" />
                         <ImageView fitHeight="26.0" fitWidth="21.0" layoutX="46.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
                            <image>

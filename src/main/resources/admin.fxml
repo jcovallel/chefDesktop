@@ -2,11 +2,11 @@
 
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
-<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Admin">
     <center>
@@ -14,7 +14,7 @@
             <tabs>
                 <Tab fx:id="restaurante" onSelectionChanged="#restauranteTab" text="Restaurantes">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
+                        <AnchorPane fx:id="paneRestaurante" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                      <children>
                         <ListView fx:id="listaRestaurante" layoutX="16.0" layoutY="50.0" onMouseClicked="#ListMouseClicked" prefHeight="248.0" prefWidth="565.0" />
                         <Label layoutX="14.0" layoutY="26.0" text="Restaurante">
@@ -39,6 +39,43 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
+                        <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="495.0" layoutY="315.0" onMouseClicked="#editarRestaurante" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/edit.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <AnchorPane fx:id="paneEditarRestaurante" layoutX="114.0" layoutY="77.0" prefHeight="195.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+                           <effect>
+                              <DropShadow offsetX="5.0" offsetY="5.0" />
+                           </effect>
+                           <children>
+                              <TextField fx:id="txtNuevoNombre" layoutX="56.0" layoutY="85.0" prefHeight="40.0" prefWidth="271.0" promptText="Nombre nuevo" style="-fx-background-radius: 0px;" />
+                              <Label layoutX="42.0" layoutY="28.0" prefHeight="45.0" prefWidth="223.0" text="Escriba el nuevo nombre que desea para el lugar seleccionado" wrapText="true">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="51.0" fitWidth="37.0" layoutX="322.0" layoutY="144.0" onMouseClicked="#okEditarNombre" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/checkmark.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                              <ImageView fitHeight="23.0" fitWidth="24.0" layoutX="349.0" onMouseClicked="#cerrarPopupEditarRestaurante" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/x.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
                      </children>
                         </AnchorPane>
                     </content>
@@ -78,17 +115,11 @@
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                             <children>
                                 <Line endX="499.0" layoutX="101.0" layoutY="57.0" startX="-100.0" />
-                                <ImageView fitHeight="35.0" fitWidth="26.0" layoutX="43.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/user_black.png" />
-                                    </image>
-                                </ImageView>
-                                <Label layoutX="27.0" layoutY="22.0" text="Usuario x">
+                                <Label layoutX="27.0" layoutY="22.0" text="Administrador">
                                     <font>
                                         <Font name="Segoe UI Bold" size="16.0" />
                                     </font>
                                 </Label>
-                                <TextField layoutX="75.0" layoutY="86.0" prefHeight="40.0" prefWidth="319.0" promptText="Usuario" style="-fx-background-radius: 0px;" />
                                 <TextField layoutX="75.0" layoutY="135.0" prefHeight="40.0" prefWidth="319.0" promptText="Correo" style="-fx-background-radius: 0px;" />
                                 <ImageView fitHeight="26.0" fitWidth="21.0" layoutX="46.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
                                     <image>

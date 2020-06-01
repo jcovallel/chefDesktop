@@ -46,7 +46,7 @@
                </image>
             </ImageView>
          </children></AnchorPane>
-      <ComboBox layoutX="300.0" layoutY="167.0" prefHeight="40.0" prefWidth="272.0" promptText="Restaurante" style="-fx-background-color: white; -fx-background-radius: 0px;" />
+      <ComboBox fx:id="comboboxUsuario" layoutX="300.0" layoutY="167.0" prefHeight="40.0" prefWidth="272.0" promptText="Usuario" style="-fx-background-color: white; -fx-background-radius: 0px;" />
       <Label layoutX="300.0" layoutY="265.0" onMouseClicked="#contrasenaOlvidadaActionPerformed" text="¿Olvidó su contraseña?" textFill="WHITE" underline="true">
          <font>
             <Font name="Segoe UI Bold" size="12.0" />

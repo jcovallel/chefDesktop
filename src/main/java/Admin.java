@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class Admin {
     @FXML
-    private TextField lunes_val,martes_val,miercoles_val,jueves_val,viernes_val;
+    private TextField lunes_val,martes_val,miercoles_val,jueves_val,viernes_val, txtNuevoNombre;
 
     @FXML
     private PasswordField txtNuevoPass, txtNuevoPassAgain;
@@ -41,7 +41,7 @@ public class Admin {
     private AnchorPane draggable;
 
     @FXML
-    private AnchorPane panelConfirmarCuenta;
+    private AnchorPane panelConfirmarCuenta, paneEditarRestaurante, paneRestaurante;
 
     @FXML
     private ListView listastar,listacoment, listaRestaurante, listaRestauranteComent;
@@ -91,12 +91,16 @@ public class Admin {
                 listaRestauranteComent.getItems().add("Smurfit casino principal");
                 listaRestauranteComent.getItems().add("Smurfit Corrugados");
                 listaRestauranteComent.getItems().add("Unilever");
+                listaRestauranteComent.getItems().sort((Object c1, Object c2)->{
+                    return c1.toString().compareTo((String) c2);
+                });
                 instream.close();
             }
             entrando=false;
         }else{
             listastar.getItems().clear();
             listacoment.getItems().clear();
+            listaRestauranteComent.getItems().clear();
             entrando=true;
         }
     }
@@ -113,6 +117,9 @@ public class Admin {
             listaRestaurante.getItems().add("Smurfit casino principal");
             listaRestaurante.getItems().add("Smurfit Corrugados");
             listaRestaurante.getItems().add("Unilever");
+            this.listaRestaurante.getItems().sort((Object c1, Object c2) -> {
+                return c1.toString().compareTo((String) c2);
+            });
 
             entrando = false;
         }
@@ -305,5 +312,25 @@ public class Admin {
     //Comparar si los dos pass nuevos son iguales
     private Boolean compararPass(String pass1, String pass2){
         return pass1.equals(pass2);
+    }
+
+    public void cerrarPopupEditarRestaurante(MouseEvent event){
+        this.paneEditarRestaurante.setVisible(false);
+        this.listaRestaurante.setDisable(false);
+    }
+
+    public void editarRestaurante(MouseEvent event){
+        this.paneEditarRestaurante.setVisible(true);
+        this.listaRestaurante.setDisable(true);
+    }
+
+    public void okEditarNombre(MouseEvent event){
+        this.listaRestaurante.getItems().remove(this.listaRestaurante.getSelectionModel().getSelectedItem());
+        this.listaRestaurante.getItems().add(txtNuevoNombre.getText());
+        this.listaRestaurante.getItems().sort((Object c1, Object c2) -> {
+            return c1.toString().compareTo((String) c2);
+        });
+        this.paneEditarRestaurante.setVisible(false);
+        this.listaRestaurante.setDisable(false);
     }
 }
