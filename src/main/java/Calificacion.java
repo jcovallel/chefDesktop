@@ -56,6 +56,6 @@ public class Calificacion {
 
     @Override
     public String toString(){
-        return "[" + this.cali + " " + this.come + " " + this.name + " " + this.cel + " " + this.addr + "]";
+        return "[" + this.cali + ", " + this.come + ", " + this.name + ", " + this.cel + ", " + this.addr + "]";
     }
 }

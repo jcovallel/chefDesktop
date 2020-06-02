@@ -78,18 +78,16 @@ public class Helper {
 
 
         TableColumn<Calificacion, String> colNombre = new TableColumn<>("Nombre");
-        colComentario.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("name"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("name"));
 
 
         TableColumn<Calificacion, String> colCelular = new TableColumn<>("Celular");
-        colComentario.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("cel"));
+        colCelular.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("cel"));
 
 
         TableColumn<Calificacion, String> colCorreo = new TableColumn<>("Correo");
-        colComentario.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("addr"));
-
-        tabla.getColumns().add(colCalificacion);
-        tabla.getColumns().add(colNombre);
+        colCorreo.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("addr"));
+        tabla.getColumns().addAll(colCalificacion, colComentario, colNombre, colCelular, colCorreo);
         tabla.setItems(lista);
     }
 
