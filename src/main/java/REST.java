@@ -1,3 +1,4 @@
+import javafx.scene.control.Alert;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -16,6 +17,8 @@ public class REST {
     private final String puerto = "8080";
     private final String urlRaiz = "http://" + ip + ":" + puerto;
     JSONArray jsonArray = null;
+
+    Helper helper = new Helper();
 
     public JSONArray GET(String path, Boolean... correo) throws IOException {
 
@@ -66,6 +69,37 @@ public class REST {
         }
         else{
             return null;
+        }
+    }
+
+    public void GETExcel(String path, String nombreExcel) throws IOException {
+
+        String endPoint = urlRaiz + path;
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+
+        HttpGet httpget = new HttpGet(endPoint);
+
+        HttpResponse response = httpclient.execute(httpget);
+
+        //BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
+
+        //Throw runtime exception if status code isn't 200
+        if (response.getStatusLine().getStatusCode() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+        }
+
+        HttpEntity entity = response.getEntity();
+        System.out.println(entity.getContent());
+        if (entity != null) {
+            BufferedInputStream bis = new BufferedInputStream(entity.getContent());
+            String filePath = nombreExcel + ".xlsx";
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+            int inByte;
+            while((inByte = bis.read()) != -1) bos.write(inByte);
+            bis.close();
+            bos.close();
+
+            helper.showAlert("Archivo descargado exitosamente", Alert.AlertType.CONFIRMATION);
         }
     }
 

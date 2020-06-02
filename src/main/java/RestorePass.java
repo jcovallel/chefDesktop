@@ -51,6 +51,7 @@ public class RestorePass implements Initializable {
             String path = "/chef/sendmail/" + comboboxUsuario.getValue() + "/" + txtCorreo.getText() + "/true";
             try {
                 JSONArray jsonArray = rest.GET(path);
+                System.out.println(jsonArray);
                 if(jsonArray != null){
                     if(jsonArray.getJSONObject(0).toString().contains("true")){
                         paneCorreoEnviado.setVisible(true);

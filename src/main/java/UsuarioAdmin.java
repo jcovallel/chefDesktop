@@ -90,7 +90,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                 this.listaRestaurante.getItems().sort((Object c1, Object c2) -> {
                     return c1.toString().compareTo((String) c2);
                 });
-                listaRestauranteComent.getItems().add("TODOS");
+                listaRestauranteComent.getItems().add("Administrador");
                 helper.setTablaCalificacion(
                         tableCalificacion,
                         listaCalificaciones,
@@ -222,7 +222,6 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         String path = "/chef/deleteuser/" + nombre;
         jsonArray = rest.GET(path);
         if(jsonArray != null){
-            System.out.println("Holaas");
         }
         else{
         }
@@ -248,15 +247,38 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     }
 
     public void ListaRestauranteComentMouseClicked(MouseEvent event) throws IOException {
-        if(listaRestaurante.isFocused() && listaRestaurante.getSelectionModel().getSelectedItem().toString() != ""){
-            if(!listaRestaurante.getSelectionModel().getSelectedItem().toString().equals("TODOS")){
-                String path = "/chef/user/review/" + listaRestaurante.getSelectionModel().getSelectedItem().toString();
-                //setListaComentarios(path);
+        if(listaRestauranteComent.isFocused() && listaRestauranteComent.getSelectionModel().getSelectedItem().toString() != ""){
+            tableCalificacion.getItems().clear();
+            String empresa = listaRestauranteComent.getSelectionModel().getSelectedItem().toString();
+            System.out.println(empresa);
+            empresa = empresa.replaceAll(" ", "%20");
+
+            String path = "/chef/user/review/" + empresa;
+            if(empresa.equals("Administrador")){
+                path = "/chef/admin/review/";
             }
-            else{
-                String path = "/chef/admin/review/";
-                //etListaComentarios(path);
+            JSONArray jsonArray = rest.GET(path);
+            listaCalificaciones.clear();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                listaCalificaciones.add(
+                        new Calificacion(
+                                jsonArray.getJSONObject(i).get("estrellas").toString(),
+                                (String) jsonArray.getJSONObject(i).get("comentario"),
+                                (String) jsonArray.getJSONObject(i).get("nombre"),
+                                jsonArray.getJSONObject(i).get("celular").toString(),
+                                (String) jsonArray.getJSONObject(i).get("correo")
+                        )
+                );
             }
+            helper.setTablaCalificacion(
+                    tableCalificacion,
+                    listaCalificaciones,
+                    Double.parseDouble("80"),
+                    Double.parseDouble("250"),
+                    Double.parseDouble("150"),
+                    Double.parseDouble("150"),
+                    Double.parseDouble("150")
+            );
         }
     }
 

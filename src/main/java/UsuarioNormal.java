@@ -203,40 +203,9 @@ public class UsuarioNormal extends Usuario implements Initializable{
     }
 
     public void getexcel(MouseEvent event) throws ClientProtocolException, IOException{
-        String getEndpoint = urlRaiz + "/chef/download_excel";
+        String path = "/chef/download_excel/" + UsuarioEntity.getNombre();
+        rest.GETExcel(path, "Reservas");
 
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-
-        HttpGet httpget = new HttpGet(getEndpoint);
-
-        HttpResponse response = httpclient.execute(httpget);
-
-        //BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-
-        //Throw runtime exception if status code isn't 200
-        if (response.getStatusLine().getStatusCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
-        }
-
-        HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            BufferedInputStream bis = new BufferedInputStream(entity.getContent());
-            String filePath = "Reservas.xlsx";
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
-            int inByte;
-            while((inByte = bis.read()) != -1) bos.write(inByte);
-            bis.close();
-            bos.close();
-
-            helper.showAlert("Archivo descargado exitosamente", Alert.AlertType.CONFIRMATION);
-        }
-
-        //Create the StringBuffer object and store the response into it.
-        /*StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = br.readLine()) != null) {
-            System.out.println("Response : \n"+result.append(line));
-        }*/
     }
 
     private String getExtension(String fileName){
@@ -253,4 +222,5 @@ public class UsuarioNormal extends Usuario implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         labelUsuario.setText(UsuarioEntity.getNombre());
     }
+
 }

@@ -48,6 +48,11 @@ public class Usuario {
     }
 
     @FXML
+    protected void descargarReporteCalificaciones(MouseEvent event) throws IOException {
+        rest.GETExcel("/chef/download_excel_comen/" + UsuarioEntity.getNombre() ,"Reporte-Comentarios");
+    }
+
+    @FXML
     protected void tabComentarios() throws IOException {
         if(entrando){
             String path = "/chef/user/review/" + UsuarioEntity.getNombre();
