@@ -24,6 +24,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 
@@ -34,20 +35,23 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class UsuarioAdmin extends Usuario{
+public class UsuarioAdmin extends Usuario implements Initializable{
     @FXML
-    private TextField txtNuevoNombre;
+    private TextField txtNuevoNombre, txtNuevoCorreo, txtNuevoRestaurante, txtEditarCorreo2;
 
     @FXML
-    private AnchorPane paneEditarRestaurante, paneAgregarRestaurante;
+    private AnchorPane paneEditarRestaurante, paneAgregarRestaurante, paneEliminarRestaurante;
 
     @FXML
     private ListView listaRestaurante, listaRestauranteComent;
 
     @FXML
-    ImageView btnEditar;
+    ImageView btnEditar, btnEliminar, btnAgregar;
+
+    private String pathUsuarios = "/chef/getusers/";
 
     Helper helper = new Helper();
+    REST rest = new REST();
 
     private static final String ip = "35.239.78.54";
     private static final String puerto = "8080";
@@ -57,76 +61,71 @@ public class UsuarioAdmin extends Usuario{
     public void tabComentarios() throws IOException {
 
         if(entrando){
-            String path = "/chef/review/";
-            JSONArray jsonArray = helper.GET(path);
-
+            JSONArray jsonArray = rest.GET("/chef/admin/review/");
+            System.out.println(jsonArray);
             if (jsonArray != null) {
-                for (int i=0; i < jsonArray.length(); i++) {
+                for (int i = 0; i < jsonArray.length(); i++) {
                     listaCalificaciones.add(
                             new Calificacion(
-                                    (Integer) jsonArray.getJSONObject(i).get("estrellas"),
-                                    (String) jsonArray.getJSONObject(i).get("comentario")
+                                    jsonArray.getJSONObject(i).get("estrellas").toString(),
+                                    (String) jsonArray.getJSONObject(i).get("comentario"),
+                                    (String) jsonArray.getJSONObject(i).get("nombre"),
+                                    jsonArray.getJSONObject(i).get("celular").toString(),
+                                    (String) jsonArray.getJSONObject(i).get("correo")
                             )
                     );
                 }
-
-                helper.setTablaCalificacion(tableCalificacion, "comentario",
-                        listaCalificaciones, Double.parseDouble("80"), Double.parseDouble("270")
-                );
-
-                listaRestauranteComent.getItems().add("Servicios Nutresa");
-                listaRestauranteComent.getItems().add("Protección");
-                listaRestauranteComent.getItems().add("Nacional de Chocolates Bogotá");
-                listaRestauranteComent.getItems().add("Suizo");
-                listaRestauranteComent.getItems().add("Comercial Nutresa");
-                listaRestauranteComent.getItems().add("DHL");
-                listaRestauranteComent.getItems().add("Tecnoquímicas San Nicolás");
-                listaRestauranteComent.getItems().add("Smurfit casino principal");
-                listaRestauranteComent.getItems().add("Smurfit Corrugados");
-                listaRestauranteComent.getItems().add("Unilever");
-                listaRestauranteComent.getItems().sort((Object c1, Object c2)->{
+                try{
+                    jsonArray = rest.GET(pathUsuarios);
+                    if(jsonArray != null){
+                        for(int i = 0; i < jsonArray.length(); i++){
+                            listaRestauranteComent.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
+                        }
+                        listaRestauranteComent.getItems().remove((String) "Administrador");
+                    }
+                }
+                catch(IOException ioe){
+                    ioe.printStackTrace();
+                }
+                this.listaRestaurante.getItems().sort((Object c1, Object c2) -> {
                     return c1.toString().compareTo((String) c2);
                 });
+                listaRestauranteComent.getItems().add("TODOS");
+                helper.setTablaCalificacion(
+                        tableCalificacion,
+                        listaCalificaciones,
+                        Double.parseDouble("80"),
+                        Double.parseDouble("250"),
+                        Double.parseDouble("150"),
+                        Double.parseDouble("150"),
+                        Double.parseDouble("150")
+                );
             }
             entrando=false;
         }else{
             tableCalificacion.getItems().clear();
             tableCalificacion.getColumns().clear();
             listaRestauranteComent.getItems().clear();
-            entrando=true;
+            entrando = true;
         }
+        setListaRestaurantes(true);
     }
     
 
     public void tabRestaurantes() throws ClientProtocolException, IOException {
-        if(entrando){
-            btnEditar.setVisible(false);
-            listaRestaurante.getItems().add("Servicios Nutresa");
-            listaRestaurante.getItems().add("Protección");
-            listaRestaurante.getItems().add("Nacional de Chocolates Bogotá");
-            listaRestaurante.getItems().add("Suizo");
-            listaRestaurante.getItems().add("Comercial Nutresa");
-            listaRestaurante.getItems().add("DHL");
-            listaRestaurante.getItems().add("Tecnoquímicas San Nicolás");
-            listaRestaurante.getItems().add("Smurfit casino principal");
-            listaRestaurante.getItems().add("Smurfit Corrugados");
-            listaRestaurante.getItems().add("Unilever");
-            this.listaRestaurante.getItems().sort((Object c1, Object c2) -> {
-                return c1.toString().compareTo((String) c2);
-            });
-
-            entrando = false;
-        }
-        else{
-            listaRestaurante.getItems().clear();
-            entrando = true;
-        }
-
+        btnEliminar.setVisible(false);
+        btnEditar.setVisible(false);
+        setListaRestaurantes(false);
     }
 
     public void ListaRestauranteMouseClicked(MouseEvent event){
-        if(listaRestaurante.isFocused()){
+        if(listaRestaurante.isFocused() && listaRestaurante.getSelectionModel().getSelectedItem().toString() != ""){
+            btnEliminar.setVisible(true);
             btnEditar.setVisible(true);
+        }
+        else{
+            btnEliminar.setVisible(false);
+            btnEditar.setVisible(false);
         }
     }
 
@@ -146,17 +145,56 @@ public class UsuarioAdmin extends Usuario{
         this.listaRestaurante.setDisable(true);
     }
 
-    public void okEditarNombre(MouseEvent event) {
-        this.listaRestaurante.getItems().remove(this.listaRestaurante.getSelectionModel().getSelectedItem());
-        this.listaRestaurante.getItems().add(txtNuevoNombre.getText());
-        this.listaRestaurante.getItems().sort((Object c1, Object c2) -> {
-            return c1.toString().compareTo((String) c2);
-        });
+    public void okEditarRestaurante(MouseEvent event) throws IOException {
+        String nuevoNombre;
+        String nuevoCorreo;
+        if(txtNuevoNombre.getText().length() <= 0){
+            nuevoNombre = "NULL";
+        }
+        else{
+            nuevoNombre = txtNuevoNombre.getText();
+            nuevoNombre.replaceAll(" ", "%20");
+        }
+        if(txtEditarCorreo2.getText().length() <= 0){
+            nuevoCorreo = null;
+        }
+        else{
+            nuevoCorreo = txtEditarCorreo2.getText();
+            nuevoCorreo.replaceAll(" ", "%20");
+        }
+        System.out.println(txtEditarCorreo2.getText());
+
+        String path = "/chef/modifyinfoadmi/" + listaRestaurante.getSelectionModel().getSelectedItem() + "/" + nuevoNombre + "/" + nuevoCorreo;
+        rest.PUT(path);
         this.paneEditarRestaurante.setVisible(false);
         this.listaRestaurante.setDisable(false);
     }
 
     public void okAgregarRestaurante(MouseEvent event) {
+
+        try {
+            rest.POST(
+                    "/chef/createuser/",
+                    "nombre", txtNuevoRestaurante.getText(),
+                    "nombreid", txtNuevoRestaurante.getText(),
+                    "correo", txtNuevoCorreo.getText(),
+                    "password", helper.hash(helper.defaultPass));
+
+            String path = "/chef/disponibilidad/" + UsuarioEntity.getNombre();
+            rest.PUT(path,
+                    "empresaid", txtNuevoRestaurante.getText(),
+                    "empresa", txtNuevoRestaurante.getText(),
+                    "Lunes", "0",
+                    "Martes", "0",
+                    "Miercoles", "0",
+                    "Jueves", "0",
+                    "Viernes", "0"
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         listaRestaurante.setDisable(false);
         paneAgregarRestaurante.setVisible(false);
     }
@@ -167,11 +205,62 @@ public class UsuarioAdmin extends Usuario{
     }
 
     public void agregarRestaurante(MouseEvent event) {
+
         listaRestaurante.setDisable(true);
         paneAgregarRestaurante.setVisible(true);
     }
 
-    public void cerrarPopupCuenta(MouseEvent event) {
-        panelConfirmarCuenta.setVisible(false);
+    public void eliminarRestaurante(MouseEvent event) {
+        paneEliminarRestaurante.setVisible(true);
+    }
+
+    public void okEliminarRestaurante(MouseEvent event) throws IOException {
+        paneEliminarRestaurante.setVisible(false);
+        JSONArray jsonArray = null;
+        String nombre = (String) listaRestaurante.getSelectionModel().getSelectedItem();
+        nombre = nombre.replaceAll(" ", "%20");
+        String path = "/chef/deleteuser/" + nombre;
+        jsonArray = rest.GET(path);
+        if(jsonArray != null){
+            System.out.println("Holaas");
+        }
+        else{
+        }
+
+    }
+
+    public void cerrarPopupEliminarRestaurante(MouseEvent event) {
+        paneEliminarRestaurante.setVisible(false);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        UsuarioEntity.getUsuario("Administrador");
+    }
+
+    public void txtMostrarBotonAgregar(KeyEvent keyEvent) {
+        if(this.txtNuevoRestaurante.getText().length() > 0){
+            this.btnAgregar.setVisible(true);
+        }
+        else{
+            this.btnAgregar.setVisible(false);
+        }
+    }
+
+    public void ListaRestauranteComentMouseClicked(MouseEvent event) throws IOException {
+        if(listaRestaurante.isFocused() && listaRestaurante.getSelectionModel().getSelectedItem().toString() != ""){
+            if(!listaRestaurante.getSelectionModel().getSelectedItem().toString().equals("TODOS")){
+                String path = "/chef/user/review/" + listaRestaurante.getSelectionModel().getSelectedItem().toString();
+                //setListaComentarios(path);
+            }
+            else{
+                String path = "/chef/admin/review/";
+                //etListaComentarios(path);
+            }
+        }
+    }
+
+    public void setListaRestaurantes(Boolean isTodos){
+
     }
 }

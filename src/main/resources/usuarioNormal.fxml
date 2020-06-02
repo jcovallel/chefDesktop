@@ -196,11 +196,11 @@
                     </children></AnchorPane>
               </content>
            </Tab>
-           <Tab fx:id="acc" text="Cuenta">
+           <Tab fx:id="acc" onSelectionChanged="#tabCuenta" text="Cuenta">
               <content>
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                      <children>
-                        <TextField layoutX="57.0" layoutY="136.0" prefHeight="40.0" prefWidth="319.0" promptText="Correo" style="-fx-background-radius: 0px;" />
+                        <TextField fx:id="txtCorreo" layoutX="57.0" layoutY="136.0" prefHeight="40.0" prefWidth="319.0" promptText="Correo" style="-fx-background-radius: 0px;" />
                         <ImageView fitHeight="26.0" fitWidth="21.0" layoutX="28.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/email.png" />
@@ -221,7 +221,7 @@
                         </ImageView>
                         <PasswordField fx:id="txtNuevoPass" layoutX="57.0" layoutY="195.0" onKeyTyped="#txtNuevoPassActionPerformed" prefHeight="40.0" prefWidth="320.0" promptText="Nueva contraseña" style="-fx-background-radius: 0px;" />
                         <PasswordField fx:id="txtNuevoPassAgain" layoutX="57.0" layoutY="244.0" prefHeight="40.0" prefWidth="320.0" promptText="Escriba la contraseña de nuevo" style="-fx-background-radius: 0px;" visible="false" />
-                        <Label layoutX="395.0" layoutY="136.0" lineSpacing="2.0" prefHeight="101.0" prefWidth="197.0" text="Modifique su información y luego haga clic sobre el botón verde. En caso de no requerir cambiar la contraseña, por favor deje este campo vacío" wrapText="true">
+                        <Label layoutX="395.0" layoutY="136.0" lineSpacing="2.0" prefHeight="101.0" prefWidth="197.0" text="Modifique su información y luego haga clic sobre el botón de Ok. En caso de no requerir cambiar la contraseña, por favor deje este campo vacío" wrapText="true">
                            <font>
                               <Font name="Segoe UI" size="14.0" />
                            </font>
@@ -240,8 +240,8 @@
                                  <font>
                                     <Font name="Segoe UI" size="12.0" />
                                  </font></Label>
-                              <PasswordField layoutX="43.0" layoutY="116.0" prefHeight="40.0" prefWidth="315.0" promptText="Contraseña actual" style="-fx-background-radius: 0px;" />
-                              <ImageView fx:id="btnAceptarPopupCuenta" fitHeight="36.0" fitWidth="29.0" layoutX="329.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true">
+                              <PasswordField fx:id="txtPassActual" layoutX="43.0" layoutY="116.0" prefHeight="40.0" prefWidth="315.0" promptText="Contraseña actual" style="-fx-background-radius: 0px;" />
+                              <ImageView fx:id="btnAceptarPopupCuenta" fitHeight="36.0" fitWidth="29.0" layoutX="329.0" layoutY="189.0" onMouseClicked="#okAceptarEditarCuenta" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/ok.png" />
                                  </image>
@@ -257,7 +257,7 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </ImageView>
-                              <Label layoutX="356.0" layoutY="192.0" onMouseClicked="#cuentaAceptar" text="Ok" textFill="#2a295c">
+                              <Label layoutX="356.0" layoutY="192.0" onMouseClicked="#okAceptarEditarCuenta" text="Ok" textFill="#2a295c">
                                  <font>
                                     <Font name="Segoe UI Bold" size="20.0" />
                                  </font>
@@ -277,11 +277,52 @@
                         </Label>
                         <AnchorPane layoutX="-3.0" prefHeight="60.0" prefWidth="608.0" style="-fx-background-color: #2a295c;">
                            <children>
-                              <Label layoutX="14.0" layoutY="19.0" text="Usuario x" textFill="WHITE">
+                              <Label fx:id="labelUsuario" layoutX="14.0" layoutY="19.0" text="Usuario x" textFill="WHITE">
                                  <font>
                                     <Font name="Segoe UI Bold" size="20.0" />
                                  </font>
                               </Label>
+                           </children>
+                        </AnchorPane>
+                        <ImageView fitHeight="42.0" fitWidth="160.0" layoutX="8.0" layoutY="321.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/sodexo_slogan_small.png" />
+                           </image>
+                        </ImageView>
+                        <AnchorPane fx:id="paneCuentaError" layoutX="156.0" layoutY="133.0" prefHeight="139.0" prefWidth="283.0" style="-fx-background-color: white;" visible="false">
+                           <effect>
+                              <DropShadow offsetX="5.0" offsetY="5.0" />
+                           </effect>
+                           <children>
+                              <ImageView fx:id="btnCuentaAceptar1" fitHeight="38.0" fitWidth="32.0" layoutX="210.0" layoutY="100.0" onMouseClicked="#cerrarPaneCuentaError" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/ok.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                              <Label layoutX="242.0" layoutY="104.0" onMouseClicked="#cerrarPaneCuentaError" text="Ok" textFill="#2a295c">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="20.0" />
+                                 </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Label>
+                              <Label fx:id="labelCuentaError" layoutX="26.0" layoutY="14.0" prefHeight="76.0" prefWidth="176.0" text="Las contraseñas no coinciden" wrapText="true">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fx:id="btnCuentaAceptar11" fitHeight="22.0" fitWidth="20.0" layoutX="259.0" layoutY="4.0" onMouseClicked="#cerrarPaneCuentaError" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/delete.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                      </children></AnchorPane>

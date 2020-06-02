@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -20,8 +21,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent logIn = FXMLLoader.load(getClass().getResource("logIn.fxml"));
-        primaryStage.setTitle("chefDesktop");
+        primaryStage.setTitle("Kitchen works");
+        primaryStage.getIcons().add(new Image("\\images\\cubiertos.png"));
         primaryStage.setScene(new Scene(logIn, 600, 400));
+
         primaryStage.show();
     }
 

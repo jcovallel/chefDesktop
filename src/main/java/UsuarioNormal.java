@@ -42,13 +42,13 @@ public class UsuarioNormal extends Usuario implements Initializable{
     private TextField lunes_val,martes_val,miercoles_val,jueves_val,viernes_val;
 
     @FXML
-    private Label archivocargado;
+    private Label archivocargado, labelUsuario;
 
     @FXML
     private AnchorPane draggable;
 
     public String imagepath="vacio397";
-    private String ip = "35.239.78.54";
+    private String ip = "35.188.127.60";
     private String puerto = "8080";
     private String urlRaiz = "http://" + ip + ":" + puerto;
 
@@ -182,58 +182,23 @@ public class UsuarioNormal extends Usuario implements Initializable{
     }
 
     public void modifyDispo(MouseEvent event) throws IOException {
-        String putEndpoint = urlRaiz + "/chef/disponibilidad/";
 
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-
-        HttpPut httpPut = new HttpPut(putEndpoint);
-        httpPut.setHeader("Accept", "application/json");
-        httpPut.setHeader("Content-type", "application/json");
-
-        String inputJson = "{\n" + "  \"id\": 0";
-        if(!lunes_val.getText().isEmpty()){
-            inputJson += ",\n  \"Lunes\": "+lunes_val.getText();
+        String path = "/chef/disponibilidad/" + UsuarioEntity.getNombre();
+        JSONArray jsonArray = rest.PUT(path,
+                "empresaid", UsuarioEntity.getNombre(),
+                "empresa", UsuarioEntity.getNombre(),
+                "Lunes", lunes_val.getText(),
+                "Martes", martes_val.getText(),
+                "Miercoles", miercoles_val.getText(),
+                "Jueves", jueves_val.getText(),
+                "Viernes", viernes_val.getText()
+                );
+        System.out.println(jsonArray);
+        if(jsonArray != null){
+            helper.showAlert("Disponibilidad actualizada satisfactoriamente", Alert.AlertType.CONFIRMATION);
         }
-        if(!martes_val.getText().isEmpty()){
-            inputJson += ",\n  \"Martes\": "+martes_val.getText();
-        }
-        if(!miercoles_val.getText().isEmpty()){
-            inputJson += ",\n  \"Miercoles\": "+miercoles_val.getText();
-        }
-        if(!jueves_val.getText().isEmpty()){
-            inputJson += ",\n  \"Jueves\": "+jueves_val.getText();
-        }
-        if(!viernes_val.getText().isEmpty()){
-            inputJson += ",\n  \"Viernes\": "+viernes_val.getText();
-        }
-        inputJson += "}";
-
-        StringEntity stringEntity = new StringEntity(inputJson);
-        httpPut.setEntity(stringEntity);
-
-        HttpResponse response = httpclient.execute(httpPut);
-
-        BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-
-        //Throw runtime exception if status code isn't 200
-        if (response.getStatusLine().getStatusCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
-        }else{
-            if(!(lunes_val.getText().isEmpty() && martes_val.getText().isEmpty() && miercoles_val.getText().isEmpty() && jueves_val.getText().isEmpty() && viernes_val.getText().isEmpty())){
-                lunes_val.setText("");
-                martes_val.setText("");
-                miercoles_val.setText("");
-                jueves_val.setText("");
-                viernes_val.setText("");
-                helper.showAlert("Valores cargados correctamente", Alert.AlertType.CONFIRMATION);
-            }
-        }
-
-        //Create the StringBuffer object and store the response into it.
-        StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = br.readLine()) != null) {
-            System.out.println("Response : \n" + result.append(line));
+        else{
+            helper.showAlert("Ocurrió un error", Alert.AlertType.ERROR);
         }
     }
 
@@ -286,9 +251,6 @@ public class UsuarioNormal extends Usuario implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
-        listaCalificaciones.add(new Calificacion(3, "Regular"));
-        listaCalificaciones.add(new Calificacion(5, "Bueno"));
+        labelUsuario.setText(UsuarioEntity.getNombre());
     }
 }

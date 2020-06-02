@@ -1,25 +1,61 @@
 public class Calificacion {
 
-    private int calificacion;
-    private String comentario;
-    public Calificacion(int calificacion, String comentario){
-        this.calificacion = calificacion;
-        this.comentario = comentario;
+    private String cali;
+    private String come;
+    private String name;
+    private String cel;
+    private String addr;
+    public Calificacion(String calificacion, String comentario, String nombre, String celular, String correo){
+        this.cali = calificacion;
+        this.come = comentario;
+        this.name = nombre;
+        this.cel = celular;
+        this.addr = correo;
+
     }
 
-    public int getCalificacion() {
-        return calificacion;
+    public String getCali() {
+        return cali;
     }
 
-    public String getComentario() {
-        return comentario;
+    public String getCome() {
+        return come;
     }
 
-    public void setCalificacion(int calificacion) {
-        this.calificacion = calificacion;
+    public void setCali(String calificacion) {
+        this.cali = calificacion;
     }
 
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
+    public void setCome(String comentario) {
+        this.come = comentario;
+    }
+
+    public void setName(String nombre) {
+        this.name = nombre;
+    }
+
+    public void setCel(String celular) {
+        this.cel = celular;
+    }
+
+    public void setAddr(String correo) {
+        this.addr = correo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCel() {
+        return cel;
+    }
+
+    public String getAddr() {
+        return addr;
+    }
+
+    @Override
+    public String toString(){
+        return "[" + this.cali + " " + this.come + " " + this.name + " " + this.cel + " " + this.addr + "]";
     }
 }

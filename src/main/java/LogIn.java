@@ -32,14 +32,14 @@ public class LogIn implements Initializable{
     @FXML
     private Button btnAceptar;
 
+    @FXML
+    Label labelError;
+
     private static final String pathUsuarios = "/chef/getusers/";
     Helper helper = new Helper();
+    REST rest = new REST();
 
-    private static final String defaultPass = "0000";
-
-    ObservableList<String> listaLugares = FXCollections.observableArrayList( "Administrador",
-            "Servicios Nutresa", "Protección", "Nacional de Chocolates Bogotá", "Suizo", "Comercial Nutresa",
-            "DHL", "Tecnoquímicas San Nicolás", "Smurfit casino principal", "Smurfit Corrugados", "Unilever");
+    ObservableList<String> listaLugares = FXCollections.observableArrayList();
 
     @FXML
     public void contrasenaOlvidadaActionPerformed(MouseEvent event) throws IOException {
@@ -49,36 +49,47 @@ public class LogIn implements Initializable{
 
     @FXML
     public void btnAceptarActionPerformed(ActionEvent event) throws IOException {
+        JSONArray jsonArray = null;
+        try{
+            if(comboboxUsuario.getValue().length() > 0 && txtPass.getText().length() > 0){
+                String path = "/chef/getpass/" + comboboxUsuario.getValue() + "/" + helper.hash(txtPass.getText());
+                jsonArray = rest.GET(path);
+            }
+            else{
+                labelError.setText("Usuario o contraseña incorrectos");
+                paneError.setVisible(true);
+            }
+            if(jsonArray != null){
 
-        String defaultPassHashed = helper.hash(defaultPass);
-        String passHashed = helper.hash(txtPass.getText());
-        String passStored = "";
+                if(jsonArray.getJSONObject(0).get("acceso").toString().contains("true")){
+                    UsuarioEntity.getUsuario(comboboxUsuario.getValue());
+                    if(helper.hash(txtPass.getText()).equals(helper.hash(helper.defaultPass))){
+                        helper.show("cambioPass.fxml", parentPane);
+                    }
+                    else{
+                        if(comboboxUsuario.getValue().equals("Administrador")){
+                            helper.show("usuarioAdmin.fxml", parentPane);
+                        }
+                        else{
+                            helper.show("usuarioNormal.fxml", parentPane);
+                        }
+                    }
+                }
+                else{
+                    labelError.setText("Usuario o contraseña incorrectos");
+                    paneError.setVisible(true);
+                }
 
-        if(passStored.equals(passHashed) && passStored.equals(defaultPassHashed)){
-            helper.show("cambioPass.fxml", parentPane);
+            }
+            else{
+                labelError.setText("Ocurrió un error inesperado");
+                paneError.setVisible(true);
+            }
         }
-
-        String privilegio = txtPass.getText();
-
-        switch(privilegio){
-            case "uno":
-                if(!this.comboboxUsuario.getValue().equals("Administrador")){
-                    helper.hash(this.txtPass.getText());
-                    helper.show("usuarioNormal.fxml", parentPane);
-                    break;
-                }
-                paneError.setVisible(true);
-                break;
-            case "dos":
-                if(this.comboboxUsuario.getValue().equals("Administrador")){
-                    helper.show("usuarioAdmin.fxml", parentPane);
-                    break;
-                }
-                paneError.setVisible(true);
-                break;
-            default:
-                paneError.setVisible(true);
-                break;
+        catch(RuntimeException re){
+            re.printStackTrace();
+            labelError.setText("Usuario o contraseña incorrectos");
+            paneError.setVisible(true);
         }
     }
 
@@ -87,17 +98,22 @@ public class LogIn implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         JSONArray jsonArray = null;
         try{
-            jsonArray = helper.GET(pathUsuarios);
-        }
-        catch(IOException ioe){
-
-        }
-        if(jsonArray != null){
-            for(Object jsonIterator : jsonArray){
-                System.out.println(jsonIterator);
+            jsonArray = rest.GET(pathUsuarios);
+            if(jsonArray != null){
+                for(int i = 0; i < jsonArray.length(); i++){
+                    listaLugares.add((String) jsonArray.getJSONObject(i).get("nombre"));
+                }
             }
         }
+        catch(IOException ioe){
+            ioe.printStackTrace();
+        }
+        listaLugares.sort((Object c1, Object c2)->{
+            return c1.toString().compareTo((String) c2);
+        });
         this.comboboxUsuario.setItems(listaLugares);
+
+
     }
 
     public void closePopupError(MouseEvent event) {

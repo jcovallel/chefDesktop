@@ -6,25 +6,34 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.*;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 
 import javax.xml.bind.DatatypeConverter;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Helper {
+    protected final String defaultPass = "0000";
 
     public void show(String path, AnchorPane parentPane) throws IOException {
         Parent parent = FXMLLoader.load(getClass().getResource(path));
@@ -32,6 +41,8 @@ public class Helper {
         Stage stage = new Stage();
         stage.initModality(Modality.NONE);
         stage.setScene(scene);
+        stage.setTitle("Kitchen works");
+        stage.getIcons().add(new Image("\\images\\cubiertos.png"));
         stage.show();
         Stage myStage = (Stage) parentPane.getScene().getWindow();
         myStage.close();
@@ -50,79 +61,36 @@ public class Helper {
         } catch (Exception e) {
 
         }
-        System.out.println(passHashedValue);
         return passHashedValue;
     }
 
-    public JSONArray GET(String path) throws IOException {
-        String ip = "35.239.78.54";
-        String puerto = "8080";
-        String urlRaiz = "http://" + ip + ":" + puerto;
+    public void setTablaCalificacion(TableView<Calificacion> tabla, ObservableList<Calificacion> lista, Double anchoCol1, Double anchoCol2, Double anchoCol3, Double anchoCol4, Double anchoCol5){
 
-        String getEndpoint = urlRaiz + path;
-
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpGet httpget = new HttpGet(getEndpoint);
-        HttpResponse response = httpclient.execute(httpget);
-
-        try{
-            //Throw runtime exception if status code isn't 200
-            if (response.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
-            }
+        for(Calificacion cali : lista){
+            System.out.println(cali);
         }
-        catch(RuntimeException re){
-            return null;
-        }
-        HttpEntity entity = response.getEntity();
+        TableColumn<Calificacion, String> colCalificacion = new TableColumn<>("Calificación");
+        colCalificacion.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("cali"));
 
-        if(entity != null){
-            InputStream instream = entity.getContent();
-            String result = convertStreamToString(instream);
-            // now you have the string representation of the HTML request
-            JSONArray jsonArray = new JSONArray(result);
-            instream.close();
-            return jsonArray;
-        }
-        else{
-            return null;
-
-        }
-
-    }
-
-    private static String convertStreamToString(InputStream is) {
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    }
-
-    public void setTablaCalificacion(TableView<Calificacion> tabla, String tipo, ObservableList lista, Double anchoCol1, Double anchoCol2){
-        tabla.setItems(lista);
-        TableColumn<Calificacion, Integer> colCalificacion = new TableColumn<>("Calificación");
-        colCalificacion.setCellValueFactory(new PropertyValueFactory<Calificacion, Integer>("calificacion"));
-        colCalificacion.setMinWidth(anchoCol1);
 
         TableColumn<Calificacion, String> colComentario = new TableColumn<>("Comentario");
-        colComentario.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("comentario"));
-        colComentario.setMinWidth(anchoCol2);
-        tabla.getColumns().addAll(colCalificacion, colComentario);
+        colComentario.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("come"));
+
+
+        TableColumn<Calificacion, String> colNombre = new TableColumn<>("Nombre");
+        colComentario.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("name"));
+
+
+        TableColumn<Calificacion, String> colCelular = new TableColumn<>("Celular");
+        colComentario.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("cel"));
+
+
+        TableColumn<Calificacion, String> colCorreo = new TableColumn<>("Correo");
+        colComentario.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("addr"));
+
+        tabla.getColumns().add(colCalificacion);
+        tabla.getColumns().add(colNombre);
+        tabla.setItems(lista);
     }
 
     public void showAlert(String mensaje, Alert.AlertType tipo){

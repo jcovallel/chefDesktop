@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="parentPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2a295c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogIn">
+<AnchorPane fx:id="parentPane" prefHeight="363.0" prefWidth="600.0" style="-fx-background-color: #2a295c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogIn">
    <children>
       <PasswordField fx:id="txtPass" layoutX="300.0" layoutY="217.0" prefHeight="40.0" prefWidth="272.0" promptText="Contraseña" style="-fx-background-radius: 0px;" />
       <Text fill="WHITE" layoutX="323.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar sesión">
@@ -53,7 +53,7 @@
             <DropShadow offsetX="5.0" offsetY="5.0" />
          </effect>
          <children>
-            <Label layoutX="45.0" layoutY="48.0" prefHeight="47.0" prefWidth="129.0" text="Usuario o contraseña incorrectos" wrapText="true">
+            <Label fx:id="labelError" layoutX="45.0" layoutY="48.0" prefHeight="47.0" prefWidth="129.0" text="Usuario o contraseña incorrectos" wrapText="true">
                <font>
                   <Font name="Segoe UI Bold" size="12.0" />
                </font>
