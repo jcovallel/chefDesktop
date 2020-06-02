@@ -1,3 +1,5 @@
+
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,32 +77,32 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                             )
                     );
                 }
-                try{
-                    jsonArray = rest.GET(pathUsuarios);
-                    if(jsonArray != null){
-                        for(int i = 0; i < jsonArray.length(); i++){
-                            listaRestauranteComent.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
-                        }
-                        listaRestauranteComent.getItems().remove((String) "Administrador");
-                    }
-                }
-                catch(IOException ioe){
-                    ioe.printStackTrace();
-                }
-                this.listaRestaurante.getItems().sort((Object c1, Object c2) -> {
-                    return c1.toString().compareTo((String) c2);
-                });
-                listaRestauranteComent.getItems().add("Administrador");
-                helper.setTablaCalificacion(
-                        tableCalificacion,
-                        listaCalificaciones,
-                        Double.parseDouble("80"),
-                        Double.parseDouble("250"),
-                        Double.parseDouble("150"),
-                        Double.parseDouble("150"),
-                        Double.parseDouble("150")
-                );
             }
+            try{
+                jsonArray = rest.GET(pathUsuarios);
+                if(jsonArray != null){
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        listaRestauranteComent.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
+                    }
+                    listaRestauranteComent.getItems().remove((String) "Administrador");
+                }
+            }
+            catch(IOException ioe){
+                ioe.printStackTrace();
+            }
+            this.listaRestaurante.getItems().sort((Object c1, Object c2) -> {
+                return c1.toString().compareTo((String) c2);
+            });
+            listaRestauranteComent.getItems().add("TODOS");
+            helper.setTablaCalificacion(
+                    tableCalificacion,
+                    listaCalificaciones,
+                    Double.parseDouble("80"),
+                    Double.parseDouble("250"),
+                    Double.parseDouble("150"),
+                    Double.parseDouble("150"),
+                    Double.parseDouble("150")
+            );
             entrando=false;
         }else{
             tableCalificacion.getItems().clear();
@@ -108,14 +110,51 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             listaRestauranteComent.getItems().clear();
             entrando = true;
         }
-        setListaRestaurantes(true);
     }
-    
+
 
     public void tabRestaurantes() throws ClientProtocolException, IOException {
         btnEliminar.setVisible(false);
         btnEditar.setVisible(false);
-        setListaRestaurantes(false);
+        if(entrando){
+            JSONArray jsonArray = rest.GET("/chef/admin/review/");
+            System.out.println(jsonArray);
+            if (jsonArray != null) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    listaCalificaciones.add(
+                            new Calificacion(
+                                    jsonArray.getJSONObject(i).get("estrellas").toString(),
+                                    (String) jsonArray.getJSONObject(i).get("comentario"),
+                                    (String) jsonArray.getJSONObject(i).get("nombre"),
+                                    jsonArray.getJSONObject(i).get("celular").toString(),
+                                    (String) jsonArray.getJSONObject(i).get("correo")
+                            )
+                    );
+                }
+            }
+            try{
+                jsonArray = rest.GET(pathUsuarios);
+                if(jsonArray != null){
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        listaRestaurante.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
+                    }
+                    listaRestaurante.getItems().remove((String) "Administrador");
+                }
+            }
+            catch(IOException ioe){
+                ioe.printStackTrace();
+            }
+            this.listaRestaurante.getItems().sort((Object c1, Object c2) -> {
+                return c1.toString().compareTo((String) c2);
+            });
+            entrando=false;
+        }else{
+            tableCalificacion.getItems().clear();
+            tableCalificacion.getColumns().clear();
+            listaRestaurante.getItems().clear();
+            entrando = true;
+        }
+
     }
 
     public void ListaRestauranteMouseClicked(MouseEvent event){
@@ -282,7 +321,5 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         }
     }
 
-    public void setListaRestaurantes(Boolean isTodos){
-
-    }
 }
+
