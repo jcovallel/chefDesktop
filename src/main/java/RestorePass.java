@@ -48,7 +48,7 @@ public class RestorePass implements Initializable {
 
     public void btnAceptarRestorePassActionPerformed(ActionEvent actionEvent) throws IOException {
         if(comboboxUsuario.getValue().length() > 0 && txtCorreo.getText().length() > 0){
-            String path = "/chef/sendmail/" + comboboxUsuario.getValue() + "/" + txtCorreo.getText() + "/true";
+            String path = "/chef/sendmail/" + comboboxUsuario.getValue().replaceAll(" ", "%20") + "/" + txtCorreo.getText() + "/true";
             try {
                 JSONArray jsonArray = rest.GET(path);
                 System.out.println(jsonArray);

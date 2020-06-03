@@ -52,7 +52,7 @@ public class LogIn implements Initializable{
         JSONArray jsonArray = null;
         try{
             if(comboboxUsuario.getValue().length() > 0 && txtPass.getText().length() > 0){
-                String path = "/chef/getpass/" + comboboxUsuario.getValue() + "/" + helper.hash(txtPass.getText());
+                String path = "/chef/getpass/" + comboboxUsuario.getValue().replaceAll(" ", "%20") + "/" + helper.hash(txtPass.getText());
                 jsonArray = rest.GET(path);
             }
             else{

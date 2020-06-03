@@ -49,13 +49,13 @@ public class Usuario {
 
     @FXML
     protected void descargarReporteCalificaciones(MouseEvent event) throws IOException {
-        rest.GETExcel("/chef/download_excel_comen/" + UsuarioEntity.getNombre() ,"Reporte-Comentarios");
+        rest.GETExcel("/chef/download_excel_comen/" + UsuarioEntity.getNombre().replaceAll(" ", "%20") ,"Reporte-Comentarios");
     }
 
     @FXML
     protected void tabComentarios() throws IOException {
         if(entrando){
-            String path = "/chef/user/review/" + UsuarioEntity.getNombre();
+            String path = "/chef/user/review/" + UsuarioEntity.getNombre().replaceAll(" ", "%20");
             JSONArray jsonArray = rest.GET(path);
             System.out.println(jsonArray);
             if (jsonArray != null) {
@@ -91,7 +91,7 @@ public class Usuario {
 
     public void tabCuenta() throws IOException {
         // chef/getmail/{empresa}
-        String path = "/chef/getmail/" + UsuarioEntity.getNombre();
+        String path = "/chef/getmail/" + UsuarioEntity.getNombre().replaceAll(" ", "%20");
         JSONArray jsonArray = rest.GET(path, true);
         if(jsonArray != null){
             txtCorreo.setText(jsonArray.getJSONObject(0).getString("correo"));
@@ -108,7 +108,7 @@ public class Usuario {
     public void okAceptarEditarCuenta(MouseEvent event) throws IOException {
         String nuevoCorreo;
         String nuevoPass = "NULL";
-        String path = "/chef/getpass/" + UsuarioEntity.getNombre() + "/" + helper.hash(txtPassActual.getText());
+        String path = "/chef/getpass/" + UsuarioEntity.getNombre().replaceAll(" ", "%20") + "/" + helper.hash(txtPassActual.getText());
         JSONArray jsonArray = rest.GET(path);
         System.out.println(jsonArray);
         if(txtCorreo.getText().length() <= 0){
@@ -151,7 +151,7 @@ public class Usuario {
                 System.out.println(jsonArray);
                 if(jsonArray != null){
                     if(jsonArray.getJSONObject(0).get("acceso").toString().contains("true")){
-                        path = "/chef/modifydatausers/" + UsuarioEntity.getNombre() + "/" + nuevoPass + "/" + nuevoCorreo;
+                        path = "/chef/modifydatausers/" + UsuarioEntity.getNombre().replaceAll(" ", "%20") + "/" + nuevoPass + "/" + nuevoCorreo;
                         rest.PUT(path);
                         panelConfirmarCuenta.setVisible(false);
                         labelCuentaError.setText("La información se actualizó satisfactoriamente");

@@ -203,7 +203,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         }
         System.out.println(txtEditarCorreo2.getText());
 
-        String path = "/chef/modifyinfoadmi/" + listaRestaurante.getSelectionModel().getSelectedItem() + "/" + nuevoNombre + "/" + nuevoCorreo;
+        String path = "/chef/modifyinfoadmi/" + listaRestaurante.getSelectionModel().getSelectedItem().toString().replaceAll(" ", "%20") + "/" + nuevoNombre + "/" + nuevoCorreo;
         rest.PUT(path);
         this.paneEditarRestaurante.setVisible(false);
         this.listaRestaurante.setDisable(false);
@@ -219,7 +219,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                     "correo", txtNuevoCorreo.getText(),
                     "password", helper.hash(helper.defaultPass));
 
-            String path = "/chef/disponibilidad/" + UsuarioEntity.getNombre();
+            String path = "/chef/disponibilidad/" + UsuarioEntity.getNombre().replaceAll(" ", "%20");
             rest.PUT(path,
                     "empresaid", txtNuevoRestaurante.getText(),
                     "empresa", txtNuevoRestaurante.getText(),

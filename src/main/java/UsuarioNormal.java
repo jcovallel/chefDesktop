@@ -183,7 +183,7 @@ public class UsuarioNormal extends Usuario implements Initializable{
 
     public void modifyDispo(MouseEvent event) throws IOException {
 
-        String path = "/chef/disponibilidad/" + UsuarioEntity.getNombre();
+        String path = "/chef/disponibilidad/" + UsuarioEntity.getNombre().replaceAll(" ", "%20");
         JSONArray jsonArray = rest.PUT(path,
                 "empresaid", UsuarioEntity.getNombre(),
                 "empresa", UsuarioEntity.getNombre(),
@@ -203,7 +203,7 @@ public class UsuarioNormal extends Usuario implements Initializable{
     }
 
     public void getexcel(MouseEvent event) throws ClientProtocolException, IOException{
-        String path = "/chef/download_excel/" + UsuarioEntity.getNombre();
+        String path = "/chef/download_excel/" + UsuarioEntity.getNombre().replaceAll(" ", "%20");
         rest.GETExcel(path, "Reservas");
 
     }

@@ -32,7 +32,7 @@ public class CambioPass {
         }
         else{
             // /modifydatausers/{user}/{npass}/{nmail}
-            String path = "/chef/modifydatausers/" + UsuarioEntity.getNombre() + "/" + helper.hash(txtPass.getText()) + "/NULL";
+            String path = "/chef/modifydatausers/" + UsuarioEntity.getNombre().replaceAll(" ", "%20") + "/" + helper.hash(txtPass.getText()) + "/NULL";
             System.out.println(path);
             try{
                 rest.PUT(path);
