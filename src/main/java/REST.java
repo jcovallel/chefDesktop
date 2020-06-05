@@ -32,12 +32,10 @@ public class REST {
         try{
             //Throw runtime exception if status code isn't 200
             if (response.getStatusLine().getStatusCode() != 200) {
-                helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
             }
         }
         catch(RuntimeException re){
-            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
             return null;
         }
         HttpEntity entity = response.getEntity();
@@ -63,13 +61,11 @@ public class REST {
                 return jsonArray;
             }
             catch(Exception e){
-                helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                 return null;
             }
 
         }
         else{
-            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
             return null;
         }
     }
@@ -100,7 +96,6 @@ public class REST {
             helper.showAlert("Archivo descargado exitosamente", Alert.AlertType.CONFIRMATION);
         }
         else{
-            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         }
     }
 
@@ -130,7 +125,6 @@ public class REST {
                     os.write(input.getBytes());
                     os.flush();
                     if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                        helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                         jsonArray = null;
                     }
                     else{
@@ -138,11 +132,9 @@ public class REST {
                     }
                     conn.disconnect();
                 } catch (MalformedURLException e) {
-                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                     jsonArray = null;
                 } catch (IOException e) {
                     jsonArray = null;
-                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                 }
             }
         });thread.start();
@@ -179,17 +171,14 @@ public class REST {
                     out.close();
                     conn.getInputStream();
                     if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                        helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                         jsonArray = null;
                     }
                     else{
                         jsonArray = new JSONArray();
                     }
                 } catch (MalformedURLException e){
-                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                     jsonArray = null;
                 } catch (IOException e){
-                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                     jsonArray = null;
                 }
             }
@@ -234,10 +223,8 @@ public class REST {
                     conn.disconnect();
                 } catch (MalformedURLException e) {
                     jsonArray = null;
-                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                 } catch (IOException e) {
                     jsonArray = null;
-                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                 }
             }
         });thread.start();
@@ -255,12 +242,10 @@ public class REST {
                 sb.append(line + "\n");
             }
         } catch (IOException e) {
-            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         } finally {
             try {
                 is.close();
             } catch (IOException e) {
-                helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
             }
         }
         return sb.toString();
