@@ -80,7 +80,6 @@ public class LogIn extends Application implements Initializable{
             }
         }
         catch(RuntimeException re){
-            re.printStackTrace();
             labelError.setText("Usuario o contraseña incorrectos");
             paneError.setVisible(true);
         }
@@ -99,7 +98,7 @@ public class LogIn extends Application implements Initializable{
             }
         }
         catch(IOException ioe){
-            ioe.printStackTrace();
+            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         }
         listaLugares.sort((Object c1, Object c2)->{
             return c1.toString().compareTo((String) c2);
