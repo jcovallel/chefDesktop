@@ -12,7 +12,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class REST {
+    //IP de Julio
     //private String ip = "35.239.78.54";
+
     private final String ip = "35.188.127.60";
     private final String puerto = "8080";
     private final String urlRaiz = "http://" + ip + ":" + puerto;
@@ -23,7 +25,6 @@ public class REST {
     public JSONArray GET(String path, Boolean... correo) throws IOException {
 
         String getEndpoint = urlRaiz + path;
-        System.out.println(getEndpoint);
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpGet httpget = new HttpGet(getEndpoint);
         HttpResponse response = httpclient.execute(httpget);
@@ -31,17 +32,17 @@ public class REST {
         try{
             //Throw runtime exception if status code isn't 200
             if (response.getStatusLine().getStatusCode() != 200) {
+                helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
             }
         }
         catch(RuntimeException re){
-            System.out.println(re);
+            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
             return null;
         }
         HttpEntity entity = response.getEntity();
         if(entity != null){
             try{
-                System.out.println(response);
                 InputStream instream = entity.getContent();
                 String result = convertStreamToString(instream);
                 // now you have the string representation of the HTML request
@@ -62,12 +63,13 @@ public class REST {
                 return jsonArray;
             }
             catch(Exception e){
-                System.out.println(e);
+                helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                 return null;
             }
 
         }
         else{
+            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
             return null;
         }
     }
@@ -81,15 +83,11 @@ public class REST {
 
         HttpResponse response = httpclient.execute(httpget);
 
-        //BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-
-        //Throw runtime exception if status code isn't 200
         if (response.getStatusLine().getStatusCode() != 200) {
             throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
         }
 
         HttpEntity entity = response.getEntity();
-        System.out.println(entity.getContent());
         if (entity != null) {
             BufferedInputStream bis = new BufferedInputStream(entity.getContent());
             String filePath = nombreExcel + ".xlsx";
@@ -100,6 +98,9 @@ public class REST {
             bos.close();
 
             helper.showAlert("Archivo descargado exitosamente", Alert.AlertType.CONFIRMATION);
+        }
+        else{
+            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         }
     }
 
@@ -128,9 +129,8 @@ public class REST {
                     OutputStream os = conn.getOutputStream();
                     os.write(input.getBytes());
                     os.flush();
-
                     if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                        System.out.println(conn.getResponseCode());
+                        helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                         jsonArray = null;
                     }
                     else{
@@ -138,11 +138,11 @@ public class REST {
                     }
                     conn.disconnect();
                 } catch (MalformedURLException e) {
+                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                     jsonArray = null;
-                    e.printStackTrace();
                 } catch (IOException e) {
                     jsonArray = null;
-                    e.printStackTrace();
+                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                 }
             }
         });thread.start();
@@ -156,7 +156,6 @@ public class REST {
             public void run() {
                 try {
                     URL url = new URL(urlRaiz + path);
-                    System.out.println(url);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setDoOutput(true);
                     conn.setRequestMethod("PUT");
@@ -180,18 +179,18 @@ public class REST {
                     out.close();
                     conn.getInputStream();
                     if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                        helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                         jsonArray = null;
-                        System.out.println(conn.getResponseCode());
                     }
                     else{
                         jsonArray = new JSONArray();
                     }
                 } catch (MalformedURLException e){
+                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                     jsonArray = null;
-                    e.printStackTrace();
                 } catch (IOException e){
+                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                     jsonArray = null;
-                    e.printStackTrace();
                 }
             }
         });thread.start();
@@ -228,7 +227,6 @@ public class REST {
                     conn.connect();
                     if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                         jsonArray = null;
-                        System.out.println(conn.getResponseCode());
                     }
                     else{
                         jsonArray = new JSONArray();
@@ -236,17 +234,17 @@ public class REST {
                     conn.disconnect();
                 } catch (MalformedURLException e) {
                     jsonArray = null;
-                    e.printStackTrace();
+                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                 } catch (IOException e) {
                     jsonArray = null;
-                    e.printStackTrace();
+                    helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
                 }
             }
         });thread.start();
         return jsonArray;
     }
 
-    private static String convertStreamToString(InputStream is) {
+    private String convertStreamToString(InputStream is) {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -257,12 +255,12 @@ public class REST {
                 sb.append(line + "\n");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         } finally {
             try {
                 is.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
             }
         }
         return sb.toString();

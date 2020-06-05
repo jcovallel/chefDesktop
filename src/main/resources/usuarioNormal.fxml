@@ -167,7 +167,7 @@
                        </Label>
                         <AnchorPane prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #2a295c;">
                            <children>
-                              <Label layoutX="14.0" layoutY="16.0" text="Administrar disponibilidad" textFill="WHITE">
+                              <Label layoutX="14.0" layoutY="16.0" text="Administrar disponibilidad menú alterno" textFill="WHITE">
                                  <font>
                                     <Font name="Segoe UI Bold" size="20.0" />
                                  </font>
@@ -209,6 +209,14 @@
                               </Label>
                            </children>
                         </AnchorPane>
+                        <ImageView fitHeight="29.0" fitWidth="58.0" layoutX="567.0" layoutY="337.0" onMouseClicked="#recargarComentarios" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/reload.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
                     </children></AnchorPane>
               </content>
            </Tab>

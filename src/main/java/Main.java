@@ -15,13 +15,15 @@ import java.io.File;
 
 public class Main extends Application {
 
+    public Routes routes = Routes.getRoutesClass();
+
     @FXML
     private AnchorPane dnd;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent logIn = FXMLLoader.load(getClass().getResource("logIn.fxml"));
-        primaryStage.setTitle("Kitchen works");
+        primaryStage.setTitle("KitchenWorksDesktop");
         primaryStage.getIcons().add(new Image("\\images\\cubiertos.png"));
         primaryStage.setScene(new Scene(logIn, 600, 400));
 

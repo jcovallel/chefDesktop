@@ -1,4 +1,6 @@
+
 public class Application {
     protected REST rest = new REST();
-    protected final String pathGetUsuarios = "/chef/getusers/";
+    protected Helper helper = new Helper();
+    protected Routes routes = Routes.getRoutesClass();
 }

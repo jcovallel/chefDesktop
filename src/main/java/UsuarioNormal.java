@@ -1,36 +1,22 @@
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.event.ActionEvent;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -52,8 +38,6 @@ public class UsuarioNormal extends Usuario implements Initializable{
     private String puerto = "8080";
     private String urlRaiz = "http://" + ip + ":" + puerto;
 
-    Helper helper = new Helper();
-
     public void ButtonUploadImageAction(MouseEvent event){
         FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.jpeg");
         FileChooser fc = new FileChooser();
@@ -63,7 +47,7 @@ public class UsuarioNormal extends Usuario implements Initializable{
             archivocargado.setText(selectedFile.getName());
             imagepath=selectedFile.getAbsolutePath();
         }else {
-            System.out.println("file is not valid");
+            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         }
     }
 
@@ -120,7 +104,7 @@ public class UsuarioNormal extends Usuario implements Initializable{
                 public void run() {
                     //Do post (read, from link below)
                     CloseableHttpClient httpClient = HttpClients.createDefault();
-                    HttpPost uploadFile = new HttpPost(urlRaiz + "/chef/uploadmenu");
+                    HttpPost uploadFile = new HttpPost(urlRaiz + routes.getRoute(Routes.routesName.UPLOAD_IMAGE, UsuarioEntity.getNombre()));
 
                     MultipartEntityBuilder builder = MultipartEntityBuilder.create();
                     builder.addTextBody("field1", "yes", ContentType.TEXT_PLAIN);
@@ -183,8 +167,8 @@ public class UsuarioNormal extends Usuario implements Initializable{
 
     public void modifyDispo(MouseEvent event) throws IOException {
 
-        String path = "/chef/disponibilidad/" + UsuarioEntity.getNombre().replaceAll(" ", "%20");
-        JSONArray jsonArray = rest.PUT(path,
+        JSONArray jsonArray = rest.PUT(
+                routes.getRoute(Routes.routesName.MODIFY_DISPONIBILIDAD, UsuarioEntity.getNombre()),
                 "empresaid", UsuarioEntity.getNombre(),
                 "empresa", UsuarioEntity.getNombre(),
                 "Lunes", lunes_val.getText(),
@@ -193,7 +177,6 @@ public class UsuarioNormal extends Usuario implements Initializable{
                 "Jueves", jueves_val.getText(),
                 "Viernes", viernes_val.getText()
                 );
-        System.out.println(jsonArray);
         if(jsonArray != null){
             helper.showAlert("Disponibilidad actualizada satisfactoriamente", Alert.AlertType.CONFIRMATION);
         }
@@ -203,8 +186,9 @@ public class UsuarioNormal extends Usuario implements Initializable{
     }
 
     public void getexcel(MouseEvent event) throws ClientProtocolException, IOException{
-        String path = "/chef/download_excel/" + UsuarioEntity.getNombre().replaceAll(" ", "%20");
-        rest.GETExcel(path, "Reservas");
+        rest.GETExcel(
+                routes.getRoute(Routes.routesName.GET_EXCEL_DISPONIBILIDAD, UsuarioEntity.getNombre()),
+                "Reservas");
 
     }
 
@@ -221,6 +205,14 @@ public class UsuarioNormal extends Usuario implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         labelUsuario.setText(UsuarioEntity.getNombre());
+        try {
+            cargarTabla();
+        } catch (IOException e) {
+            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
+        }
     }
 
+    public void recargarComentarios(MouseEvent event) throws IOException {
+        cargarTabla();
+    }
 }

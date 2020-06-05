@@ -7,7 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
-public class CambioPass {
+public class CambioPass extends Application{
 
     @FXML
     private AnchorPane paneError, parentPane;
@@ -17,9 +17,6 @@ public class CambioPass {
 
     @FXML
     private Label labelError;
-
-    Helper helper = new Helper();
-    REST rest = new REST();
 
     public void btnAceptarActionPerformed(javafx.event.ActionEvent actionEvent) throws IOException {
         if(txtPass.getText().length() <= 0 || txtPass1.getText().length() <= 0){
@@ -31,11 +28,14 @@ public class CambioPass {
             paneError.setVisible(true);
         }
         else{
-            // /modifydatausers/{user}/{npass}/{nmail}
-            String path = "/chef/modifydatausers/" + UsuarioEntity.getNombre().replaceAll(" ", "%20") + "/" + helper.hash(txtPass.getText()) + "/NULL";
-            System.out.println(path);
             try{
-                rest.PUT(path);
+                rest.PUT(
+                        routes.getRoute(
+                                Routes.routesName.MODIFY_USUARIO,
+                                UsuarioEntity.getNombre(),
+                                helper.hash(txtPass.getText()), "NULL"
+                        )
+                );
                 if(UsuarioEntity.getUsuario("").getNombre().equals("Administrador")){
                     helper.show("usuarioAdmin.fxml", parentPane);
                 }

@@ -3,8 +3,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
@@ -15,10 +13,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class LogIn implements Initializable{
-
-    @FXML
-    private TextField txtUsuario;
+public class LogIn extends Application implements Initializable{
 
     @FXML
     private AnchorPane parentPane, paneError;
@@ -30,14 +25,7 @@ public class LogIn implements Initializable{
     private ComboBox<String> comboboxUsuario;
 
     @FXML
-    private Button btnAceptar;
-
-    @FXML
     Label labelError;
-
-    private static final String pathUsuarios = "/chef/getusers/";
-    Helper helper = new Helper();
-    REST rest = new REST();
 
     ObservableList<String> listaLugares = FXCollections.observableArrayList();
 
@@ -52,8 +40,13 @@ public class LogIn implements Initializable{
         JSONArray jsonArray = null;
         try{
             if(comboboxUsuario.getValue().length() > 0 && txtPass.getText().length() > 0){
-                String path = "/chef/getpass/" + comboboxUsuario.getValue().replaceAll(" ", "%20") + "/" + helper.hash(txtPass.getText());
-                jsonArray = rest.GET(path);
+                jsonArray = rest.GET(
+                        routes.getRoute(
+                                Routes.routesName.GET_PASS,
+                                comboboxUsuario.getValue(),
+                                helper.hash(txtPass.getText())
+                        )
+                );
             }
             else{
                 labelError.setText("Usuario o contraseña incorrectos");
@@ -98,7 +91,7 @@ public class LogIn implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         JSONArray jsonArray = null;
         try{
-            jsonArray = rest.GET(pathUsuarios);
+            jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS));
             if(jsonArray != null){
                 for(int i = 0; i < jsonArray.length(); i++){
                     listaLugares.add((String) jsonArray.getJSONObject(i).get("nombre"));
@@ -112,8 +105,6 @@ public class LogIn implements Initializable{
             return c1.toString().compareTo((String) c2);
         });
         this.comboboxUsuario.setItems(listaLugares);
-
-
     }
 
     public void closePopupError(MouseEvent event) {

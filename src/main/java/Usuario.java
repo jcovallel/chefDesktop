@@ -1,20 +1,19 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
-public class Usuario {
+public class Usuario extends Application{
 
     @FXML
     protected TextField txtCorreo;
@@ -32,8 +31,6 @@ public class Usuario {
     Label labelCuentaError;
 
     protected static Boolean entrando = true;
-    protected Helper helper = new Helper();
-    REST rest = new REST();
 
     protected ObservableList<Calificacion> listaCalificaciones = FXCollections.observableArrayList();
 
@@ -49,50 +46,29 @@ public class Usuario {
 
     @FXML
     protected void descargarReporteCalificaciones(MouseEvent event) throws IOException {
-        rest.GETExcel("/chef/download_excel_comen/" + UsuarioEntity.getNombre().replaceAll(" ", "%20") ,"Reporte-Comentarios");
+        rest.GETExcel(
+                routes.getRoute(
+                        Routes.routesName.GET_EXCEL_COMENTARIOS,
+                        UsuarioEntity.getNombre()
+                ),
+                "Reporte-comentarios"
+        );
     }
 
     @FXML
     protected void tabComentarios() throws IOException {
-        if(entrando){
-            String path = "/chef/user/review/" + UsuarioEntity.getNombre().replaceAll(" ", "%20");
-            JSONArray jsonArray = rest.GET(path);
-            System.out.println(jsonArray);
-            if (jsonArray != null) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    listaCalificaciones.add(
-                            new Calificacion(
-                                    jsonArray.getJSONObject(i).get("estrellas").toString(),
-                                    (String) jsonArray.getJSONObject(i).get("comentario"),
-                                    (String) jsonArray.getJSONObject(i).get("nombre"),
-                                    jsonArray.getJSONObject(i).get("celular").toString(),
-                                    (String) jsonArray.getJSONObject(i).get("correo")
-                            )
-                    );
-                }
 
-                helper.setTablaCalificacion(
-                        tableCalificacion,
-                        listaCalificaciones,
-                        Double.parseDouble("80"),
-                        Double.parseDouble("300"),
-                        Double.parseDouble("150"),
-                        Double.parseDouble("150"),
-                        Double.parseDouble("150")
-                );
-            }
-            entrando=false;
-        }else{
-            tableCalificacion.getItems().clear();
-            tableCalificacion.getColumns().clear();
-            entrando=true;
-        }
     }
 
     public void tabCuenta() throws IOException {
-        // chef/getmail/{empresa}
-        String path = "/chef/getmail/" + UsuarioEntity.getNombre().replaceAll(" ", "%20");
-        JSONArray jsonArray = rest.GET(path, true);
+        JSONArray jsonArray = rest.GET(
+                routes.getRoute(
+                        Routes.routesName.GET_EMAIL,
+                        UsuarioEntity.getNombre()
+                ),
+                true
+        );
+
         if(jsonArray != null){
             txtCorreo.setText(jsonArray.getJSONObject(0).getString("correo"));
         }
@@ -108,9 +84,13 @@ public class Usuario {
     public void okAceptarEditarCuenta(MouseEvent event) throws IOException {
         String nuevoCorreo;
         String nuevoPass = "NULL";
-        String path = "/chef/getpass/" + UsuarioEntity.getNombre().replaceAll(" ", "%20") + "/" + helper.hash(txtPassActual.getText());
-        JSONArray jsonArray = rest.GET(path);
-        System.out.println(jsonArray);
+        JSONArray jsonArray = rest.GET(
+                routes.getRoute(
+                        Routes.routesName.GET_PASS,
+                        UsuarioEntity.getNombre(),
+                        helper.hash(txtPassActual.getText())
+                )
+        );
         if(txtCorreo.getText().length() <= 0){
             nuevoCorreo = "NULL";
         }
@@ -123,8 +103,14 @@ public class Usuario {
             if(!nuevoCorreo.equals("NULL")){
                 if(jsonArray != null){
                     if(jsonArray.getJSONObject(0).get("acceso").toString().contains("true")){
-                        path = "/chef/modifydatausers/" + UsuarioEntity.getNombre() + "/" + nuevoPass + "/" + nuevoCorreo;
-                        rest.PUT(path);
+                        rest.PUT(
+                                routes.getRoute(
+                                        Routes.routesName.MODIFY_USUARIO,
+                                        UsuarioEntity.getNombre(),
+                                        nuevoPass,
+                                        nuevoCorreo
+                                )
+                        );
                         panelConfirmarCuenta.setVisible(false);
                         labelCuentaError.setText("La información se actualizó satisfactoriamente");
                         paneCuentaError.setVisible(true);
@@ -148,11 +134,16 @@ public class Usuario {
             if(txtNuevoPass.getText().equals(txtNuevoPassAgain.getText())){
 
                 nuevoPass = helper.hash(txtNuevoPass.getText());
-                System.out.println(jsonArray);
                 if(jsonArray != null){
                     if(jsonArray.getJSONObject(0).get("acceso").toString().contains("true")){
-                        path = "/chef/modifydatausers/" + UsuarioEntity.getNombre().replaceAll(" ", "%20") + "/" + nuevoPass + "/" + nuevoCorreo;
-                        rest.PUT(path);
+                        rest.PUT(
+                                routes.getRoute(
+                                        Routes.routesName.MODIFY_USUARIO,
+                                        UsuarioEntity.getNombre(),
+                                        nuevoPass,
+                                        nuevoCorreo
+                                )
+                        );
                         panelConfirmarCuenta.setVisible(false);
                         labelCuentaError.setText("La información se actualizó satisfactoriamente");
                         paneCuentaError.setVisible(true);
@@ -177,5 +168,45 @@ public class Usuario {
 
     public void cerrarPaneCuentaError(MouseEvent event) {
         paneCuentaError.setVisible(false);
+    }
+
+    protected void cargarTabla() throws IOException {
+        if(!tableCalificacion.getItems().isEmpty()){
+            tableCalificacion.getItems().clear();
+            tableCalificacion.getColumns().clear();
+        }
+
+        JSONArray jsonArray = rest.GET(
+                routes.getRoute(
+                        Routes.routesName.GET_REVIEWS_USUARIOS,
+                        UsuarioEntity.getNombre()
+                )
+        );
+        if (jsonArray != null) {
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                listaCalificaciones.add(
+                        new Calificacion(
+                                jsonArray.getJSONObject(i).get("estrellas").toString(),
+                                (String) jsonArray.getJSONObject(i).get("comentario"),
+                                (String) jsonArray.getJSONObject(i).get("nombre"),
+                                jsonArray.getJSONObject(i).get("celular").toString(),
+                                (String) jsonArray.getJSONObject(i).get("correo")
+                        )
+                );
+            }
+        }
+
+        if(!listaCalificaciones.isEmpty()) {
+            helper.setTablaCalificacion(
+                    tableCalificacion,
+                    listaCalificaciones,
+                    Double.parseDouble("80"),
+                    Double.parseDouble("300"),
+                    Double.parseDouble("150"),
+                    Double.parseDouble("150"),
+                    Double.parseDouble("150")
+            );
+        }
     }
 }

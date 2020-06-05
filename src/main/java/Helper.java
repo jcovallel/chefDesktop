@@ -41,7 +41,7 @@ public class Helper {
         Stage stage = new Stage();
         stage.initModality(Modality.NONE);
         stage.setScene(scene);
-        stage.setTitle("Kitchen works");
+        stage.setTitle("KitchenWorksDesktop");
         stage.getIcons().add(new Image("\\images\\cubiertos.png"));
         stage.show();
         Stage myStage = (Stage) parentPane.getScene().getWindow();
@@ -66,28 +66,26 @@ public class Helper {
 
     public void setTablaCalificacion(TableView<Calificacion> tabla, ObservableList<Calificacion> lista, Double anchoCol1, Double anchoCol2, Double anchoCol3, Double anchoCol4, Double anchoCol5){
 
-        for(Calificacion cali : lista){
-            System.out.println(cali);
-        }
         TableColumn<Calificacion, String> colCalificacion = new TableColumn<>("Calificación");
         colCalificacion.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("cali"));
-
+        colCalificacion.setPrefWidth(anchoCol1);
 
         TableColumn<Calificacion, String> colComentario = new TableColumn<>("Comentario");
         colComentario.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("come"));
-
+        colComentario.setPrefWidth(anchoCol2);
 
         TableColumn<Calificacion, String> colNombre = new TableColumn<>("Nombre");
         colNombre.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("name"));
-
+        colNombre.setPrefWidth(anchoCol3);
 
         TableColumn<Calificacion, String> colCelular = new TableColumn<>("Celular");
         colCelular.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("cel"));
-
+        colCelular.setPrefWidth(anchoCol4);
 
         TableColumn<Calificacion, String> colCorreo = new TableColumn<>("Correo");
         colCorreo.setCellValueFactory(new PropertyValueFactory<Calificacion, String>("addr"));
         tabla.getColumns().addAll(colCalificacion, colComentario, colNombre, colCelular, colCorreo);
+        colCorreo.setPrefWidth(anchoCol5);
         tabla.setItems(lista);
     }
 
