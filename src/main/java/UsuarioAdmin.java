@@ -118,6 +118,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             for(String diasIterator : dias){
                 rest.POST(
                         routes.getRoute(Routes.routesName.CREATE_HOURS),
+                        "id", txtNuevoRestaurante.getText() + diasIterator,
                         "empresa", txtNuevoRestaurante.getText(),
                         "dia", diasIterator,
                         "franja1", "0",
@@ -230,13 +231,13 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         catch(IOException ioe){
             helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         }
+        listaRestauranteComent.getItems().add("Administrador");
         listaRestaurante.getItems().sort((Object c1, Object c2) -> {
             return c1.toString().compareTo((String) c2);
         });
         listaRestauranteComent.getItems().sort((Object c1, Object c2) -> {
             return c1.toString().compareTo((String) c2);
         });
-        listaRestauranteComent.getItems().add("Administrador");
     }
 
     protected void cargarTabla(Routes.routesName route, String... args) throws IOException {
