@@ -75,7 +75,6 @@ public class LogIn extends Application implements Initializable{
 
             }
             else{
-                labelError.setText("Ocurrió un error inesperado");
                 paneError.setVisible(true);
             }
         }
