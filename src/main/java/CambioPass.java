@@ -3,9 +3,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.passay.*;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CambioPass extends Application{
 
@@ -18,7 +21,15 @@ public class CambioPass extends Application{
     @FXML
     private Label labelError;
 
+    List<Rule> rules = new ArrayList();
+
     public void btnAceptarActionPerformed(javafx.event.ActionEvent actionEvent) throws IOException {
+        rules.add(new LengthRule(8));
+        rules.add(new CharacterRule(EnglishCharacterData.UpperCase, 1));
+        rules.add(new CharacterRule(EnglishCharacterData.LowerCase, 1));
+        rules.add(new CharacterRule(EnglishCharacterData.Digit, 2));
+        rules.add(new CharacterRule(EnglishCharacterData.Special, 1));
+        PasswordValidator validator = new PasswordValidator(rules);
         if(txtPass.getText().length() <= 0 || txtPass1.getText().length() <= 0){
             labelError.setText("Los dos campos deben ser completados");
             paneError.setVisible(true);
@@ -28,6 +39,12 @@ public class CambioPass extends Application{
             paneError.setVisible(true);
         }
         else{
+            PasswordData password = new PasswordData(txtPass.getText());
+            RuleResult result = validator.validate(password);
+            if(!result.isValid()){
+                labelError.setText("La contraseña debe serguir los estandares impuestos");
+                paneError.setVisible(true);
+            }
             try{
                 rest.PUT(
                         routes.getRoute(

@@ -79,18 +79,18 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="paneAgregarRestaurante" layoutX="114.0" layoutY="77.0" prefHeight="195.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+                        <AnchorPane fx:id="paneAgregarRestaurante" layoutX="114.0" layoutY="77.0" prefHeight="234.0" prefWidth="373.0" style="-fx-background-color: white;">
                            <effect>
                               <DropShadow offsetX="5.0" offsetY="5.0" />
                            </effect>
                            <children>
                               <TextField fx:id="txtNuevoCorreo" layoutX="56.0" layoutY="85.0" prefHeight="40.0" prefWidth="271.0" promptText="Correo electrónico" style="-fx-background-radius: 0px;" />
-                              <Label layoutX="42.0" layoutY="28.0" prefHeight="45.0" prefWidth="223.0" text="Escriba el correo electronico asociado al nuevo restaurante" wrapText="true">
+                              <Label layoutX="42.0" layoutY="28.0" prefHeight="45.0" prefWidth="223.0" text="Escriba el correo electronico y el tipo de rol que desea agregar" wrapText="true">
                                  <font>
                                     <Font name="Segoe UI Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="297.0" layoutY="151.0" onMouseClicked="#okAgregarRestaurante" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="299.0" layoutY="190.0" onMouseClicked="#okAgregarRestaurante" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/ok.png" />
                                  </image>
@@ -106,7 +106,7 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </ImageView>
-                              <Label layoutX="326.0" layoutY="155.0" onMouseClicked="#okAgregarRestaurante" text="Ok" textFill="#2a295c">
+                              <Label layoutX="328.0" layoutY="194.0" onMouseClicked="#okAgregarRestaurante" text="Ok" textFill="#2a295c">
                                  <font>
                                     <Font name="Segoe UI Bold" size="20.0" />
                                  </font>
@@ -114,6 +114,7 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </Label>
+                              <ComboBox fx:id="comboboxRol" layoutX="56.0" layoutY="143.0" prefHeight="40.0" prefWidth="149.0" style="-fx-background-radius: 0px;" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="-3.0" layoutY="-4.0" prefHeight="60.0" prefWidth="607.0" style="-fx-background-color: #2a295c;">
@@ -152,6 +153,42 @@
                                  </cursor>
                               </ImageView>
                               <Label layoutX="216.0" layoutY="98.0" onMouseClicked="#okEliminarRestaurante" text="Ok" textFill="#2a295c">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="20.0" />
+                                 </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="paneSinPermisos" layoutX="176.0" layoutY="117.0" prefHeight="136.0" prefWidth="265.0" style="-fx-background-color: white;" visible="false">
+                           <effect>
+                              <DropShadow offsetX="5.0" offsetY="5.0" />
+                           </effect>
+                           <children>
+                              <Label layoutX="29.0" layoutY="26.0" prefHeight="45.0" prefWidth="197.0" text="Usted no tiene los permisos suficientes para realizar esta acción" wrapText="true">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="186.0" layoutY="95.0" onMouseClicked="#okSinPermisos" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/ok.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                              <ImageView fitHeight="23.0" fitWidth="24.0" layoutX="240.0" layoutY="3.0" onMouseClicked="#okSinPermisos" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/x.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                              <Label layoutX="216.0" layoutY="98.0" onMouseClicked="#okSinPermisos" text="Ok" textFill="#2a295c">
                                  <font>
                                     <Font name="Segoe UI Bold" size="20.0" />
                                  </font>

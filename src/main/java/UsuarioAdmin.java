@@ -1,4 +1,6 @@
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -17,13 +19,18 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     private TextField txtNuevoNombre, txtNuevoCorreo, txtNuevoRestaurante, txtEditarCorreo2;
 
     @FXML
-    private AnchorPane paneEditarRestaurante, paneAgregarRestaurante, paneEliminarRestaurante;
+    private AnchorPane paneEditarRestaurante, paneAgregarRestaurante, paneEliminarRestaurante, paneSinPermisos;
 
     @FXML
     private ListView listaRestaurante, listaRestauranteComent;
 
     @FXML
+    private ComboBox comboboxRol;
+
+    @FXML
     ImageView btnEditar, btnEliminar, btnAgregar;
+
+    ObservableList<String> listaRoles = FXCollections.observableArrayList();
 
     @Override
     public void tabComentarios() throws IOException {
@@ -95,53 +102,58 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     public void okAgregarRestaurante(MouseEvent event) {
 
         try {
-            rest.POST(
+            JSONArray jsonArray = rest.POST(
                     routes.getRoute(Routes.routesName.CREATE_USUARIO),
                     "nombre", txtNuevoRestaurante.getText(),
                     "nombreid", txtNuevoRestaurante.getText(),
                     "correo", txtNuevoCorreo.getText(),
                     "password", helper.hash(helper.defaultPass));
-            rest.PUT(
-                    routes.getRoute(
-                            Routes.routesName.MODIFY_DISPONIBILIDAD,
-                            UsuarioEntity.getNombre()
-                    ),
-                    "empresaid", txtNuevoRestaurante.getText(),
-                    "empresa", txtNuevoRestaurante.getText(),
-                    "Lunes", "0",
-                    "Martes", "0",
-                    "Miercoles", "0",
-                    "Jueves", "0",
-                    "Viernes", "0"
-            );
-            String[] dias = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
-            for(String diasIterator : dias){
-                rest.POST(
-                        routes.getRoute(Routes.routesName.CREATE_HOURS),
-                        "id", txtNuevoRestaurante.getText() + diasIterator,
+            if(jsonArray.getJSONObject(0).get("acceso").equals("false")){
+                paneSinPermisos.setVisible(true);
+            }
+            else{
+                rest.PUT(
+                        routes.getRoute(
+                                Routes.routesName.MODIFY_DISPONIBILIDAD,
+                                UsuarioEntity.getNombre()
+                        ),
+                        "empresaid", txtNuevoRestaurante.getText(),
                         "empresa", txtNuevoRestaurante.getText(),
-                        "dia", diasIterator,
-                        "franja1", "0",
-                        "franja2", "0",
-                        "franja3", "0",
-                        "franja4", "0",
-                        "franja5", "0",
-                        "franja6", "0",
-                        "franja7", "0",
-                        "franja8", "0",
-                        "franja9", "0",
-                        "franja10", "0",
-                        "franja11", "0",
-                        "franja12", "0",
-                        "franja13", "0",
-                        "franja14", "0",
-                        "franja15", "0",
-                        "franja16", "0",
-                        "franja17", "0",
-                        "franja18", "0",
-                        "franja19", "0",
-                        "franja20", "0"
+                        "Lunes", "0",
+                        "Martes", "0",
+                        "Miercoles", "0",
+                        "Jueves", "0",
+                        "Viernes", "0"
                 );
+                String[] dias = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
+                for(String diasIterator : dias){
+                    rest.POST(
+                            routes.getRoute(Routes.routesName.CREATE_HOURS),
+                            "id", txtNuevoRestaurante.getText() + diasIterator,
+                            "empresa", txtNuevoRestaurante.getText(),
+                            "dia", diasIterator,
+                            "franja1", "0",
+                            "franja2", "0",
+                            "franja3", "0",
+                            "franja4", "0",
+                            "franja5", "0",
+                            "franja6", "0",
+                            "franja7", "0",
+                            "franja8", "0",
+                            "franja9", "0",
+                            "franja10", "0",
+                            "franja11", "0",
+                            "franja12", "0",
+                            "franja13", "0",
+                            "franja14", "0",
+                            "franja15", "0",
+                            "franja16", "0",
+                            "franja17", "0",
+                            "franja18", "0",
+                            "franja19", "0",
+                            "franja20", "0"
+                    );
+                }
             }
         } catch (IOException e) {
             helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
@@ -274,7 +286,15 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        listaRoles.add("Supervisor");
+        listaRoles.add("Administrador contrato");
+        this.comboboxRol.setItems(listaRoles);
+
         cargarLista();
+    }
+
+    public void okSinPermisos(MouseEvent event) {
+        paneSinPermisos.setVisible(false);
     }
 }
 
