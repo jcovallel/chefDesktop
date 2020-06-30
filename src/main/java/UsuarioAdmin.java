@@ -9,9 +9,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.json.JSONArray;
+import org.passay.*;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class UsuarioAdmin extends Usuario implements Initializable{
@@ -56,6 +59,21 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
 
     public void cuentaAceptarMouseClicked(MouseEvent event){
+        List<Rule> rules = new ArrayList();
+        rules.add(new LengthRule(8));
+        rules.add(new CharacterRule(EnglishCharacterData.UpperCase, 1));
+        rules.add(new CharacterRule(EnglishCharacterData.LowerCase, 1));
+        rules.add(new CharacterRule(EnglishCharacterData.Digit, 2));
+        rules.add(new CharacterRule(EnglishCharacterData.Special, 1));
+        PasswordValidator validator = new PasswordValidator(rules);
+        PasswordData password = new PasswordData(txtNuevoPass.getText());
+        RuleResult result = validator.validate(password);
+        if(!result.isValid()){
+            labelCuentaError.setText("La contraseña debe serguir los estandares impuestos");
+            paneCuentaError.setVisible(true);
+        }
+        panelConfirmarCuenta.setVisible(true);
+
         panelConfirmarCuenta.setVisible(true);
     }
 
@@ -100,9 +118,18 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     }
 
     public void okAgregarRestaurante(MouseEvent event) {
-
+        Integer rol = 0;
+        if(comboboxRol.getValue().toString().equals("Supervisor")){
+            rol = 2;
+        }
+        else if(comboboxRol.getValue().toString().equals("Administrador contrato")){
+            rol = 3;
+        }
+        else{
+            helper.showAlert("Debe seleccionar un rol", Alert.AlertType.ERROR);
+        }
         try {
-            JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL,UsuarioEntity.getNombre()));
+            JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL,UsuarioEntity.getNombre(), rol.toString()));
             if(jsonArray.getJSONObject(0).get("response").equals("false")){
                 paneSinPermisos.setVisible(true);
             }
@@ -113,7 +140,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                         "nombreid", txtNuevoRestaurante.getText(),
                         "correo", txtNuevoCorreo.getText(),
                         "password", helper.hash(helper.defaultPass),
-                        "rol", comboboxRol.getValue().toString()
+                        "rol", rol.toString()
                 );
                 rest.PUT(
                         routes.getRoute(
