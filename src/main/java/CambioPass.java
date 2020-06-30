@@ -3,6 +3,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.json.JSONArray;
 import org.passay.*;
 
 import java.awt.event.ActionEvent;
@@ -55,17 +56,22 @@ public class CambioPass extends Application{
                                     helper.hash(txtPass.getText()), "NULL"
                             )
                     );
-                    if(UsuarioEntity.getUsuario("").getNombre().equals("Administrador")){
+                    JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL, UsuarioEntity.getUsuario("").getNombre()));
+                    System.out.println(jsonArray.getJSONObject(0));
+                    if(jsonArray.getJSONObject(0).get("response").toString().equals("2") || jsonArray.getJSONObject(0).get("response").toString().equals("1")){
                         helper.show("usuarioAdmin.fxml", parentPane);
                     }
-                    else{
+                    else if(jsonArray.getJSONObject(0).get("response").toString().equals("3")){
                         helper.show("usuarioNormal.fxml", parentPane);
+                    }
+                    else{
+                        labelError.setText("ocurrió un error inesperado");
+                        paneError.setVisible(true);
                     }
                 }
                 catch (Exception e){
                     labelError.setText("Error al cambiar la contraseña");
                     paneError.setVisible(true);
-                    e.printStackTrace();
                 }
             }
         }
