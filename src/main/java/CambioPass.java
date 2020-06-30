@@ -56,7 +56,7 @@ public class CambioPass extends Application{
                                     helper.hash(txtPass.getText()), "NULL"
                             )
                     );
-                    JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL, UsuarioEntity.getUsuario("").getNombre()));
+                    JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL, UsuarioEntity.getUsuario("", 0).getNombre()));
                     System.out.println(jsonArray.getJSONObject(0));
                     if(jsonArray.getJSONObject(0).get("response").toString().equals("2") || jsonArray.getJSONObject(0).get("response").toString().equals("1")){
                         helper.show("usuarioAdmin.fxml", parentPane);

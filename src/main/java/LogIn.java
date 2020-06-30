@@ -54,13 +54,15 @@ public class LogIn extends Application implements Initializable{
             }
             if(jsonArray != null){
                 if(jsonArray.getJSONObject(0).get("acceso").toString().equals("true")){
-                    UsuarioEntity.getUsuario(comboboxUsuario.getValue());
+                    Integer rol = 0;
+                    jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL, comboboxUsuario.getValue()));
+                    rol = (Integer) jsonArray.getJSONObject(0).get("response");
+                    UsuarioEntity.getUsuario(comboboxUsuario.getValue(), rol);
 
                     if(helper.hash(txtPass.getText()).equals(helper.hash(helper.defaultPass))){
                         helper.show("cambioPass.fxml", parentPane);
                     }
                     else{
-                        jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL, comboboxUsuario.getValue()));
                         if(jsonArray.getJSONObject(0).get("response").toString().equals("2") || jsonArray.getJSONObject(0).get("response").toString().equals("1")){
                             helper.show("usuarioAdmin.fxml", parentPane);
                         }
