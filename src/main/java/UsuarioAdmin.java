@@ -102,16 +102,19 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     public void okAgregarRestaurante(MouseEvent event) {
 
         try {
-            JSONArray jsonArray = rest.POST(
-                    routes.getRoute(Routes.routesName.CREATE_USUARIO),
-                    "nombre", txtNuevoRestaurante.getText(),
-                    "nombreid", txtNuevoRestaurante.getText(),
-                    "correo", txtNuevoCorreo.getText(),
-                    "password", helper.hash(helper.defaultPass));
-            if(jsonArray.getJSONObject(0).get("acceso").equals("false")){
+            JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL,UsuarioEntity.getNombre()));
+            if(jsonArray.getJSONObject(0).get("response").equals("false")){
                 paneSinPermisos.setVisible(true);
             }
             else{
+                rest.POST(
+                        routes.getRoute(Routes.routesName.CREATE_USUARIO),
+                        "nombre", txtNuevoRestaurante.getText(),
+                        "nombreid", txtNuevoRestaurante.getText(),
+                        "correo", txtNuevoCorreo.getText(),
+                        "password", helper.hash(helper.defaultPass),
+                        "rol", comboboxRol.getValue().toString()
+                );
                 rest.PUT(
                         routes.getRoute(
                                 Routes.routesName.MODIFY_DISPONIBILIDAD,

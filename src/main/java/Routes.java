@@ -16,7 +16,8 @@ public class Routes{
         DELETE_USUARIO,
         SEND_EMAIL,
         UPLOAD_IMAGE,
-        CREATE_HOURS
+        CREATE_HOURS,
+        GET_ROL
     }
     private static HashMap<String, String> routesHash;
     private static Routes routesEntity;
@@ -42,6 +43,7 @@ public class Routes{
         routesHash.put("SEND_EMAIL", "/chef/deleteuser/");
         routesHash.put("UPLOAD_IMAGE", "/chef/uploadmenu/");
         routesHash.put("CREATE_HOURS", "/chef/createhours/");
+        routesHash.put("GET_ROL", "/chef/getrol/");
     }
 
     public static Routes getRoutesClass(){

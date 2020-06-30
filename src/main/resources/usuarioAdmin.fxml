@@ -114,7 +114,7 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </Label>
-                              <ComboBox fx:id="comboboxRol" layoutX="56.0" layoutY="143.0" prefHeight="40.0" prefWidth="149.0" style="-fx-background-radius: 0px;" />
+                              <ComboBox fx:id="comboboxRol" layoutX="56.0" layoutY="143.0" prefHeight="40.0" prefWidth="149.0" promptText="Rol" style="-fx-background-radius: 0px;" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="-3.0" layoutY="-4.0" prefHeight="60.0" prefWidth="607.0" style="-fx-background-color: #2a295c;">
