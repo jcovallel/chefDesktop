@@ -260,12 +260,10 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         }
         JSONArray jsonArray = null;
         try{
-            if(UsuarioEntity.getRol().equals(1)){
-                jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS));
-            }
-            else if(UsuarioEntity.getRol().equals(2)){
+            if(UsuarioEntity.getRol().equals(1) || UsuarioEntity.getRol().equals(2)){
                 jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
             }
+
             if(jsonArray != null){
                 for(int i = 0; i < jsonArray.length(); i++){
                     listaRestaurante.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
