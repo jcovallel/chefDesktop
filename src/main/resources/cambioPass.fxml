@@ -45,7 +45,7 @@
       </Label>
       <AnchorPane fx:id="paneError" layoutX="184.0" layoutY="145.0" prefHeight="125.0" prefWidth="233.0" style="-fx-background-color: white;" visible="false">
          <children>
-            <Label fx:id="labelError" layoutX="25.0" layoutY="26.0" text="Las contraseñas no coinciden" />
+            <Label fx:id="labelError" layoutX="25.0" layoutY="26.0" prefHeight="47.0" prefWidth="155.0" text="Las contraseñas no coinciden" wrapText="true" />
             <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="167.0" layoutY="84.0" onMouseClicked="#okError" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/ok.png" />

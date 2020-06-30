@@ -45,25 +45,28 @@ public class CambioPass extends Application{
                 labelError.setText("La contraseña debe serguir los estandares impuestos");
                 paneError.setVisible(true);
             }
-            try{
-                rest.PUT(
-                        routes.getRoute(
-                                Routes.routesName.MODIFY_USUARIO,
-                                UsuarioEntity.getNombre(),
-                                helper.hash(txtPass.getText()), "NULL"
-                        )
-                );
-                if(UsuarioEntity.getUsuario("").getNombre().equals("Administrador")){
-                    helper.show("usuarioAdmin.fxml", parentPane);
+            else{
+
+                try{
+                    rest.PUT(
+                            routes.getRoute(
+                                    Routes.routesName.MODIFY_USUARIO,
+                                    UsuarioEntity.getNombre(),
+                                    helper.hash(txtPass.getText()), "NULL"
+                            )
+                    );
+                    if(UsuarioEntity.getUsuario("").getNombre().equals("Administrador")){
+                        helper.show("usuarioAdmin.fxml", parentPane);
+                    }
+                    else{
+                        helper.show("usuarioNormal.fxml", parentPane);
+                    }
                 }
-                else{
-                    helper.show("usuarioNormal.fxml", parentPane);
+                catch (Exception e){
+                    labelError.setText("Error al cambiar la contraseña");
+                    paneError.setVisible(true);
+                    e.printStackTrace();
                 }
-            }
-            catch (Exception e){
-                labelError.setText("Error al cambiar la contraseña");
-                paneError.setVisible(true);
-                e.printStackTrace();
             }
         }
     }

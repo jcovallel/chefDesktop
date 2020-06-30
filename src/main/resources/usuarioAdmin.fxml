@@ -79,7 +79,7 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="paneAgregarRestaurante" layoutX="114.0" layoutY="77.0" prefHeight="234.0" prefWidth="373.0" style="-fx-background-color: white;">
+                        <AnchorPane fx:id="paneAgregarRestaurante" layoutX="114.0" layoutY="77.0" prefHeight="234.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
                            <effect>
                               <DropShadow offsetX="5.0" offsetY="5.0" />
                            </effect>
