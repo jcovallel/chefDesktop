@@ -31,6 +31,9 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     private ComboBox comboboxRol;
 
     @FXML
+    private Label labelRestaurantes;
+
+    @FXML
     ImageView btnEditar, btnEliminar, btnAgregar;
 
     ObservableList<String> listaRoles = FXCollections.observableArrayList();
@@ -42,6 +45,9 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
 
     public void tabRestaurantes() throws IOException {
+        if(UsuarioEntity.getRol().equals(1)){
+            labelRestaurantes.setText("Restaurantes y supervisores");
+        }
         btnEliminar.setVisible(false);
         btnEditar.setVisible(false);
     }
@@ -258,16 +264,23 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         if(!listaRestauranteComent.getItems().isEmpty()){
             listaRestauranteComent.getItems().clear();
         }
-        JSONArray jsonArray = null;
         try{
-            if(UsuarioEntity.getRol().equals(1) || UsuarioEntity.getRol().equals(2)){
-                jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
+            JSONArray jsonArray2 = null;
+            //jsonArray2 es el que llena la lista de restaurantes y supervisores
+            if(UsuarioEntity.getRol().equals(1)){
+                jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS));
             }
+            else{
+                jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
+            }
+            JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
 
-            if(jsonArray != null){
+            if(jsonArray != null && jsonArray2 != null){
                 for(int i = 0; i < jsonArray.length(); i++){
-                    listaRestaurante.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
                     listaRestauranteComent.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
+                }
+                for(int i = 0; i < jsonArray2.length(); i++){
+                    listaRestaurante.getItems().add((String) jsonArray2.getJSONObject(i).get("nombre"));
                 }
                 try{
                     listaRestaurante.getItems().remove((String) "Administrador");
