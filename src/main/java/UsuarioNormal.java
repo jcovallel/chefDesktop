@@ -33,7 +33,7 @@ public class UsuarioNormal extends Usuario implements Initializable{
     private Label archivocargado, labelUsuario;
 
     @FXML
-    private AnchorPane draggable;
+    private AnchorPane draggable, parentPane;
 
     public String imagepath="vacio397";
     private String ip = "35.188.100.206";
@@ -229,5 +229,10 @@ public class UsuarioNormal extends Usuario implements Initializable{
 
     public void recargarComentarios(MouseEvent event) throws IOException {
         cargarTabla();
+    }
+
+    public void btnCerrarSesion(MouseEvent event) throws IOException {
+        helper.show("login.fxml", parentPane);
+        UsuarioEntity.destroy();
     }
 }

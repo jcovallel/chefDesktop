@@ -22,7 +22,7 @@ public class UsuarioEntity {
     public static Integer getRol(){
         return rol;
     }
-    public void destroy(){
+    public static void destroy(){
         usuarioEntity = null;
     }
 }

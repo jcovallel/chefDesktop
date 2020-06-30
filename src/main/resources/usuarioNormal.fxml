@@ -15,7 +15,7 @@
         <tabs>
            <Tab text="Menú">
               <content>
-                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
+                 <AnchorPane fx:id="parentPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                     <children>
                        <AnchorPane fx:id="draggable" layoutX="18.0" layoutY="76.0" onDragEntered="#dragImagen" onMouseDragged="#dragImagen" prefHeight="163.0" prefWidth="564.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: segments(5, 5, 5, 5)  line-cap round;">
                           <children>
@@ -306,6 +306,22 @@
                                     <Font name="Segoe UI Bold" size="20.0" />
                                  </font>
                               </Label>
+                              <Label layoutX="479.0" layoutY="22.0" onMouseClicked="#btnCerrarSesion" text="Cerrar sesión" textFill="WHITE">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="16.0" />
+                                 </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Label>
+                              <ImageView fitHeight="25.0" fitWidth="29.0" layoutX="454.0" layoutY="19.0" onMouseClicked="#btnCerrarSesion" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/cerrar_sesion.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                         <ImageView fitHeight="42.0" fitWidth="160.0" layoutX="8.0" layoutY="321.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">

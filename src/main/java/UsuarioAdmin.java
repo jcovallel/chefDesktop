@@ -22,7 +22,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     private TextField txtNuevoNombre, txtNuevoCorreo, txtNuevoRestaurante, txtEditarCorreo2;
 
     @FXML
-    private AnchorPane paneEditarRestaurante, paneAgregarRestaurante, paneEliminarRestaurante, paneSinPermisos;
+    private AnchorPane paneEditarRestaurante, paneAgregarRestaurante, paneEliminarRestaurante, paneSinPermisos, parentPane;
 
     @FXML
     private ListView listaRestaurante, listaRestauranteComent;
@@ -238,7 +238,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             tableCalificacion.getItems().clear();
             String empresa = listaRestauranteComent.getSelectionModel().getSelectedItem().toString();
 
-            if(empresa.equals("Administrador")){
+            if(empresa.equals("Todos los comentarios")){
                 cargarTabla(Routes.routesName.GET_REVIEWS_ADMIN);
             }
             else{
@@ -271,20 +271,26 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                     listaRestaurante.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
                     listaRestauranteComent.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
                 }
-                listaRestaurante.getItems().remove((String) "Administrador");
-                listaRestauranteComent.getItems().remove((String) "Administrador");
+                try{
+                    listaRestaurante.getItems().remove((String) "Administrador");
+                    listaRestauranteComent.getItems().remove((String) "Administrador");
+                }
+                catch(Exception e){
+
+                }
             }
         }
         catch(IOException ioe){
             helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         }
-        listaRestauranteComent.getItems().add("Administrador");
+
         listaRestaurante.getItems().sort((Object c1, Object c2) -> {
             return c1.toString().compareTo((String) c2);
         });
         listaRestauranteComent.getItems().sort((Object c1, Object c2) -> {
             return c1.toString().compareTo((String) c2);
         });
+        listaRestauranteComent.getItems().add("Todos los comentarios");
     }
 
     protected void cargarTabla(Routes.routesName route, String... args) throws IOException {
@@ -330,6 +336,11 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     public void okSinPermisos(MouseEvent event) {
         paneSinPermisos.setVisible(false);
+    }
+
+    public void btnCerrarSesion(MouseEvent event) throws IOException {
+        helper.show("login.fxml", parentPane);
+        UsuarioEntity.destroy();
     }
 }
 
