@@ -130,7 +130,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         }
         try {
             JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL,UsuarioEntity.getNombre(), rol.toString()));
-            if(jsonArray.getJSONObject(0).get("response").equals("false")){
+            if(jsonArray.getJSONObject(0).get("acceso").equals("false")){
                 paneSinPermisos.setVisible(true);
             }
             else{
