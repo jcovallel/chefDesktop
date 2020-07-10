@@ -1,0 +1,28 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="chefDesktop">
+    <output-path>$PROJECT_DIR$/out/artifacts/chefDesktop</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="Main" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="nativeBundle" value="all" />
+        <option name="title" value="" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="chefDesktop.jar">
+        <element id="module-output" name="chefDesktop" />
+        <element id="library" level="project" name="Maven: org.passay:passay:1.6.0" />
+        <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpmime:4.5.11" />
+        <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.11" />
+        <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.13" />
+        <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.2" />
+        <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.11" />
+        <element id="library" level="project" name="Maven: org.json:json:20190722" />
+      </element>
+    </root>
+  </artifact>
+</component>

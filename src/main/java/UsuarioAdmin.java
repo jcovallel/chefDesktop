@@ -65,22 +65,29 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
 
     public void cuentaAceptarMouseClicked(MouseEvent event){
-        List<Rule> rules = new ArrayList();
-        rules.add(new LengthRule(8));
-        rules.add(new CharacterRule(EnglishCharacterData.UpperCase, 1));
-        rules.add(new CharacterRule(EnglishCharacterData.LowerCase, 1));
-        rules.add(new CharacterRule(EnglishCharacterData.Digit, 2));
-        rules.add(new CharacterRule(EnglishCharacterData.Special, 1));
-        PasswordValidator validator = new PasswordValidator(rules);
-        PasswordData password = new PasswordData(txtNuevoPass.getText());
-        RuleResult result = validator.validate(password);
-        if(!result.isValid()){
-            labelCuentaError.setText("La contraseña debe serguir los estandares impuestos");
-            paneCuentaError.setVisible(true);
+        if(!txtNuevoPass.getText().isEmpty()){
+            List<Rule> rules = new ArrayList();
+            rules.add(new LengthRule(8));
+            rules.add(new CharacterRule(EnglishCharacterData.UpperCase, 1));
+            rules.add(new CharacterRule(EnglishCharacterData.LowerCase, 1));
+            rules.add(new CharacterRule(EnglishCharacterData.Digit, 2));
+            rules.add(new CharacterRule(EnglishCharacterData.Special, 1));
+            PasswordValidator validator = new PasswordValidator(rules);
+            PasswordData password = new PasswordData(txtNuevoPass.getText());
+            RuleResult result = validator.validate(password);
+            if(!result.isValid()){
+                labelCuentaError.setText("La contraseña debe seguir los estandares impuestos");
+                paneCuentaError.setVisible(true);
+            }
+            panelConfirmarCuenta.setVisible(true);
+        }else{
+            if(!txtCorreo.getText().isEmpty()){
+                panelConfirmarCuenta.setVisible(true);
+            }else{
+                labelCuentaError.setText("No ha introducido ningun valor");
+                paneCuentaError.setVisible(true);
+            }
         }
-        panelConfirmarCuenta.setVisible(true);
-
-        panelConfirmarCuenta.setVisible(true);
     }
 
 
@@ -194,7 +201,6 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         } catch (IOException e) {
             helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         }
-
         cargarLista();
         listaRestaurante.setDisable(false);
         paneAgregarRestaurante.setVisible(false);
@@ -220,6 +226,30 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         rest.GET(
                 routes.getRoute(
                         Routes.routesName.DELETE_USUARIO,
+                        listaRestaurante.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_COMENTS,
+                        listaRestaurante.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_DMODEL,
+                        listaRestaurante.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_DHMODEL,
+                        listaRestaurante.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_DISPOMODEL,
                         listaRestaurante.getSelectionModel().getSelectedItem().toString()
                 )
         );
@@ -350,7 +380,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     }
 
     public void btnCerrarSesion(MouseEvent event) throws IOException {
-        helper.show("login.fxml", parentPane);
+        helper.show("logIn.fxml", parentPane);
         UsuarioEntity.destroy();
     }
 }

@@ -14,6 +14,10 @@ public class Routes{
         MODIFY_USUARIO,
         CREATE_USUARIO,
         DELETE_USUARIO,
+        DELETE_COMENTS,
+        DELETE_DMODEL,
+        DELETE_DHMODEL,
+        DELETE_DISPOMODEL,
         SEND_EMAIL,
         UPLOAD_IMAGE,
         CREATE_HOURS,
@@ -41,6 +45,10 @@ public class Routes{
         routesHash.put("MODIFY_USUARIO", "/chef/modifydatausers/");
         routesHash.put("CREATE_USUARIO", "/chef/createuser/");
         routesHash.put("DELETE_USUARIO", "/chef/deleteuser/");
+        routesHash.put("DELETE_COMENTS", "/chef/deletecoment/");
+        routesHash.put("DELETE_DMODEL", "/chef/deletedmodel/");
+        routesHash.put("DELETE_DHMODEL", "/chef/deletedhmodel/");
+        routesHash.put("DELETE_DISPOMODEL", "/chef/deletedispomodel/");
         routesHash.put("SEND_EMAIL", "/chef/deleteuser/");
         routesHash.put("UPLOAD_IMAGE", "/chef/uploadmenu/");
         routesHash.put("CREATE_HOURS", "/chef/createhours/");

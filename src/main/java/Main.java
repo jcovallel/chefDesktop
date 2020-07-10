@@ -24,9 +24,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent logIn = FXMLLoader.load(getClass().getResource("logIn.fxml"));
         primaryStage.setTitle("KitchenWorksDesktop");
-        primaryStage.getIcons().add(new Image("\\images\\cubiertos.png"));
+        //primaryStage.getIcons().add(new Image("\\images\\cubiertos.png"));
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("images/cubiertos.png")));
         primaryStage.setScene(new Scene(logIn, 600, 400));
-
         primaryStage.show();
     }
 
