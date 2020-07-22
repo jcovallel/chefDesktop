@@ -49,7 +49,7 @@ public class Routes{
         routesHash.put("DELETE_DMODEL", "/chef/deletedmodel/");
         routesHash.put("DELETE_DHMODEL", "/chef/deletedhmodel/");
         routesHash.put("DELETE_DISPOMODEL", "/chef/deletedispomodel/");
-        routesHash.put("SEND_EMAIL", "/chef/deleteuser/");
+        routesHash.put("SEND_EMAIL", "/chef/sendmail/");
         routesHash.put("UPLOAD_IMAGE", "/chef/uploadmenu/");
         routesHash.put("CREATE_HOURS", "/chef/createhours/");
         routesHash.put("GET_ROL", "/chef/getrol/");

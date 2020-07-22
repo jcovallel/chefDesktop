@@ -33,7 +33,6 @@ public class RestorePass extends Application implements Initializable {
 
     public void btnAceptarRestorePassActionPerformed(ActionEvent actionEvent) throws IOException {
         if(comboboxUsuario.getValue().length() > 0 && txtCorreo.getText().length() > 0){
-
             try {
                 JSONArray jsonArray = rest.GET(
                         routes.getRoute(
