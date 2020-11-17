@@ -1,11 +1,9 @@
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.json.JSONArray;
@@ -16,6 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 public class UsuarioAdmin extends Usuario implements Initializable{
     @FXML
@@ -64,7 +63,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     }
 
 
-    public void cuentaAceptarMouseClicked(MouseEvent event){
+    public void cuentaAceptarMouseClicked(){
         if(!txtNuevoPass.getText().isEmpty()){
             List<Rule> rules = new ArrayList();
             rules.add(new LengthRule(8));
@@ -91,17 +90,17 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     }
 
 
-    public void cerrarPopupEditarRestaurante(MouseEvent event){
+    public void cerrarPopupEditarRestaurante(){
         this.paneEditarRestaurante.setVisible(false);
         this.listaRestaurante.setDisable(false);
     }
 
-    public void editarRestaurante(MouseEvent event){
+    public void editarRestaurante(){
         this.paneEditarRestaurante.setVisible(true);
         this.listaRestaurante.setDisable(true);
     }
 
-    public void okEditarRestaurante(MouseEvent event) throws IOException {
+    public void okEditarRestaurante() throws IOException {
         String nuevoNombre;
         String nuevoCorreo;
         if(txtNuevoNombre.getText().length() <= 0){
@@ -125,12 +124,12 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                         nuevoCorreo
                 )
         );
-        cargarLista();
+        cargarListaUsers();
         this.paneEditarRestaurante.setVisible(false);
         this.listaRestaurante.setDisable(false);
     }
 
-    public void okAgregarRestaurante(MouseEvent event) {
+    public void okAgregarRestaurante() {
         Integer rol = 0;
         if(comboboxRol.getValue().toString().equals("Supervisor")){
             rol = 2;
@@ -201,27 +200,28 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         } catch (IOException e) {
             helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         }
-        cargarLista();
+        listaRestaurante.setDisable(false);
+        paneAgregarRestaurante.setVisible(false);
+        txtNuevoRestaurante.setText("");
+        txtMostrarBotonAgregar();
+        cargarListaUsers();
+    }
+
+    public void cerrarPopupAgregarRestaurante() {
         listaRestaurante.setDisable(false);
         paneAgregarRestaurante.setVisible(false);
     }
 
-    public void cerrarPopupAgregarRestaurante(MouseEvent event) {
-        listaRestaurante.setDisable(false);
-        paneAgregarRestaurante.setVisible(false);
-    }
-
-    public void agregarRestaurante(MouseEvent event) {
-
+    public void agregarRestaurante() {
         listaRestaurante.setDisable(true);
         paneAgregarRestaurante.setVisible(true);
     }
 
-    public void eliminarRestaurante(MouseEvent event) {
+    public void eliminarRestaurante() {
         paneEliminarRestaurante.setVisible(true);
     }
 
-    public void okEliminarRestaurante(MouseEvent event) throws IOException {
+    public void okEliminarRestaurante() throws IOException {
         paneEliminarRestaurante.setVisible(false);
         rest.GET(
                 routes.getRoute(
@@ -253,15 +253,15 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                         listaRestaurante.getSelectionModel().getSelectedItem().toString()
                 )
         );
-        cargarLista();
+        cargarListaUsers();
     }
 
-    public void cerrarPopupEliminarRestaurante(MouseEvent event) {
+    public void cerrarPopupEliminarRestaurante() {
         paneEliminarRestaurante.setVisible(false);
     }
 
-    public void txtMostrarBotonAgregar(KeyEvent keyEvent) {
-        if(this.txtNuevoRestaurante.getText().length() > 0){
+    public void txtMostrarBotonAgregar() {
+        if(!txtNuevoRestaurante.getText().isEmpty()){
             this.btnAgregar.setVisible(true);
         }
         else{
@@ -269,7 +269,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         }
     }
 
-    public void ListaRestauranteComentMouseClicked(MouseEvent event) throws IOException {
+    public void ListaRestauranteComentMouseClicked() throws IOException {
         if(listaRestauranteComent.isFocused() && listaRestauranteComent.getSelectionModel().getSelectedItem().toString() != ""){
             tableCalificacion.getItems().clear();
             String empresa = listaRestauranteComent.getSelectionModel().getSelectedItem().toString();
@@ -287,51 +287,58 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     }
 
-    private void cargarLista(){
-        if(!listaRestaurante.getItems().isEmpty()){
-            listaRestaurante.getItems().clear();
-        }
-        if(!listaRestauranteComent.getItems().isEmpty()){
-            listaRestauranteComent.getItems().clear();
+    private void cargarListaUsers(){
+        listaRestaurante.getItems().clear();
+        try{
+            TimeUnit.MILLISECONDS.sleep(250);
+        }catch (Exception e){
+            helper.showAlert("Ocurrió un error inesperado ERR03T", Alert.AlertType.ERROR);//Error 03T error al realizar el delay
         }
         try{
             JSONArray jsonArray2 = null;
-            //jsonArray2 es el que llena la lista de restaurantes y supervisores
             if(UsuarioEntity.getRol().equals(1)){
                 jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS));
-            }
-            else{
+            }else{
                 jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
             }
-            JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
-
-            if(jsonArray != null && jsonArray2 != null){
-                for(int i = 0; i < jsonArray.length(); i++){
-                    listaRestauranteComent.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
-                }
+            if(jsonArray2 != null){
                 for(int i = 0; i < jsonArray2.length(); i++){
                     listaRestaurante.getItems().add((String) jsonArray2.getJSONObject(i).get("nombre"));
                 }
+                listaRestaurante.getItems().remove((String) "Administrador");
+            }else {
+                listaRestaurante.setPlaceholder(new Label("No Se Encontraron Restaurantes"));
+            }
+        }catch(Exception e){
+            helper.showAlert("Ocurrió un error al consultar el listado de usuarios, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+        }
+        listaRestaurante.getItems().sort((Object c1, Object c2) -> c1.toString().compareTo((String) c2));
+    }
+
+    private void cargarListaComent () {
+        /*if(!listaRestauranteComent.getItems().isEmpty()){
+            listaRestauranteComent.getItems().clear();
+        }*/
+        try{
+            JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
+            if(jsonArray != null ){
+                for(int i = 0; i < jsonArray.length(); i++){
+                    listaRestauranteComent.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
+                }
                 try{
-                    listaRestaurante.getItems().remove((String) "Administrador");
+                    //listaRestaurante.refresh();
+                    //listaRestaurante.
                     listaRestauranteComent.getItems().remove((String) "Administrador");
                 }
                 catch(Exception e){
-
+                    System.out.println("testando");
                 }
             }
-        }
-        catch(IOException ioe){
-            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
-        }
+            listaRestauranteComent.getItems().sort((Object c1, Object c2) -> c1.toString().compareTo((String) c2));
+            listaRestauranteComent.getItems().add("Todos los comentarios");
+        }catch (IOException e){
 
-        listaRestaurante.getItems().sort((Object c1, Object c2) -> {
-            return c1.toString().compareTo((String) c2);
-        });
-        listaRestauranteComent.getItems().sort((Object c1, Object c2) -> {
-            return c1.toString().compareTo((String) c2);
-        });
-        listaRestauranteComent.getItems().add("Todos los comentarios");
+        }
     }
 
     protected void cargarTabla(Routes.routesName route, String... args) throws IOException {
@@ -371,11 +378,10 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         listaRoles.add("Supervisor");
         listaRoles.add("Administrador contrato");
         this.comboboxRol.setItems(listaRoles);
-
-        cargarLista();
+        cargarListaUsers();
     }
 
-    public void okSinPermisos(MouseEvent event) {
+    public void okSinPermisos() {
         paneSinPermisos.setVisible(false);
     }
 
