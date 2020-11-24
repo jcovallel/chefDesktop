@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.json.JSONArray;
 import org.passay.*;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import java.io.*;
 import java.net.URL;
@@ -18,143 +19,213 @@ import java.util.concurrent.TimeUnit;
 
 public class UsuarioAdmin extends Usuario implements Initializable{
     @FXML
-    private TextField txtNuevoNombre, txtNuevoCorreo, txtNuevoRestaurante, txtEditarCorreo2;
+    private TextField txtNuevoNombre, txtNuevoCorreo1, txtNuevoRestaurante, txtEditarCorreo, txtNuevoTmenu, txtNuevoNombreTmenu;
 
     @FXML
-    private AnchorPane paneEditarRestaurante, paneAgregarRestaurante, paneEliminarRestaurante, paneSinPermisos, parentPane;
+    private AnchorPane paneEditarRestaurante, paneAgregarRestaurante1, paneAgregarRestaurante2, paneEliminarRestaurante, paneSinPermisos, parentPane,
+            paneEliminarTmenu, paneAgregarTmenu, paneEditarTmenu, paneAsignarMenu;
 
     @FXML
-    private ListView listaRestaurante, listaRestauranteComent;
+    private ListView listaRestaurante, listaRestauranteComent, listaTmenu;
 
     @FXML
     private ComboBox comboboxRol;
 
     @FXML
-    private Label labelRestaurantes;
+    private Label labelRestaurantes, labelAgregarMenu;
 
     @FXML
-    ImageView btnEditar, btnEliminar, btnAgregar;
+    ImageView btnEditar, btnEliminar, btnAgregar, btnEliminarTmenu, btnAgregarTmenu, btnEditarTmenu;
 
     ObservableList<String> listaRoles = FXCollections.observableArrayList();
 
+    String listviewVacia;
+
     @Override
-    public void tabComentarios() throws IOException {
+    public void tabComentarios() {
 
     }
 
-
-    public void tabRestaurantes() throws IOException {
+    public void tabRestaurantes() {
         if(UsuarioEntity.getRol().equals(1)){
-            labelRestaurantes.setText("Restaurantes y supervisores");
+            labelRestaurantes.setText("Restaurantes y Supervisores");
+            txtNuevoRestaurante.setPromptText("Escriba el nombre del restaurante o supervisor a añadir");
         }
         btnEliminar.setVisible(false);
         btnEditar.setVisible(false);
     }
 
-    public void ListaRestauranteMouseClicked(MouseEvent event){
-        if(listaRestaurante.isFocused() && listaRestaurante.getSelectionModel().getSelectedItem().toString() != ""){
-            btnEliminar.setVisible(true);
-            btnEditar.setVisible(true);
-        }
-        else{
-            btnEliminar.setVisible(false);
-            btnEditar.setVisible(false);
+    public void tabTmenu() {
+        cargarListaMenus();
+        btnEliminarTmenu.setVisible(false);
+        btnEditarTmenu.setVisible(false);
+    }
+
+    //################################################### METODOS PESTAÑA RESTAURANTE ##############################################################
+    //CUANDO SE CLICKEA Y SELECCIONA UN ELEMENTO DE LA LISTVIEW (RETAURANTE O SUEPRVISOR)
+    public void ListaRestauranteMouseClicked(){
+        try{
+            if(listaRestaurante.isFocused() && listaRestaurante.getSelectionModel().getSelectedItem().toString() != ""){
+                btnEliminar.setVisible(true);
+                btnEditar.setVisible(true);
+            }
+            else{
+                btnEliminar.setVisible(false);
+                btnEditar.setVisible(false);
+            }
+        }catch (NullPointerException e){
+
         }
     }
 
-
-    public void cuentaAceptarMouseClicked(){
-        if(!txtNuevoPass.getText().isEmpty()){
-            List<Rule> rules = new ArrayList();
-            rules.add(new LengthRule(8));
-            rules.add(new CharacterRule(EnglishCharacterData.UpperCase, 1));
-            rules.add(new CharacterRule(EnglishCharacterData.LowerCase, 1));
-            rules.add(new CharacterRule(EnglishCharacterData.Digit, 2));
-            rules.add(new CharacterRule(EnglishCharacterData.Special, 1));
-            PasswordValidator validator = new PasswordValidator(rules);
-            PasswordData password = new PasswordData(txtNuevoPass.getText());
-            RuleResult result = validator.validate(password);
-            if(!result.isValid()){
-                labelCuentaError.setText("La contraseña debe seguir los estandares impuestos");
-                paneCuentaError.setVisible(true);
-            }
-            panelConfirmarCuenta.setVisible(true);
-        }else{
-            if(!txtCorreo.getText().isEmpty()){
-                panelConfirmarCuenta.setVisible(true);
+    //ACTUALIZA LA LISTA DE SUPERVISORES Y RESTAURANTES
+    private void cargarListaUsers(){
+        listaRestaurante.getItems().clear();
+        try{
+            TimeUnit.MILLISECONDS.sleep(250);
+        }catch (Exception e){
+            helper.showAlert("Ocurrió un error inesperado ERR03T", Alert.AlertType.ERROR);//Error 03T error al realizar el delay
+        }
+        try{
+            JSONArray jsonArray2 = null;
+            if(UsuarioEntity.getRol().equals(1)){
+                jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS));
             }else{
-                labelCuentaError.setText("No ha introducido ningun valor");
-                paneCuentaError.setVisible(true);
+                jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
             }
+            if(jsonArray2 != null){
+                if(jsonArray2.length()==1){
+                    listaRestaurante.setPlaceholder(new Label(listviewVacia));
+                    listaRestaurante.setDisable(true);
+                }else {
+                    listaRestaurante.setDisable(false);
+                    for(int i = 0; i < jsonArray2.length(); i++){
+                        listaRestaurante.getItems().add((String) jsonArray2.getJSONObject(i).get("nombre"));
+                    }
+                    listaRestaurante.getItems().remove((String) "Administrador");
+                }
+            }else {
+                helper.showAlert("Ocurrió un error al consultar el listado de usuarios, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+            }
+        }catch(Exception e){
+            helper.showAlert("Ocurrió un error al consultar el listado de usuarios, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
         }
+        listaRestaurante.getItems().sort((Object c1, Object c2) -> c1.toString().compareTo((String) c2));
     }
 
-
-    public void cerrarPopupEditarRestaurante(){
-        this.paneEditarRestaurante.setVisible(false);
-        this.listaRestaurante.setDisable(false);
-    }
-
+    //===================================================== METODOS DE EDICION RESTAURANTES =======================================================
+    //CUANDO SE SELECCIONA LA OPCION EDITAR RESTAURANTE
     public void editarRestaurante(){
         this.paneEditarRestaurante.setVisible(true);
         this.listaRestaurante.setDisable(true);
+        this.txtNuevoRestaurante.setDisable(true);
+        this.btnAgregar.setVisible(false);
     }
 
+    //MUESTRA EL BOTON DE AGREGAR CUANDO SE ESCRIBE TEXTO EN EL CUADRO DE NOMBRE PARA AGREGAR RESTAURANTE
+    public void txtMostrarBotonAgregar() {
+        if(txtNuevoRestaurante.getCharacters().length()!=0){
+            this.btnAgregar.setVisible(true);
+        }
+        else{
+            this.btnAgregar.setVisible(false);
+        }
+    }
+
+    //CUANDO SE CIERRA LA VENTANA DE EDITAR RESTAURANTE
+    public void cerrarPopupEditarRestaurante(){
+        this.paneEditarRestaurante.setVisible(false);
+        this.listaRestaurante.setDisable(false);
+        this.txtNuevoRestaurante.setDisable(false);
+        txtMostrarBotonAgregar();
+        txtNuevoNombre.setText("");
+        txtEditarCorreo.setText("");
+    }
+
+    //CUANDO SE DA OK Y SE REALIZA LA EDICION DEL RESTAURANTE
     public void okEditarRestaurante() throws IOException {
         String nuevoNombre;
         String nuevoCorreo;
+        int ambosNULL = 0;
+        boolean badMail = false;
         if(txtNuevoNombre.getText().length() <= 0){
             nuevoNombre = "NULL";
-        }
-        else{
+            ambosNULL++;
+        }else{
             nuevoNombre = txtNuevoNombre.getText();
         }
-        if(txtEditarCorreo2.getText().length() <= 0){
-            nuevoCorreo = null;
-        }
-        else{
-            nuevoCorreo = txtEditarCorreo2.getText();
-        }
 
-        rest.PUT(
-                routes.getRoute(
-                        Routes.routesName.MODIFY_RESTAURANTE,
-                        listaRestaurante.getSelectionModel().getSelectedItem().toString(),
-                        nuevoNombre,
-                        nuevoCorreo
-                )
-        );
-        cargarListaUsers();
-        this.paneEditarRestaurante.setVisible(false);
-        this.listaRestaurante.setDisable(false);
-    }
-
-    public void okAgregarRestaurante() {
-        Integer rol = 0;
-        if(comboboxRol.getValue().toString().equals("Supervisor")){
-            rol = 2;
-        }
-        else if(comboboxRol.getValue().toString().equals("Administrador contrato")){
-            rol = 3;
-        }
-        else{
-            helper.showAlert("Debe seleccionar un rol", Alert.AlertType.ERROR);
-        }
-        try {
-            JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL,UsuarioEntity.getNombre(), rol.toString()));
-            if(jsonArray.getJSONObject(0).get("acceso").equals("false")){
-                paneSinPermisos.setVisible(true);
+        if(txtEditarCorreo.getText().length() <= 0){
+            nuevoCorreo = "NULL";
+            ambosNULL++;
+        }else{
+            nuevoCorreo = txtEditarCorreo.getText();
+            if(!EmailValidator.getInstance().isValid(nuevoCorreo)){
+                helper.showAlert("Debe proporcionar una direccion de correo electronico valida", Alert.AlertType.ERROR);
+                badMail=true;
             }
-            else{
-                rest.POST(
-                        routes.getRoute(Routes.routesName.CREATE_USUARIO),
-                        "nombre", txtNuevoRestaurante.getText(),
-                        "nombreid", txtNuevoRestaurante.getText(),
-                        "correo", txtNuevoCorreo.getText(),
-                        "password", helper.hash(helper.defaultPass),
-                        "rol", rol.toString()
-                );
-                rest.PUT(
+        }
+
+        if(ambosNULL!=2 && badMail!=true){
+            rest.PUT(
+                    routes.getRoute(
+                            Routes.routesName.MODIFY_RESTAURANTE,
+                            listaRestaurante.getSelectionModel().getSelectedItem().toString(),
+                            nuevoNombre,
+                            nuevoCorreo
+                    )
+            );
+        }
+        if(badMail!=true){
+            cargarListaUsers();
+            this.paneEditarRestaurante.setVisible(false);
+            this.listaRestaurante.setDisable(false);
+            this.txtNuevoRestaurante.setDisable(false);
+            txtMostrarBotonAgregar();
+            txtNuevoNombre.setText("");
+            txtEditarCorreo.setText("");
+        }
+    }
+    //===============================================================================================================================================
+
+    //======================================================== METODOS AGREGAR RESTAURANTES =========================================================
+    //CUANDO SE HACE CLICK EN OK AGREGAR RESTAURANTE
+    public void okAgregarRestaurante() {
+        Boolean rolVacio = false;
+        ListaRestauranteMouseClicked();
+        if(txtNuevoCorreo1.getText().isEmpty()){
+            helper.showAlert("Debe proporcionar un correo electronico", Alert.AlertType.ERROR);
+        }else if(!EmailValidator.getInstance().isValid(txtNuevoCorreo1.getText())){
+            helper.showAlert("Debe proporcionar una direccion de correo electronico valida", Alert.AlertType.ERROR);
+        }else {
+            try{
+                Integer rol = 0;
+                if(comboboxRol.getValue().toString().equals("Supervisor")){
+                    rol = 2;
+                }else if(comboboxRol.getValue().toString().equals("Administrador contrato")){
+                    rol = 3;
+                }
+
+                try {
+                    String respuesta;
+                    respuesta = rest.POST(
+                            routes.getRoute(Routes.routesName.CREATE_USUARIO),
+                            "id", txtNuevoRestaurante.getText(),
+                            "nombre", txtNuevoRestaurante.getText(),
+                            "correo", txtNuevoCorreo1.getText(),
+                            "password", helper.hash(helper.defaultPass),
+                            "rol", rol.toString()
+                    );
+
+                    if(!respuesta.equals("sucess")){
+                        if(respuesta.contains("duplicate key error")){
+                            helper.showAlert("Error: Nombre ya registrado", Alert.AlertType.ERROR);
+                        }else{
+                            helper.showAlert("Ocurrió un error al registrar el sitio, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+                        }
+                    }
+
+                /*rest.PUT(
                         routes.getRoute(
                                 Routes.routesName.MODIFY_DISPONIBILIDAD,
                                 UsuarioEntity.getNombre()
@@ -195,32 +266,63 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                             "franja19", "0",
                             "franja20", "0"
                     );
+                }*/
+                } catch (Exception e) {
+                    helper.showAlert("Ocurrió un error al registrar el sitio, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
                 }
+
+            }catch (NullPointerException e){
+                helper.showAlert("Debe seleccionar un rol", Alert.AlertType.ERROR);
+                rolVacio=true;
             }
-        } catch (IOException e) {
-            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
+            if(!rolVacio){
+                listaRestaurante.setDisable(false);
+                paneAgregarRestaurante1.setVisible(false);
+                paneAgregarRestaurante2.setVisible(false);
+                txtNuevoRestaurante.setText("");
+                txtNuevoRestaurante.setDisable(false);
+                txtNuevoCorreo1.setText("");
+                comboboxRol.valueProperty().set(null);
+                txtMostrarBotonAgregar();
+                cargarListaUsers();
+            }
         }
-        listaRestaurante.setDisable(false);
-        paneAgregarRestaurante.setVisible(false);
-        txtNuevoRestaurante.setText("");
-        txtMostrarBotonAgregar();
-        cargarListaUsers();
     }
 
-    public void cerrarPopupAgregarRestaurante() {
-        listaRestaurante.setDisable(false);
-        paneAgregarRestaurante.setVisible(false);
-    }
-
+    //CUANDO SE HACE CLICK EN EL BOTON +(MÁS) PARA AGREGAR RESTAURANTE
     public void agregarRestaurante() {
         listaRestaurante.setDisable(true);
-        paneAgregarRestaurante.setVisible(true);
+        this.txtNuevoRestaurante.setDisable(true);
+        this.btnAgregar.setVisible(false);
+        if(UsuarioEntity.getRol()==1){
+            paneAgregarRestaurante1.setVisible(true);
+        }else {
+            paneAgregarRestaurante2.setVisible(true);
+        }
     }
 
+    //CUANDO SE CIERRA LA VENTANA DE AGREGAR RESTAURANTE
+    public void cerrarPopupAgregarRestaurante() {
+        cargarListaUsers();
+        this.txtNuevoRestaurante.setDisable(false);
+        this.btnAgregar.setVisible(true);
+        txtNuevoCorreo1.setText("");
+        comboboxRol.valueProperty().set(null);
+        paneAgregarRestaurante1.setVisible(false);
+        paneAgregarRestaurante2.setVisible(false);
+    }
+    //===============================================================================================================================================
+
+    //======================================================== METODOS ELIMINAR RESTAURANTES =========================================================
+    //CUANDO SE HACE CLICK EN EL BOTON DE ELIMINAR RESTAURANTE
     public void eliminarRestaurante() {
         paneEliminarRestaurante.setVisible(true);
+        this.listaRestaurante.setDisable(true);
+        this.txtNuevoRestaurante.setDisable(true);
+        this.btnAgregar.setVisible(false);
     }
 
+    //CUANDO SE HACE CLICK EN OK EN LA VENTANA DE ELIMINAR RESTAURANTE
     public void okEliminarRestaurante() throws IOException {
         paneEliminarRestaurante.setVisible(false);
         rest.GET(
@@ -254,18 +356,227 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                 )
         );
         cargarListaUsers();
+        this.txtNuevoRestaurante.setDisable(false);
+        txtMostrarBotonAgregar();
     }
 
+    //CUANDO SE HACE CIERRA LA VENTANA DE ELIMINAR RESTAURANTE
     public void cerrarPopupEliminarRestaurante() {
         paneEliminarRestaurante.setVisible(false);
+        this.listaRestaurante.setDisable(false);
+        this.txtNuevoRestaurante.setDisable(false);
+        txtMostrarBotonAgregar();
+    }
+    //===============================================================================================================================================
+    //###############################################################################################################################################
+
+    //######################################################## METODOS PESTAÑA COMENTARIOS ###########################################################
+
+    //###############################################################################################################################################
+
+    //################################################### METODOS PESTAÑA MENU ##############################################################
+    //CUANDO SE CLICKEA Y SELECCIONA UN ELEMENTO DE LA LISTVIEW (MENU)
+    public void ListaTmenuMouseClicked(){
+        try{
+            if(listaTmenu.isFocused() && listaTmenu.getSelectionModel().getSelectedItem().toString() != ""){
+                btnEliminarTmenu.setVisible(true);
+                btnEditarTmenu.setVisible(true);
+            }
+            else{
+                btnEliminarTmenu.setVisible(false);
+                btnEditarTmenu.setVisible(false);
+            }
+        }catch (NullPointerException e){
+
+        }
     }
 
-    public void txtMostrarBotonAgregar() {
-        if(!txtNuevoRestaurante.getText().isEmpty()){
-            this.btnAgregar.setVisible(true);
+    //ACTUALIZA LA LISTA DE SUPERVISORES Y RESTAURANTES
+    private void cargarListaMenus(){
+        listaTmenu.getItems().clear();
+        try{
+            TimeUnit.MILLISECONDS.sleep(250);
+        }catch (Exception e){
+            helper.showAlert("Ocurrió un error inesperado ERR03T", Alert.AlertType.ERROR);//Error 03T error al realizar el delay
+        }
+        try{
+            JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS));
+            if(jsonArray2 != null){
+                listaTmenu.setDisable(false);
+                for(int i = 0; i < jsonArray2.length(); i++){
+                    listaTmenu.getItems().add((String) jsonArray2.getJSONObject(i).get("menu"));
+                }
+            }else {
+                listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
+                listaTmenu.setDisable(true);
+            }
+        }catch(Exception e){
+            helper.showAlert("Ocurrió un error al consultar el listado de menus, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+        }
+        listaTmenu.getItems().sort((Object c1, Object c2) -> c1.toString().compareTo((String) c2));
+    }
+
+    //===================================================== METODOS DE EDICION MENUS ============================================================
+    //CUANDO SE SELECCIONA LA OPCION EDITAR MENU
+    public void editarTmenu(){
+        this.paneEditarTmenu.setVisible(true);
+        this.listaTmenu.setDisable(true);
+        this.txtNuevoTmenu.setDisable(true);
+        this.btnAgregarTmenu.setVisible(false);
+    }
+
+    //MUESTRA EL BOTON DE AGREGAR CUANDO SE ESCRIBE TEXTO EN EL CUADRO DE NOMBRE PARA AGREGAR MENU
+    public void txtMostrarBotonAgregarTmenu() {
+        if(txtNuevoTmenu.getCharacters().length()!=0){
+            this.btnAgregarTmenu.setVisible(true);
         }
         else{
-            this.btnAgregar.setVisible(false);
+            this.btnAgregarTmenu.setVisible(false);
+        }
+    }
+
+    //CUANDO SE CIERRA LA VENTANA DE EDITAR MENU
+    public void cerrarPopupEditarTmenu(){
+        this.paneEditarTmenu.setVisible(false);
+        this.listaTmenu.setDisable(false);
+        this.txtNuevoTmenu.setDisable(false);
+        txtMostrarBotonAgregarTmenu();
+        txtNuevoNombreTmenu.setText("");
+    }
+
+    //CUANDO SE DA OK Y SE REALIZA LA EDICION DEL MENU
+    public void okEditarTmenu() throws IOException {
+        String nuevoNombreTmenu;
+        int nombreNULL = 0;
+        if(txtNuevoNombreTmenu.getText().length() <= 0){
+            nuevoNombreTmenu = "NULL";
+            nombreNULL++;
+        }else{
+            nuevoNombreTmenu = txtNuevoNombreTmenu.getText();
+        }
+
+        if(nombreNULL==0){
+            rest.PUT(
+                    routes.getRoute(
+                            Routes.routesName.MODIFY_MENU,
+                            listaTmenu.getSelectionModel().getSelectedItem().toString(),
+                            nuevoNombreTmenu
+                    )
+            );
+        }
+        cargarListaMenus();
+        this.paneEditarTmenu.setVisible(false);
+        this.listaTmenu.setDisable(false);
+        this.txtNuevoTmenu.setDisable(false);
+        txtMostrarBotonAgregarTmenu();
+        txtNuevoNombreTmenu.setText("");
+    }
+    //===============================================================================================================================================
+
+    //======================================================== METODOS AGREGAR MENUs =========================================================
+    //CUANDO SE HACE CLICK EN OK AGREGAR RESTAURANTE
+    public void okAgregarTmenu() {
+        ListaTmenuMouseClicked();
+        try {
+            String respuesta;
+            respuesta = rest.POST(
+                    routes.getRoute(Routes.routesName.CREATE_MENU),
+                    "id", txtNuevoTmenu.getText(),
+                    "menu", txtNuevoTmenu.getText()
+            );
+
+            if(!respuesta.equals("sucess")){
+                if(respuesta.contains("duplicate key error")){
+                    helper.showAlert("Error: Menú ya registrado", Alert.AlertType.ERROR);
+                }else{
+                    helper.showAlert("Ocurrió un error al agregar el menú, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+                }
+            }
+        } catch (Exception e) {
+            helper.showAlert("Ocurrió un error al agregar el menú, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+        }
+        listaTmenu.setDisable(false);
+        paneAgregarTmenu.setVisible(false);
+        txtNuevoTmenu.setText("");
+        txtNuevoTmenu.setDisable(false);
+        txtMostrarBotonAgregarTmenu();
+        cargarListaMenus();
+    }
+
+    //CUANDO SE HACE CLICK EN EL BOTON +(MÁS) PARA AGREGAR MENU
+    public void agregarTmenu() {
+        listaTmenu.setDisable(true);
+        this.txtNuevoTmenu.setDisable(true);
+        this.btnAgregarTmenu.setVisible(false);
+        labelAgregarMenu.setText("Desea agregar \""+txtNuevoTmenu.getText().toString()+"\" al listado de menus?");
+        paneAgregarTmenu.setVisible(true);
+    }
+
+    //CUANDO SE CIERRA LA VENTANA DE AGREGAR RESTAURANTE
+    public void cerrarPopupAgregarTmenu() {
+        cargarListaMenus();
+        this.txtNuevoTmenu.setDisable(false);
+        this.btnAgregarTmenu.setVisible(true);
+        paneAgregarTmenu.setVisible(false);
+    }
+    //===============================================================================================================================================
+
+    //======================================================== METODOS ELIMINAR RESTAURANTES =========================================================
+    //CUANDO SE HACE CLICK EN EL BOTON DE ELIMINAR RESTAURANTE
+    public void eliminarTmenu() {
+        paneEliminarTmenu.setVisible(true);
+        this.listaTmenu.setDisable(true);
+        this.txtNuevoTmenu.setDisable(true);
+        this.btnAgregarTmenu.setVisible(false);
+    }
+
+    //CUANDO SE HACE CLICK EN OK EN LA VENTANA DE ELIMINAR RESTAURANTE
+    public void okEliminarTmenu() throws IOException {
+        paneEliminarTmenu.setVisible(false);
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_MENU,
+                        listaTmenu.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        cargarListaMenus();
+        this.txtNuevoTmenu.setDisable(false);
+        txtMostrarBotonAgregarTmenu();
+    }
+
+    //CUANDO SE HACE CIERRA LA VENTANA DE ELIMINAR RESTAURANTE
+    public void cerrarPopupEliminarTmenu() {
+        paneEliminarTmenu.setVisible(false);
+        this.listaTmenu.setDisable(false);
+        this.txtNuevoTmenu.setDisable(false);
+        txtMostrarBotonAgregarTmenu();
+    }
+    //===============================================================================================================================================
+    //###############################################################################################################################################
+
+    public void cuentaAceptarMouseClicked(){
+        if(!txtNuevoPass.getText().isEmpty()){
+            List<Rule> rules = new ArrayList();
+            rules.add(new LengthRule(8));
+            rules.add(new CharacterRule(EnglishCharacterData.UpperCase, 1));
+            rules.add(new CharacterRule(EnglishCharacterData.LowerCase, 1));
+            rules.add(new CharacterRule(EnglishCharacterData.Digit, 2));
+            rules.add(new CharacterRule(EnglishCharacterData.Special, 1));
+            PasswordValidator validator = new PasswordValidator(rules);
+            PasswordData password = new PasswordData(txtNuevoPass.getText());
+            RuleResult result = validator.validate(password);
+            if(!result.isValid()){
+                labelCuentaError.setText("La contraseña debe seguir los estandares impuestos");
+                paneCuentaError.setVisible(true);
+            }
+            panelConfirmarCuenta.setVisible(true);
+        }else{
+            if(!txtCorreo.getText().isEmpty()){
+                panelConfirmarCuenta.setVisible(true);
+            }else{
+                labelCuentaError.setText("No ha introducido ningun valor");
+                paneCuentaError.setVisible(true);
+            }
         }
     }
 
@@ -285,34 +596,6 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     private void cargarDatosTablas(){
 
-    }
-
-    private void cargarListaUsers(){
-        listaRestaurante.getItems().clear();
-        try{
-            TimeUnit.MILLISECONDS.sleep(250);
-        }catch (Exception e){
-            helper.showAlert("Ocurrió un error inesperado ERR03T", Alert.AlertType.ERROR);//Error 03T error al realizar el delay
-        }
-        try{
-            JSONArray jsonArray2 = null;
-            if(UsuarioEntity.getRol().equals(1)){
-                jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS));
-            }else{
-                jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
-            }
-            if(jsonArray2 != null){
-                for(int i = 0; i < jsonArray2.length(); i++){
-                    listaRestaurante.getItems().add((String) jsonArray2.getJSONObject(i).get("nombre"));
-                }
-                listaRestaurante.getItems().remove((String) "Administrador");
-            }else {
-                listaRestaurante.setPlaceholder(new Label("No Se Encontraron Restaurantes"));
-            }
-        }catch(Exception e){
-            helper.showAlert("Ocurrió un error al consultar el listado de usuarios, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
-        }
-        listaRestaurante.getItems().sort((Object c1, Object c2) -> c1.toString().compareTo((String) c2));
     }
 
     private void cargarListaComent () {
@@ -375,8 +658,12 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        listaRoles.add("Supervisor");
         listaRoles.add("Administrador contrato");
+        listviewVacia="No Se Encontraron Restaurantes";
+        if(UsuarioEntity.getRol()==1){
+            listaRoles.add("Supervisor");
+            listviewVacia="No Se Encontraron Restaurantes o Supervisores";
+        }
         this.comboboxRol.setItems(listaRoles);
         cargarListaUsers();
     }

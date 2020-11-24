@@ -13,7 +13,7 @@
             <tabs>
                 <Tab fx:id="restaurante" onSelectionChanged="#tabRestaurantes" text="Restaurantes">
                     <content>
-                        <AnchorPane fx:id="parentPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
+                        <AnchorPane fx:id="parentPane" minHeight="0.0" minWidth="0.0" onMouseClicked="#ListaRestauranteMouseClicked" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                      <children>
                         <ListView fx:id="listaRestaurante" layoutX="16.0" layoutY="64.0" onMouseClicked="#ListaRestauranteMouseClicked" prefHeight="234.0" prefWidth="565.0" />
                         <ImageView fx:id="btnEliminar" fitHeight="39.0" fitWidth="34.0" layoutX="547.0" layoutY="317.0" onMouseClicked="#eliminarRestaurante" pickOnBounds="true" preserveRatio="true">
@@ -24,8 +24,8 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <TextField fx:id="txtNuevoRestaurante" layoutX="18.0" layoutY="314.0" onKeyTyped="#txtMostrarBotonAgregar" prefHeight="40.0" prefWidth="296.0" promptText="Escriba el nombre del sitio a añadir" style="-fx-background-radius: 0px;" />
-                        <ImageView fx:id="btnAgregar" fitHeight="35.0" fitWidth="33.0" layoutX="321.0" layoutY="318.0" onMouseClicked="#agregarRestaurante" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <TextField fx:id="txtNuevoRestaurante" layoutX="18.0" layoutY="314.0" onKeyReleased="#txtMostrarBotonAgregar" onMouseClicked="#ListaRestauranteMouseClicked" prefHeight="40.0" prefWidth="310.0" promptText="Escriba el nombre del restaurante o supervisor a añadir" style="-fx-background-radius: 0px;" />
+                        <ImageView fx:id="btnAgregar" fitHeight="35.0" fitWidth="33.0" layoutX="335.0" layoutY="318.0" onMouseClicked="#agregarRestaurante" pickOnBounds="true" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@images/add.png" />
                            </image>
@@ -46,13 +46,6 @@
                               <DropShadow offsetX="5.0" offsetY="5.0" />
                            </effect>
                            <children>
-                              <TextField fx:id="txtEditarCorreo2" layoutX="56.0" layoutY="127.0" prefHeight="40.0" prefWidth="272.0" promptText="Correo nuevo" style="-fx-background-radius: 0px;" />
-                              <TextField fx:id="txtNuevoNombre" layoutX="56.0" layoutY="77.0" prefHeight="40.0" prefWidth="271.0" promptText="Nombre nuevo" style="-fx-background-radius: 0px;" />
-                              <Label layoutX="45.0" layoutY="14.0" prefHeight="45.0" prefWidth="223.0" text="Escriba el nuevo nombre y/o que desea para el lugar seleccionado" wrapText="true">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="12.0" />
-                                 </font>
-                              </Label>
                               <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="299.0" layoutY="177.0" onMouseClicked="#okEditarRestaurante" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/ok.png" />
@@ -77,15 +70,25 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </Label>
+                              <Label layoutX="45.0" layoutY="14.0" prefHeight="45.0" prefWidth="223.0" text="Ingrese la información que desee actualizar. Puede modificar solo un campo, o los dos si asi lo requiere." wrapText="true">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtNuevoNombre" layoutX="56.0" layoutY="77.0" prefHeight="40.0" prefWidth="271.0" promptText="Nuevo Nombre" style="-fx-background-radius: 0px;" />
+                              <TextField fx:id="txtEditarCorreo" layoutX="56.0" layoutY="127.0" prefHeight="40.0" prefWidth="272.0" promptText="Nuevo Correo" style="-fx-background-radius: 0px;" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="paneAgregarRestaurante" layoutX="114.0" layoutY="77.0" prefHeight="234.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+                        <AnchorPane fx:id="paneAsignarMenu" layoutX="16.0" layoutY="64.0" prefHeight="221.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+
+                        </AnchorPane>
+                        <AnchorPane fx:id="paneAgregarRestaurante1" layoutX="114.0" layoutY="77.0" prefHeight="234.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
                            <effect>
                               <DropShadow offsetX="5.0" offsetY="5.0" />
                            </effect>
                            <children>
-                              <TextField fx:id="txtNuevoCorreo" layoutX="56.0" layoutY="85.0" prefHeight="40.0" prefWidth="271.0" promptText="Correo electrónico" style="-fx-background-radius: 0px;" />
-                              <Label layoutX="42.0" layoutY="28.0" prefHeight="45.0" prefWidth="223.0" text="Escriba el correo electronico y el tipo de rol que desea agregar" wrapText="true">
+                              <TextField fx:id="txtNuevoCorreo1" layoutX="56.0" layoutY="85.0" prefHeight="40.0" prefWidth="271.0" promptText="Correo electrónico" style="-fx-background-radius: 0px;" />
+                              <Label layoutX="42.0" layoutY="28.0" prefHeight="45.0" prefWidth="223.0" text="Escriba el correo electronico y seleccione el tipo de rol para el usuario que desea agregar" wrapText="true">
                                  <font>
                                     <Font name="Segoe UI Bold" size="12.0" />
                                  </font>
@@ -117,9 +120,48 @@
                               <ComboBox fx:id="comboboxRol" layoutX="56.0" layoutY="143.0" prefHeight="40.0" prefWidth="149.0" promptText="Rol" style="-fx-background-radius: 0px;" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="-3.0" layoutY="-4.0" prefHeight="60.0" prefWidth="607.0" style="-fx-background-color: #2a295c;">
+
+                        <AnchorPane fx:id="paneAgregarRestaurante2" layoutX="114.0" layoutY="77.0" prefHeight="234.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+                             <effect>
+                                 <DropShadow offsetX="5.0" offsetY="5.0" />
+                             </effect>
+                             <children>
+                                 <TextField fx:id="txtNuevoCorreo2" layoutX="56.0" layoutY="85.0" prefHeight="40.0" prefWidth="271.0" promptText="Correo electrónico" style="-fx-background-radius: 0px;" />
+                                 <Label layoutX="42.0" layoutY="28.0" prefHeight="45.0" prefWidth="223.0" text="Escriba el correo electronico del restaurante que desea agregar" wrapText="true">
+                                     <font>
+                                         <Font name="Segoe UI Bold" size="12.0" />
+                                     </font>
+                                 </Label>
+                                 <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="299.0" layoutY="190.0" onMouseClicked="#okAgregarRestaurante" pickOnBounds="true" preserveRatio="true">
+                                     <image>
+                                         <Image url="@images/ok.png" />
+                                     </image>
+                                     <cursor>
+                                         <Cursor fx:constant="HAND" />
+                                     </cursor>
+                                 </ImageView>
+                                 <ImageView fitHeight="23.0" fitWidth="24.0" layoutX="349.0" onMouseClicked="#cerrarPopupAgregarRestaurante" pickOnBounds="true" preserveRatio="true">
+                                     <image>
+                                         <Image url="@images/x.png" />
+                                     </image>
+                                     <cursor>
+                                         <Cursor fx:constant="HAND" />
+                                     </cursor>
+                                 </ImageView>
+                                 <Label layoutX="328.0" layoutY="194.0" onMouseClicked="#okAgregarRestaurante" text="Ok" textFill="#2a295c">
+                                     <font>
+                                         <Font name="Segoe UI Bold" size="20.0" />
+                                     </font>
+                                     <cursor>
+                                         <Cursor fx:constant="HAND" />
+                                     </cursor>
+                                 </Label>
+                             </children>
+                         </AnchorPane>
+
+                        <AnchorPane layoutX="-3.0" layoutY="-4.0" onMouseClicked="#ListaRestauranteMouseClicked" prefHeight="60.0" prefWidth="607.0" style="-fx-background-color: #2a295c;">
                            <children>
-                              <Label fx:id="labelRestaurantes" layoutX="14.0" layoutY="18.0" text="Restaurantes" textFill="WHITE">
+                              <Label fx:id="labelRestaurantes" layoutX="14.0" layoutY="18.0" onMouseClicked="#ListaRestauranteMouseClicked" text="Restaurantes" textFill="WHITE">
                                  <font>
                                     <Font name="Segoe UI Bold" size="20.0" />
                                  </font>
@@ -389,6 +431,158 @@
                            </children>
                         </AnchorPane>
                             </children></AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="tmenu" onSelectionChanged="#tabTmenu" text="Tipo Menú">
+                    <content>
+                        <AnchorPane fx:id="PROVISIONAL" minHeight="0.0" minWidth="0.0" onMouseClicked="#ListaTmenuMouseClicked" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
+                            <children>
+                                <ListView fx:id="listaTmenu" layoutX="16.0" layoutY="64.0" onMouseClicked="#ListaTmenuMouseClicked" prefHeight="234.0" prefWidth="565.0" />
+                                <ImageView fx:id="btnEliminarTmenu" fitHeight="39.0" fitWidth="34.0" layoutX="547.0" layoutY="317.0" onMouseClicked="#eliminarTmenu" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/delete_bin.png" />
+                                    </image>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </ImageView>
+                                <TextField fx:id="txtNuevoTmenu" layoutX="18.0" layoutY="314.0" onKeyReleased="#txtMostrarBotonAgregarTmenu" onMouseClicked="#ListaTmenuMouseClicked" prefHeight="40.0" prefWidth="296.0" promptText="Escriba el nombre del menú a añadir" style="-fx-background-radius: 0px;" />
+                                <ImageView fx:id="btnAgregarTmenu" fitHeight="35.0" fitWidth="33.0" layoutX="321.0" layoutY="318.0" onMouseClicked="#agregarTmenu" pickOnBounds="true" preserveRatio="true" visible="false">
+                                    <image>
+                                        <Image url="@images/add.png" />
+                                    </image>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </ImageView>
+                                <ImageView fx:id="btnEditarTmenu" fitHeight="33.0" fitWidth="30.0" layoutX="502.0" layoutY="319.0" onMouseClicked="#editarTmenu" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/edit.png" />
+                                    </image>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </ImageView>
+                                <AnchorPane fx:id="paneEditarTmenu" layoutX="114.0" layoutY="77.0" prefHeight="171.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+                                    <effect>
+                                        <DropShadow offsetX="5.0" offsetY="5.0" />
+                                    </effect>
+                                    <children>
+                                        <TextField fx:id="txtNuevoNombreTmenu" layoutX="56.0" layoutY="77.0" prefHeight="40.0" prefWidth="272.0" promptText="Nombre Menú" style="-fx-background-radius: 0px;" />
+                                        <Label layoutX="45.0" layoutY="14.0" prefHeight="45.0" prefWidth="223.0" text="Ingrese el nuevo nombre para el menú seleccionado" wrapText="true">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="299.0" layoutY="137.0" onMouseClicked="#okEditarTmenu" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/ok.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <ImageView fitHeight="23.0" fitWidth="24.0" layoutX="349.0" onMouseClicked="#cerrarPopupEditarTmenu" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/x.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <Label layoutX="329.0" layoutY="140.0" onMouseClicked="#okEditarTmenu" text="Ok" textFill="#2a295c">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="20.0" />
+                                            </font>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane fx:id="paneAgregarTmenu" layoutX="114.0" layoutY="77.0" prefHeight="131.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+                                    <effect>
+                                        <DropShadow offsetX="5.0" offsetY="5.0" />
+                                    </effect>
+                                    <children>
+                                        <Label fx:id="labelAgregarMenu" layoutX="42.0" layoutY="28.0" prefHeight="45.0" prefWidth="223.0" wrapText="true">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="299.0" layoutY="90.0" onMouseClicked="#okAgregarTmenu" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/ok.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <ImageView fitHeight="23.0" fitWidth="24.0" layoutX="349.0" onMouseClicked="#cerrarPopupAgregarTmenu" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/x.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <Label layoutX="328.0" layoutY="94.0" onMouseClicked="#okAgregarTmenu" text="Ok" textFill="#2a295c">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="20.0" />
+                                            </font>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane layoutX="-3.0" layoutY="-4.0" onMouseClicked="#ListaTmenuMouseClicked" prefHeight="60.0" prefWidth="607.0" style="-fx-background-color: #2a295c;">
+                                    <children>
+                                        <Label fx:id="labelTmenu" layoutX="14.0" layoutY="18.0" onMouseClicked="#ListaTmenuMouseClicked" text="Tipos de Menú" textFill="WHITE">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="20.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane fx:id="paneEliminarTmenu" layoutX="166.0" layoutY="107.0" prefHeight="136.0" prefWidth="265.0" style="-fx-background-color: white;" visible="false">
+                                    <effect>
+                                        <DropShadow offsetX="5.0" offsetY="5.0" />
+                                    </effect>
+                                    <children>
+                                        <Label layoutX="29.0" layoutY="26.0" prefHeight="45.0" prefWidth="197.0" text="¿Está seguro que desea eliminar el lugar seleccionado?" wrapText="true">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="186.0" layoutY="95.0" onMouseClicked="#okEliminarTmenu" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/ok.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <ImageView fitHeight="23.0" fitWidth="24.0" layoutX="240.0" layoutY="3.0" onMouseClicked="#cerrarPopupEliminarTmenu" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/x.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <Label layoutX="216.0" layoutY="98.0" onMouseClicked="#okEliminarTmenu" text="Ok" textFill="#2a295c">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="20.0" />
+                                            </font>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
                     </content>
                 </Tab>
             </tabs>

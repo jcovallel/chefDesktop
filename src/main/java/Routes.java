@@ -10,10 +10,12 @@ public class Routes{
         GET_EMAIL,
         GET_PASS,
         MODIFY_RESTAURANTE,
+        MODIFY_MENU,
         MODIFY_DISPONIBILIDAD,
         MODIFY_USUARIO,
         CREATE_USUARIO,
         DELETE_USUARIO,
+        DELETE_MENU,
         DELETE_COMENTS,
         DELETE_DMODEL,
         DELETE_DHMODEL,
@@ -21,8 +23,10 @@ public class Routes{
         SEND_EMAIL,
         UPLOAD_IMAGE,
         CREATE_HOURS,
+        CREATE_MENU,
         GET_ROL,
-        GET_USUARIOS_ROL3
+        GET_USUARIOS_ROL3,
+        GET_MENUS
     }
     private static HashMap<String, String> routesHash;
     private static Routes routesEntity;
@@ -43,8 +47,11 @@ public class Routes{
         routesHash.put("MODIFY_RESTAURANTE", "/chef/modifyinfoadmi/");
         routesHash.put("MODIFY_DISPONIBILIDAD", "/chef/disponibilidad/");
         routesHash.put("MODIFY_USUARIO", "/chef/modifydatausers/");
+        routesHash.put("MODIFY_MENU", "/chef/modifymenu/");
         routesHash.put("CREATE_USUARIO", "/chef/createuser/");
+        routesHash.put("CREATE_MENU", "/chef/createmenu/");
         routesHash.put("DELETE_USUARIO", "/chef/deleteuser/");
+        routesHash.put("DELETE_MENU", "/chef/deletemenu/");
         routesHash.put("DELETE_COMENTS", "/chef/deletecoment/");
         routesHash.put("DELETE_DMODEL", "/chef/deletedmodel/");
         routesHash.put("DELETE_DHMODEL", "/chef/deletedhmodel/");
@@ -54,6 +61,7 @@ public class Routes{
         routesHash.put("CREATE_HOURS", "/chef/createhours/");
         routesHash.put("GET_ROL", "/chef/getrol/");
         routesHash.put("GET_USUARIOS_ROL3", "/chef/getusersmobile/");
+        routesHash.put("GET_MENUS", "/chef/getmenus/");
     }
 
     public static Routes getRoutesClass(){

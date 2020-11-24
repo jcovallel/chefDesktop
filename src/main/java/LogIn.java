@@ -3,6 +3,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import org.json.JSONArray;
 
@@ -30,6 +32,13 @@ public class LogIn extends Application implements Initializable{
     @FXML
     public void contrasenaOlvidadaActionPerformed() throws IOException {
         helper.show("restorePass.fxml", parentPane);
+    }
+
+    @FXML
+    public void onEnterKey(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            btnAceptarActionPerformed();
+        }
     }
 
 

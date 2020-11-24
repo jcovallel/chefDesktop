@@ -1,10 +1,13 @@
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import org.json.JSONArray;
 import org.passay.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,5 +106,12 @@ public class CambioPass extends Application{
 
     public void okError() {
         paneError.setVisible(false);
+    }
+
+    @FXML
+    public void onEnterKey(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            btnAceptarActionPerformed();
+        }
     }
 }

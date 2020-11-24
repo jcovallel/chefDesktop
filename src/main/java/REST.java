@@ -19,6 +19,7 @@ public class REST {
     private final String puerto = "8080";
     private final String urlRaiz = "http://" + ip + ":" + puerto;
     JSONArray jsonArray = null;
+    String response = "";
 
     Helper helper = new Helper();
 
@@ -99,8 +100,7 @@ public class REST {
         }
     }
 
-    public JSONArray POST(String path, String... args) throws IOException {
-        jsonArray = null;
+    public String POST(String path, String... args) throws IOException, InterruptedException {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -124,21 +124,24 @@ public class REST {
                     OutputStream os = conn.getOutputStream();
                     os.write(input.getBytes());
                     os.flush();
-                    if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                        jsonArray = null;
-                    }
-                    else{
-                        jsonArray = new JSONArray();
+                    if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        response = "sucess";
+                    }else {
+                        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                        String strCurrentLine="";
+                        while ((strCurrentLine = br.readLine()) != null) {
+                            response += strCurrentLine;
+                        }
                     }
                     conn.disconnect();
-                } catch (MalformedURLException e) {
-                    jsonArray = null;
-                } catch (IOException e) {
-                    jsonArray = null;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });thread.start();
-        return jsonArray;
+        thread.join();
+        return response;
     }
 
     public JSONArray PUT(String path, String... args) throws IOException {
