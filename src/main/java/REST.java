@@ -48,10 +48,10 @@ public class REST {
                 if(result.length() == 0){
                     return new JSONArray();
                 }
-                else if (result.contains("true")){
+                else if (result.contains("true") && !result.contains("check") && !result.contains("sabado")){
                     return new JSONArray("[{acceso:true}]");
                 }
-                else if(result.contains("false")){
+                else if(result.contains("false") && !result.contains("check") && !result.contains("sabado")){
                     return new JSONArray("[{acceso:false}]");
                 }
                 else if(result.contains("@") && correo.length > 0 && correo[0] == true){
@@ -121,6 +121,40 @@ public class REST {
                     }
                     input = input.substring(0, input.length()-1);
                     input += "}";
+                    OutputStream os = conn.getOutputStream();
+                    os.write(input.getBytes());
+                    os.flush();
+                    if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        response = "sucess";
+                    }else {
+                        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                        String strCurrentLine="";
+                        while ((strCurrentLine = br.readLine()) != null) {
+                            response += strCurrentLine;
+                        }
+                    }
+                    conn.disconnect();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });thread.start();
+        thread.join();
+        return response;
+    }
+
+    public String POSTARRAY(String path, JSONArray arr) throws IOException, InterruptedException {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(urlRaiz + path);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setDoOutput(true);
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    String input = arr.toString();
                     OutputStream os = conn.getOutputStream();
                     os.write(input.getBytes());
                     os.flush();

@@ -6,10 +6,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.passay.*;
 import org.apache.commons.validator.routines.EmailValidator;
 
+import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -29,7 +34,9 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     private ListView listaRestaurante, listaRestauranteComent, listaTmenu;
 
     @FXML
-    private ComboBox comboboxRol;
+    private ComboBox comboboxRol, horaInicioReserva, minutoInicioReserva, amInicioReserva, horaFinReserva,
+            minutoFinReserva, amFinReserva, horaInicioEntrega, minutoInicioEntrega,amInicioEntrega, horaFinEntrega,
+            minutoFinEntrega, amFinEntrega, ListaRestaurant, ListaMenuReservas;
 
     @FXML
     private Label labelRestaurantes, labelAgregarMenu;
@@ -37,7 +44,24 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     @FXML
     ImageView btnEditar, btnEliminar, btnAgregar, btnEliminarTmenu, btnAgregarTmenu, btnEditarTmenu;
 
+    @FXML
+    private CheckBox checkLunes, checkMartes, checkMiercoles, checkJueves, checkViernes, checkSabado, checkDomingo;
+
+    @FXML
+    private Button btnSelectMenu;
+
+    @FXML
+    private Tab reservaTab;
+
+    @FXML
+    TableView tableview;
+
+    TableColumn checkCol = new TableColumn();
+    TableColumn nombreMenuCol = new TableColumn();
+
     ObservableList<String> listaRoles = FXCollections.observableArrayList();
+
+    ObservableList<MenuModel> listaMenus = FXCollections.observableArrayList();
 
     String listviewVacia;
 
@@ -53,12 +77,35 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         }
         btnEliminar.setVisible(false);
         btnEditar.setVisible(false);
+        btnSelectMenu.setVisible(false);
     }
 
     public void tabTmenu() {
         cargarListaMenus();
         btnEliminarTmenu.setVisible(false);
         btnEditarTmenu.setVisible(false);
+    }
+
+    public void tabReserva(){
+        if(reservaTab.isSelected()){
+            ObservableList<String> listaResta = FXCollections.observableArrayList();
+            try{
+                JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
+                if(jsonArray2 != null){
+                    for(int i = 0; i < jsonArray2.length(); i++){
+                        listaResta.add((String) jsonArray2.getJSONObject(i).get("nombre"));
+                    }
+                    this.ListaRestaurant.setItems(listaResta);
+                }else {
+                    //listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
+                    //listaTmenu.setDisable(true);
+                }
+            }catch (Exception e){
+
+            }
+        }else {
+
+        }
     }
 
     //################################################### METODOS PESTAÑA RESTAURANTE ##############################################################
@@ -68,10 +115,12 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             if(listaRestaurante.isFocused() && listaRestaurante.getSelectionModel().getSelectedItem().toString() != ""){
                 btnEliminar.setVisible(true);
                 btnEditar.setVisible(true);
+                btnSelectMenu.setVisible(true);
             }
             else{
                 btnEliminar.setVisible(false);
                 btnEditar.setVisible(false);
+                btnSelectMenu.setVisible(false);
             }
         }catch (NullPointerException e){
 
@@ -223,6 +272,31 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                         }else{
                             helper.showAlert("Ocurrió un error al registrar el sitio, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
                         }
+                    }else {
+                        JSONArray jarray = new JSONArray();
+                        try{
+                            JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS));
+                            if(jsonArray2 != null){
+                                listaTmenu.setDisable(false);
+                                for(int i = 0; i < jsonArray2.length(); i++){
+                                    JSONObject jObject = new JSONObject();
+                                    String menu = (String) jsonArray2.getJSONObject(i).get("menu");
+                                    jObject.put("id",txtNuevoRestaurante.getText()+menu);
+                                    jObject.put("empresa",txtNuevoRestaurante.getText());
+                                    jObject.put("menu",menu);
+                                    jObject.put("check",false);
+                                    jarray.put(jObject);
+                                }
+                                rest.POSTARRAY(routes.getRoute(Routes.routesName.CREATE_MENU_EMPRESA), jarray);
+                            }else {
+                                //listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
+                                //listaTmenu.setDisable(true);
+                            }
+                        }catch(Exception e){
+                            helper.showAlert("Ocurrió un error al consultar el listado de menus, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+                        }
+
+
                     }
 
                 /*rest.PUT(
@@ -658,6 +732,9 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        checkCol.setPrefWidth(23);
+        nombreMenuCol.setPrefWidth(326);
+        tableview.getColumns().addAll(checkCol, nombreMenuCol);
         listaRoles.add("Administrador contrato");
         listviewVacia="No Se Encontraron Restaurantes";
         if(UsuarioEntity.getRol()==1){
@@ -665,6 +742,21 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             listviewVacia="No Se Encontraron Restaurantes o Supervisores";
         }
         this.comboboxRol.setItems(listaRoles);
+        ObservableList<String> listaHoras = FXCollections.observableArrayList("01","02","03","04","05","06","07","08","09","10","11","12");
+        ObservableList<String> listaMinutos = FXCollections.observableArrayList("00","15","30","45");
+        ObservableList<String> listaAmPm = FXCollections.observableArrayList("AM","PM");
+        this.horaInicioReserva.setItems(listaHoras);
+        this.horaFinReserva.setItems(listaHoras);
+        this.horaInicioEntrega.setItems(listaHoras);
+        this.horaFinEntrega.setItems(listaHoras);
+        this.minutoInicioReserva.setItems(listaMinutos);
+        this.minutoFinReserva.setItems(listaMinutos);
+        this.minutoInicioEntrega.setItems(listaMinutos);
+        this.minutoFinEntrega.setItems(listaMinutos);
+        this.amInicioReserva.setItems(listaAmPm);
+        this.amFinReserva.setItems(listaAmPm);
+        this.amInicioEntrega.setItems(listaAmPm);
+        this.amFinEntrega.setItems(listaAmPm);
         cargarListaUsers();
     }
 
@@ -675,6 +767,179 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     public void btnCerrarSesion(MouseEvent event) throws IOException {
         helper.show("logIn.fxml", parentPane);
         UsuarioEntity.destroy();
+    }
+
+    public void selectMenuMouseClicked(){
+        paneAsignarMenu.setVisible(true);
+        this.listaRestaurante.setDisable(true);
+        this.txtNuevoRestaurante.setDisable(true);
+        this.btnAgregar.setVisible(false);
+        this.btnEditar.setVisible(false);
+        this.btnEliminar.setVisible(false);
+        this.btnSelectMenu.setDisable(true);
+        try{
+            JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS_EMPRESA, listaRestaurante.getSelectionModel().getSelectedItem().toString()));
+            if(jsonArray2 != null){
+                for(int i = 0; i < jsonArray2.length(); i++){
+                    listaMenus.add(new MenuModel((Boolean) jsonArray2.getJSONObject(i).get("check"), (String) jsonArray2.getJSONObject(i).get("menu")));
+                }
+            }else {
+                //listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
+                //listaTmenu.setDisable(true);
+            }
+            nombreMenuCol.setCellValueFactory(
+                    new PropertyValueFactory<MenuModel,String>("nombreMenu")
+            );
+
+            checkCol.setCellValueFactory(
+                    new PropertyValueFactory<MenuModel,String>("remark")
+            );
+
+
+
+            tableview.setItems(listaMenus);
+            /*
+            checkCol.setCellValueFactory(
+                    new PropertyValueFactory<MenuModel,String>("isSelected")
+            );
+            nombreMenuCol.setCellValueFactory(
+                    new PropertyValueFactory<MenuModel,String>("nMenu")
+            );
+            tableview.setItems(listaMenus);*/
+        }catch(Exception e){
+            helper.showAlert("Ocurrió un error al consultar el listado de menus, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+        }
+    }
+
+    public void cerrarPopupAsignarMenu(){
+        paneAsignarMenu.setVisible(false);
+        this.listaRestaurante.setDisable(false);
+        this.txtNuevoRestaurante.setDisable(false);
+        txtMostrarBotonAgregar();
+        ListaRestauranteMouseClicked();
+        this.btnSelectMenu.setDisable(false);
+        this.tableview.setItems(null);
+    }
+
+    public void saveMenuChanges() {
+        try{
+            JSONArray jarray = new JSONArray();
+            for(int i = 0; i < listaMenus.size(); i++){
+                JSONObject jObject = new JSONObject();
+                String menu = listaMenus.get(i).getNombreMenu();
+                jObject.put("id",listaRestaurante.getSelectionModel().getSelectedItem().toString()+menu);
+                jObject.put("empresa",listaRestaurante.getSelectionModel().getSelectedItem().toString());
+                jObject.put("menu",menu);
+                jObject.put("check",listaMenus.get(i).getRemark().isSelected());
+                jarray.put(jObject);
+            }
+            rest.POSTARRAY(routes.getRoute(Routes.routesName.CREATE_MENU_EMPRESA), jarray);
+        }catch (Exception e){
+            System.out.println("error momentaneo");
+        }
+    }
+
+    public void cargarDiasMenu(){
+        try{
+            JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_DIAS, ListaRestaurant.getValue().toString()));
+            if(jsonArray2 != null){
+                checkLunes.setSelected((Boolean) jsonArray2.getJSONObject(0).get("lunes"));
+                checkMartes.setSelected((Boolean) jsonArray2.getJSONObject(0).get("martes"));
+                checkMiercoles.setSelected((Boolean) jsonArray2.getJSONObject(0).get("miercoles"));
+                checkJueves.setSelected((Boolean) jsonArray2.getJSONObject(0).get("jueves"));
+                checkViernes.setSelected((Boolean) jsonArray2.getJSONObject(0).get("viernes"));
+                checkSabado.setSelected((Boolean) jsonArray2.getJSONObject(0).get("sabado"));
+                checkDomingo.setSelected((Boolean) jsonArray2.getJSONObject(0).get("domingo"));
+
+                try{
+                    ObservableList<String> listatrue = FXCollections.observableArrayList();
+                    JSONArray jsonArray3 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS_TRUE, ListaRestaurant.getValue().toString()));
+                    if(jsonArray3 != null){
+                        for(int i = 0; i < jsonArray3.length(); i++){
+                            listatrue.add((String) jsonArray3.getJSONObject(i).get("menu"));
+                            ListaMenuReservas.setItems(listatrue);
+                        }
+                    }else {
+                        System.out.println("F");
+                    }
+                }catch (Exception e){
+
+                }
+
+            }else {
+                //listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
+                //listaTmenu.setDisable(true);
+            }
+        }catch (Exception e){
+
+        }
+    }
+
+    public void getHoras(){
+        try{
+            JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_HORAS, ListaRestaurant.getValue().toString(), ListaMenuReservas.getValue().toString()));
+            if(jsonArray2 != null) {
+                horaInicioReserva.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hInicioRes").toString().substring(0,2));
+                minutoInicioReserva.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hInicioRes").toString().substring(3,5));
+                amInicioReserva.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hInicioRes").toString().substring(5));
+
+                horaFinReserva.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hFinRes").toString().substring(0,2));
+                minutoFinReserva.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hFinRes").toString().substring(3,5));
+                amFinReserva.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hFinRes").toString().substring(5));
+
+                horaInicioEntrega.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hInicioEnt").toString().substring(0,2));
+                minutoInicioEntrega.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hInicioEnt").toString().substring(3,5));
+                amInicioEntrega.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hInicioEnt").toString().substring(5));
+
+                horaFinEntrega.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hFinEnt").toString().substring(0,2));
+                minutoFinEntrega.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hFinEnt").toString().substring(3,5));
+                amFinEntrega.getSelectionModel().select(jsonArray2.getJSONObject(0).get("hFinEnt").toString().substring(5));
+            }else {
+                System.out.println("oh my");
+            }
+        }catch (Exception e){
+
+        }
+    }
+
+    public void cambiarDisponibilidad(){
+        try {
+            rest.POST(
+                    routes.getRoute(Routes.routesName.CREATE_DIAS),
+                    "id", ListaRestaurant.getValue().toString(),
+                    "empresa", ListaRestaurant.getValue().toString(),
+                    "lunes", String.valueOf(checkLunes.isSelected()),
+                    "martes", String.valueOf(checkMartes.isSelected()),
+                    "miercoles", String.valueOf(checkMiercoles.isSelected()),
+                    "jueves", String.valueOf(checkJueves.isSelected()),
+                    "viernes", String.valueOf(checkViernes.isSelected()),
+                    "sabado", String.valueOf(checkSabado.isSelected()),
+                    "domingo", String.valueOf(checkDomingo.isSelected())
+            );
+        }catch (Exception e){
+
+        }
+    }
+
+    public void cambiarHorarios(){
+        String hInicioRes = horaInicioReserva.getValue().toString()+":"+minutoInicioReserva.getValue().toString()+amInicioReserva.getValue().toString();
+        String hFinRes = horaFinReserva.getValue().toString()+":"+minutoFinReserva.getValue().toString()+amFinReserva.getValue().toString();
+        String hInicioEnt = horaInicioEntrega.getValue().toString()+":"+minutoInicioEntrega.getValue().toString()+amInicioEntrega.getValue().toString();
+        String hFinEnt = horaFinEntrega.getValue().toString()+":"+minutoFinEntrega.getValue().toString()+amFinEntrega.getValue().toString();
+        try {
+            rest.POST(
+                    routes.getRoute(Routes.routesName.CREATE_DIAS),
+                    "id", ListaRestaurant.getValue().toString()+ListaMenuReservas.getValue().toString(),
+                    "empresa", ListaRestaurant.getValue().toString(),
+                    "menu", ListaMenuReservas.getValue().toString(),
+                    "hInicioRes", hInicioRes,
+                    "hFinRes", hFinRes,
+                    "hInicioEnt", hInicioEnt,
+                    "hFinEnt", hFinEnt
+            );
+        }catch (Exception e){
+
+        }
     }
 }
 

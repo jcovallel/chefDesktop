@@ -22,11 +22,17 @@ public class Routes{
         DELETE_DISPOMODEL,
         SEND_EMAIL,
         UPLOAD_IMAGE,
-        CREATE_HOURS,
+        CREATE_HORARIO,
         CREATE_MENU,
+        CREATE_MENU_EMPRESA,
         GET_ROL,
         GET_USUARIOS_ROL3,
-        GET_MENUS
+        GET_MENUS,
+        GET_MENUS_TRUE,
+        GET_MENUS_EMPRESA,
+        GET_DIAS,
+        CREATE_DIAS,
+        GET_HORAS
     }
     private static HashMap<String, String> routesHash;
     private static Routes routesEntity;
@@ -50,6 +56,7 @@ public class Routes{
         routesHash.put("MODIFY_MENU", "/chef/modifymenu/");
         routesHash.put("CREATE_USUARIO", "/chef/createuser/");
         routesHash.put("CREATE_MENU", "/chef/createmenu/");
+        routesHash.put("CREATE_MENU_EMPRESA", "/chef/menuwithempresa/");
         routesHash.put("DELETE_USUARIO", "/chef/deleteuser/");
         routesHash.put("DELETE_MENU", "/chef/deletemenu/");
         routesHash.put("DELETE_COMENTS", "/chef/deletecoment/");
@@ -62,6 +69,12 @@ public class Routes{
         routesHash.put("GET_ROL", "/chef/getrol/");
         routesHash.put("GET_USUARIOS_ROL3", "/chef/getusersmobile/");
         routesHash.put("GET_MENUS", "/chef/getmenus/");
+        routesHash.put("GET_MENUS_TRUE", "/chef/getmenustrueempresa/");
+        routesHash.put("GET_MENUS_EMPRESA", "/chef/getmenusempresa/");
+        routesHash.put("GET_DIAS", "/chef/getdispodiassitio/");
+        routesHash.put("CREATE_DIAS", "/chef/creatediassitio/");
+        routesHash.put("GET_HORAS", "/chef/gethorariomenu/");
+        routesHash.put("CREATE_HORARIO", "/chef/createhorariomenus/");
     }
 
     public static Routes getRoutesClass(){

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UsuarioAdmin">
@@ -79,8 +81,31 @@
                               <TextField fx:id="txtEditarCorreo" layoutX="56.0" layoutY="127.0" prefHeight="40.0" prefWidth="272.0" promptText="Nuevo Correo" style="-fx-background-radius: 0px;" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="paneAsignarMenu" layoutX="16.0" layoutY="64.0" prefHeight="221.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
-
+                        <AnchorPane fx:id="paneAsignarMenu" layoutX="16.0" layoutY="64.0" prefHeight="260.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+                            <effect>
+                                <DropShadow offsetX="5.0" offsetY="5.0" />
+                            </effect>
+                            <children>
+                                <TableView fx:id="tableview" layoutX="11.0" layoutY="48.0" prefHeight="170.0" prefWidth="351.0" />
+                                <Button fx:id="AsignarMenuBtn" layoutX="304.0" layoutY="228.0" mnemonicParsing="false" onMouseClicked="#saveMenuChanges" text="Guardar" />
+                                <AnchorPane layoutX="0" layoutY="0" prefHeight="40.0" prefWidth="373.0" style="-fx-background-color: #2a295c;">
+                                    <children>
+                                        <ImageView fitHeight="20.0" fitWidth="21.0" layoutX="349.0" layoutY="3" onMouseClicked="#cerrarPopupAsignarMenu" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/x_white.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <Label fx:id="labelAsignarMenu" layoutX="14.0" layoutY="11.0" onMouseClicked="#ListaRestauranteMouseClicked" text="Seleccionar Tipo de Menú" textFill="WHITE">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="18.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="paneAgregarRestaurante1" layoutX="114.0" layoutY="77.0" prefHeight="234.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
                            <effect>
@@ -240,6 +265,7 @@
                               </Label>
                            </children>
                         </AnchorPane>
+                        <Button fx:id="btnSelectMenu" layoutX="398.0" layoutY="322.0" mnemonicParsing="false" onMouseClicked="#selectMenuMouseClicked" text="Tipo Menú" />
                      </children>
                         </AnchorPane>
                     </content>
@@ -583,6 +609,179 @@
                                 </AnchorPane>
                             </children>
                         </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="reservaTab" onSelectionChanged="#tabReserva" text="Reservas">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
+                            <children>
+                                <Line endX="100.0" endY="140.0" layoutX="207.0" layoutY="215.0" startX="100.0" startY="-149.0" />
+                                <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="65.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/monday.png" />
+                                    </image></ImageView>
+                                <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="154.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/tuesday.png" />
+                                    </image>
+                                </ImageView>
+                                <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="242.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/wednesday.png" />
+                                    </image>
+                                </ImageView>
+                                <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="65.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/thursday.png" />
+                                    </image>
+                                </ImageView>
+                                <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="154.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/friday.png" />
+                                    </image>
+                                </ImageView>
+                                <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="242.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/Saturday.png" />
+                                    </image>
+                                </ImageView>
+                                <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="65.0" layoutY="259.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/Sunday.png" />
+                                    </image>
+                                </ImageView>
+                                <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="50.0" layoutY="305.0" onMouseClicked="#cambiarDisponibilidad" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/change.png" />
+                                    </image>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </ImageView>
+                                <Label layoutX="93.0" layoutY="314.0" onMouseClicked="#cambiarDisponibilidad" text="Cambiar disponibilidad" textFill="#2a295c">
+                                    <font>
+                                        <Font name="Segoe UI Bold" size="15.0" />
+                                    </font>
+                                    <opaqueInsets>
+                                        <Insets />
+                                    </opaqueInsets>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </Label>
+                                <AnchorPane prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #2a295c;">
+                                    <children>
+                                        <Label layoutX="14.0" layoutY="16.0" text="Administrar Tipos de Menú y Disponibilidad" textFill="WHITE">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="20.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                        <Label layoutX="37.0" layoutY="77.0" text="Restaurante">
+                           <font>
+                              <Font name="Segoe UI Semibold" size="13.0" />
+                           </font></Label>
+                        <Label layoutX="36.0" layoutY="124.0" text="Disponibilidad Reservas">
+                           <font>
+                              <Font name="Segoe UI Bold" size="16.0" />
+                           </font></Label>
+                        <ComboBox fx:id="ListaRestaurant" layoutX="115.0" layoutY="73.0" onAction="#cargarDiasMenu" prefHeight="25.0" prefWidth="179.0" promptText="Seleccione un restaurante" />
+                        <CheckBox fx:id="checkLunes" layoutX="42.0" layoutY="172.0" mnemonicParsing="false" scaleX="1.2" scaleY="1.2" />
+                        <CheckBox fx:id="checkMartes" layoutX="127.0" layoutY="171.0" mnemonicParsing="false" scaleX="1.2" scaleY="1.2" />
+                        <CheckBox fx:id="checkMiercoles" layoutX="219.0" layoutY="171.0" mnemonicParsing="false" scaleX="1.2" scaleY="1.2" />
+                        <CheckBox fx:id="checkJueves" layoutX="42.0" layoutY="217.0" mnemonicParsing="false" scaleX="1.2" scaleY="1.2" />
+                        <CheckBox fx:id="checkViernes" layoutX="127.0" layoutY="217.0" mnemonicParsing="false" scaleX="1.2" scaleY="1.2" />
+                        <CheckBox fx:id="checkSabado" layoutX="219.0" layoutY="217.0" mnemonicParsing="false" scaleX="1.2" scaleY="1.2" />
+                        <CheckBox fx:id="checkDomingo" layoutX="42.0" layoutY="266.0" mnemonicParsing="false" scaleX="1.2" scaleY="1.2" />
+                        <ComboBox fx:id="ListaMenuReservas" layoutX="315.0" layoutY="90.0" onAction="#getHoras" prefHeight="25.0" prefWidth="198.0" promptText="Seleccione un menú" />
+                        <Label layoutX="315.0" layoutY="64.0" text="Tipo Menú">
+                           <font>
+                              <Font name="Segoe UI Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="314.0" layoutY="124.0" text="Horarios de Reserva">
+                           <font>
+                              <Font name="Segoe UI Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="314.0" layoutY="216.0" text="Horarios de Entrega">
+                           <font>
+                              <Font name="Segoe UI Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="443.0" layoutY="248.0" text=":">
+                           <font>
+                              <Font name="Segoe UI Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="314.0" layoutY="248.0" text="Hora inicio">
+                           <font>
+                              <Font name="Segoe UI Semibold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="322.0" layoutY="282.0" text="Hora fin">
+                           <font>
+                              <Font name="Segoe UI Semibold" size="13.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="amInicioEntrega" layoutX="515.0" layoutY="245.0" prefHeight="25.0" prefWidth="83.0" promptText="AM/PM" />
+                        <ComboBox fx:id="minutoInicioEntrega" layoutX="450.0" layoutY="245.0" prefHeight="25.0" prefWidth="64.0" promptText="MM" />
+                        <ComboBox fx:id="horaInicioEntrega" layoutX="380.0" layoutY="245.0" prefHeight="25.0" prefWidth="60.0" promptText="HH" />
+                        <Label layoutX="443.0" layoutY="282.0" text=":">
+                           <font>
+                              <Font name="Segoe UI Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="amFinEntrega" layoutX="515.0" layoutY="279.0" prefHeight="25.0" prefWidth="83.0" promptText="AM/PM" />
+                        <ComboBox fx:id="minutoFinEntrega" layoutX="450.0" layoutY="279.0" prefHeight="25.0" prefWidth="64.0" promptText="MM" />
+                        <ComboBox fx:id="horaFinEntrega" layoutX="380.0" layoutY="279.0" prefHeight="25.0" prefWidth="60.0" promptText="HH" />
+                        <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="368.0" layoutY="315.0" onMouseClicked="#cambiarHorarios" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/change.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <Label layoutX="411.0" layoutY="324.0" onMouseClicked="#cambiarHorarios" text="Cambiar horarios" textFill="#2a295c">
+                           <font>
+                              <Font name="Segoe UI Bold" size="15.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
+                        <Label layoutX="443.0" layoutY="154.0" text=":">
+                           <font>
+                              <Font name="Segoe UI Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="314.0" layoutY="154.0" text="Hora inicio">
+                           <font>
+                              <Font name="Segoe UI Semibold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="322.0" layoutY="188.0" text="Hora fin">
+                           <font>
+                              <Font name="Segoe UI Semibold" size="13.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="amInicioReserva" layoutX="515.0" layoutY="151.0" prefHeight="25.0" prefWidth="83.0" promptText="AM/PM" />
+                        <ComboBox fx:id="minutoInicioReserva" layoutX="450.0" layoutY="151.0" prefHeight="25.0" prefWidth="64.0" promptText="MM" />
+                        <ComboBox fx:id="horaInicioReserva" layoutX="380.0" layoutY="151.0" prefHeight="25.0" prefWidth="60.0" promptText="HH" />
+                        <Label layoutX="443.0" layoutY="188.0" text=":">
+                           <font>
+                              <Font name="Segoe UI Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="amFinReserva" layoutX="515.0" layoutY="185.0" prefHeight="25.0" prefWidth="83.0" promptText="AM/PM" />
+                        <ComboBox fx:id="minutoFinReserva" layoutX="450.0" layoutY="185.0" prefHeight="25.0" prefWidth="64.0" promptText="MM" />
+                        <ComboBox fx:id="horaFinReserva" layoutX="380.0" layoutY="185.0" prefHeight="25.0" prefWidth="60.0" promptText="HH" />
+                            </children></AnchorPane>
                     </content>
                 </Tab>
             </tabs>

@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UsuarioNormal">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UsuarioNormal">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -90,39 +90,51 @@
               <content>
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                     <children>
-                       <TextField fx:id="lunes_val" layoutX="50.0" layoutY="66.0" prefHeight="35.0" prefWidth="250.0" promptText="Lunes" style="-fx-background-radius: 0px;" />
-                       <TextField fx:id="martes_val" layoutX="50.0" layoutY="112.0" prefHeight="35.0" prefWidth="250.0" promptText="Martes" style="-fx-background-radius: 0px;" />
-                       <TextField fx:id="miercoles_val" layoutX="50.0" layoutY="157.0" prefHeight="35.0" prefWidth="250.0" promptText="Miércoles" style="-fx-background-radius: 0px;" />
-                       <TextField fx:id="jueves_val" layoutX="50.0" layoutY="203.0" prefHeight="35.0" prefWidth="250.0" promptText="Jueves" style="-fx-background-radius: 0px;" />
-                       <TextField fx:id="viernes_val" layoutX="50.0" layoutY="253.0" prefHeight="35.0" prefWidth="250.0" promptText="Viernes" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="lunes_val" layoutX="71.0" layoutY="129.0" prefHeight="35.0" prefWidth="80.0" promptText="Lunes" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="martes_val" layoutX="71.0" layoutY="175.0" prefHeight="35.0" prefWidth="79.0" promptText="Martes" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="miercoles_val" layoutX="71.0" layoutY="220.0" prefHeight="35.0" prefWidth="79.0" promptText="Miércoles" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="jueves_val" layoutX="71.0" layoutY="266.0" prefHeight="35.0" prefWidth="78.0" promptText="Jueves" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="viernes_val" layoutX="222.0" layoutY="132.0" prefHeight="35.0" prefWidth="78.0" promptText="Viernes" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="sabado_val" layoutX="222.0" layoutY="176.0" prefHeight="35.0" prefWidth="78.0" promptText="Sabado" style="-fx-background-radius: 0px;" />
+                       <TextField fx:id="domingo_val" layoutX="222.0" layoutY="221.0" prefHeight="35.0" prefWidth="78.0" promptText="Domingo" style="-fx-background-radius: 0px;" />
                        <Line endX="100.0" endY="140.0" layoutX="239.0" layoutY="215.0" startX="100.0" startY="-149.0" />
                        <Label layoutX="374.0" layoutY="77.0" text="Descargar Excel &#10;de reservas" textAlignment="CENTER">
                           <font>
                              <Font name="Segoe UI Bold" size="25.0" />
                           </font>
                        </Label>
-                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="35.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/monday.png" />
                           </image></ImageView>
-                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="35.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/tuesday.png" />
                           </image>
                        </ImageView>
-                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="35.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/wednesday.png" />
                           </image>
                        </ImageView>
-                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="206.0" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="35.0" layoutY="269.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/thursday.png" />
                           </image>
                        </ImageView>
-                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="14.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="184.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/friday.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="184.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/Saturday.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="184.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                             <Image url="@images/Sunday.png" />
                           </image>
                        </ImageView>
                        <ImageView fitHeight="62.0" fitWidth="51.0" layoutX="445.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true">
@@ -146,7 +158,7 @@
                              <Cursor fx:constant="HAND" />
                           </cursor>
                        </Label>
-                       <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="50.0" layoutY="305.0" onMouseClicked="#modifyDispo" pickOnBounds="true" preserveRatio="true">
+                       <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="71.0" layoutY="319.0" onMouseClicked="#modifyDispo" pickOnBounds="true" preserveRatio="true">
                           <image>
                              <Image url="@images/change.png" />
                           </image>
@@ -154,7 +166,7 @@
                              <Cursor fx:constant="HAND" />
                           </cursor>
                        </ImageView>
-                       <Label layoutX="93.0" layoutY="314.0" onMouseClicked="#modifyDispo" text="Cambiar disponibilidad" textFill="#2a295c">
+                       <Label layoutX="114.0" layoutY="328.0" onMouseClicked="#modifyDispo" text="Cambiar disponibilidad" textFill="#2a295c">
                           <font>
                              <Font name="Segoe UI Bold" size="15.0" />
                           </font>
@@ -174,6 +186,12 @@
                               </Label>
                            </children>
                         </AnchorPane>
+                        <ComboBox layoutX="151.0" layoutY="81.0" prefHeight="25.0" prefWidth="174.0" />
+                        <Label layoutX="24.0" layoutY="82.0" text="Tipo de Menú" textAlignment="CENTER">
+                           <font>
+                              <Font name="Segoe UI Bold" size="18.0" />
+                           </font>
+                        </Label>
                     </children></AnchorPane>
               </content>
            </Tab>
