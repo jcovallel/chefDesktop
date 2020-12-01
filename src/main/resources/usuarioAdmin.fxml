@@ -266,6 +266,42 @@
                            </children>
                         </AnchorPane>
                         <Button fx:id="btnSelectMenu" layoutX="398.0" layoutY="322.0" mnemonicParsing="false" onMouseClicked="#selectMenuMouseClicked" text="Tipo Menú" />
+                         <AnchorPane fx:id="paneAsignarMenuSuccess" layoutX="114.0" layoutY="77.0" prefHeight="131.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+                             <effect>
+                                 <DropShadow offsetX="5.0" offsetY="5.0" />
+                             </effect>
+                             <children>
+                                 <Label layoutX="42.0" layoutY="28.0" prefHeight="45.0" prefWidth="223.0" wrapText="true" text="Cambios realizados exitosamente!">
+                                     <font>
+                                         <Font name="Segoe UI Bold" size="12.0" />
+                                     </font>
+                                 </Label>
+                                 <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="299.0" layoutY="90.0" onMouseClicked="#cerrarPopupAsignarMenuSuccess" pickOnBounds="true" preserveRatio="true">
+                                     <image>
+                                         <Image url="@images/ok.png" />
+                                     </image>
+                                     <cursor>
+                                         <Cursor fx:constant="HAND" />
+                                     </cursor>
+                                 </ImageView>
+                                 <ImageView fitHeight="23.0" fitWidth="24.0" layoutX="349.0" onMouseClicked="#cerrarPopupDispoSuccess" pickOnBounds="true" preserveRatio="true">
+                                     <image>
+                                         <Image url="@images/x.png" />
+                                     </image>
+                                     <cursor>
+                                         <Cursor fx:constant="HAND" />
+                                     </cursor>
+                                 </ImageView>
+                                 <Label layoutX="328.0" layoutY="94.0" onMouseClicked="#okAgregarTmenu" text="Ok" textFill="#2a295c">
+                                     <font>
+                                         <Font name="Segoe UI Bold" size="20.0" />
+                                     </font>
+                                     <cursor>
+                                         <Cursor fx:constant="HAND" />
+                                     </cursor>
+                                 </Label>
+                             </children>
+                         </AnchorPane>
                      </children>
                         </AnchorPane>
                     </content>
@@ -592,6 +628,42 @@
                         <ComboBox fx:id="amFinReserva" layoutX="515.0" layoutY="185.0" prefHeight="25.0" prefWidth="83.0" promptText="AM/PM" />
                         <ComboBox fx:id="minutoFinReserva" layoutX="450.0" layoutY="185.0" prefHeight="25.0" prefWidth="64.0" promptText="MM" />
                         <ComboBox fx:id="horaFinReserva" layoutX="380.0" layoutY="185.0" prefHeight="25.0" prefWidth="60.0" promptText="HH" />
+                                <AnchorPane fx:id="paneDispoSuccess" layoutX="114.0" layoutY="77.0" prefHeight="131.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+                                    <effect>
+                                        <DropShadow offsetX="5.0" offsetY="5.0" />
+                                    </effect>
+                                    <children>
+                                        <Label layoutX="42.0" layoutY="28.0" prefHeight="45.0" prefWidth="223.0" wrapText="true" text="Cambios realizados exitosamente!">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="299.0" layoutY="90.0" onMouseClicked="#cerrarPopupDispoSuccess" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/ok.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <ImageView fitHeight="23.0" fitWidth="24.0" layoutX="349.0" onMouseClicked="#cerrarPopupDispoSuccess" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@images/x.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <Label layoutX="328.0" layoutY="94.0" onMouseClicked="#okAgregarTmenu" text="Ok" textFill="#2a295c">
+                                            <font>
+                                                <Font name="Segoe UI Bold" size="20.0" />
+                                            </font>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
                             </children></AnchorPane>
                     </content>
                 </Tab>

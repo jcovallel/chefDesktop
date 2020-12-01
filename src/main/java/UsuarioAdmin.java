@@ -28,7 +28,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     @FXML
     private AnchorPane paneEditarRestaurante, paneAgregarRestaurante1, paneAgregarRestaurante2, paneEliminarRestaurante, paneSinPermisos, parentPane,
-            paneEliminarTmenu, paneAgregarTmenu, paneEditarTmenu, paneAsignarMenu, reservaAnchor;
+            paneEliminarTmenu, paneAgregarTmenu, paneEditarTmenu, paneAsignarMenu, reservaAnchor, paneDispoSuccess, paneAsignarMenuSuccess;
 
     @FXML
     private ListView listaRestaurante, listaRestauranteComent, listaTmenu;
@@ -138,6 +138,19 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             checkViernes.setSelected(false);
             checkSabado.setSelected(false);
             checkDomingo.setSelected(false);
+            this.ListaMenuReservas.getSelectionModel().clearSelection();
+            horaInicioReserva.getSelectionModel().clearSelection();
+            minutoInicioReserva.getSelectionModel().clearSelection();
+            amInicioReserva.getSelectionModel().clearSelection();
+            horaFinReserva.getSelectionModel().clearSelection();
+            minutoFinReserva.getSelectionModel().clearSelection();
+            amFinReserva.getSelectionModel().clearSelection();
+            horaInicioEntrega.getSelectionModel().clearSelection();
+            minutoInicioEntrega.getSelectionModel().clearSelection();
+            amInicioEntrega.getSelectionModel().clearSelection();
+            horaFinEntrega.getSelectionModel().clearSelection();
+            minutoFinEntrega.getSelectionModel().clearSelection();
+            amFinEntrega.getSelectionModel().clearSelection();
         }
     }
 
@@ -624,10 +637,10 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                                     "id", nombre+txtNuevoTmenu.getText(),
                                     "empresa", nombre,
                                     "menu", txtNuevoTmenu.getText(),
-                                    "hInicioRes", "empty",
-                                    "hFinRes", "empty",
-                                    "hInicioEnt", "empty",
-                                    "hFinEnt", "empty"
+                                    "hInicioRes", "-------",
+                                    "hFinRes", "-------",
+                                    "hInicioEnt", "-------",
+                                    "hFinEnt", "-------"
                             );
                             //Create disponibilidad por menus
                             rest.POST(
@@ -934,7 +947,13 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                 jObject.put("check",listaMenus.get(i).getRemark().isSelected());
                 jarray.put(jObject);
             }
-            rest.POSTARRAY(routes.getRoute(Routes.routesName.CREATE_MENU_EMPRESA), jarray);
+            String respuesta = rest.POSTARRAY(routes.getRoute(Routes.routesName.CREATE_MENU_EMPRESA), jarray);
+            if(!respuesta.equals("sucess")){
+                helper.showAlert("Ocurrió un error al asignar los menus, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+            }else{
+                paneAsignarMenuSuccess.setVisible(true);
+            }
+
         }catch (Exception e){
             System.out.println("error momentaneo");
         }
@@ -988,6 +1007,20 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     }
 
     public void getHoras(){
+        horaInicioReserva.setDisable(false);
+        minutoInicioReserva.setDisable(false);
+        amInicioReserva.setDisable(false);
+        horaFinReserva.setDisable(false);
+        minutoFinReserva.setDisable(false);
+        amFinReserva.setDisable(false);
+        horaInicioEntrega.setDisable(false);
+        minutoInicioEntrega.setDisable(false);
+        amInicioEntrega.setDisable(false);
+        horaFinEntrega.setDisable(false);
+        minutoFinEntrega.setDisable(false);
+        amFinEntrega.setDisable(false);
+        cambioHorarioImg.setDisable(false);
+        cambioHorarioTxt.setDisable(false);
         try{
             JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_HORAS, ListaRestaurant.getValue().toString(), ListaMenuReservas.getValue().toString()));
             if(jsonArray2 != null) {
@@ -1016,7 +1049,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     public void cambiarDisponibilidad(){
         try {
-            rest.POST(
+            String respuesta = rest.POST(
                     routes.getRoute(Routes.routesName.CREATE_DIAS),
                     "id", ListaRestaurant.getValue().toString(),
                     "empresa", ListaRestaurant.getValue().toString(),
@@ -1028,8 +1061,14 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                     "sabado", String.valueOf(checkSabado.isSelected()),
                     "domingo", String.valueOf(checkDomingo.isSelected())
             );
-        }catch (Exception e){
 
+            if(!respuesta.equals("sucess")){
+                helper.showAlert("Ocurrió un error al guardar la disponibilidad, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+            }else{
+                paneDispoSuccess.setVisible(true);
+            }
+        }catch (Exception e){
+            helper.showAlert("Ocurrió un error al guardar la disponibilidad, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
         }
     }
 
@@ -1038,20 +1077,41 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         String hFinRes = horaFinReserva.getValue().toString()+":"+minutoFinReserva.getValue().toString()+amFinReserva.getValue().toString();
         String hInicioEnt = horaInicioEntrega.getValue().toString()+":"+minutoInicioEntrega.getValue().toString()+amInicioEntrega.getValue().toString();
         String hFinEnt = horaFinEntrega.getValue().toString()+":"+minutoFinEntrega.getValue().toString()+amFinEntrega.getValue().toString();
-        try {
-            rest.POST(
-                    routes.getRoute(Routes.routesName.CREATE_DIAS),
-                    "id", ListaRestaurant.getValue().toString()+ListaMenuReservas.getValue().toString(),
-                    "empresa", ListaRestaurant.getValue().toString(),
-                    "menu", ListaMenuReservas.getValue().toString(),
-                    "hInicioRes", hInicioRes,
-                    "hFinRes", hFinRes,
-                    "hInicioEnt", hInicioEnt,
-                    "hFinEnt", hFinEnt
-            );
-        }catch (Exception e){
 
+        if(hInicioRes.contains("-") || hFinRes.contains("-") || hInicioEnt.contains("-") || hFinEnt.contains("-")){
+            helper.showAlert("No se han inicializado de forma correcta los horarios, por favor asigne un valor valido a cada uno de los horarios", Alert.AlertType.ERROR);
+        }else {
+            try {
+                System.out.println("time; "+hInicioEnt);
+
+                String respuesta = rest.POST(
+                        routes.getRoute(Routes.routesName.CREATE_HORARIO),
+                        "id", ListaRestaurant.getValue().toString()+ListaMenuReservas.getValue().toString(),
+                        "empresa", ListaRestaurant.getValue().toString(),
+                        "menu", ListaMenuReservas.getValue().toString(),
+                        "hInicioRes", hInicioRes,
+                        "hFinRes", hFinRes,
+                        "hInicioEnt", hInicioEnt,
+                        "hFinEnt", hFinEnt
+                );
+
+                if(!respuesta.equals("sucess")){
+                    helper.showAlert("Ocurrió un error al guardar los horarios, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+                }else{
+                    paneDispoSuccess.setVisible(true);
+                }
+            }catch (Exception e){
+                helper.showAlert("Ocurrió un error al guardar los horarios, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+            }
         }
+    }
+
+    public void cerrarPopupDispoSuccess() {
+        paneDispoSuccess.setVisible(false);
+    }
+
+    public void cerrarPopupAsignarMenuSuccess() {
+        paneAsignarMenuSuccess.setVisible(false);
     }
 }
 
