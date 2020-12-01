@@ -38,7 +38,8 @@ public class Routes{
         DELETE_DISPO_DIAS,
         DELETE_HORARIO_MENU,
         DELETE_LISMENU_EMPRESAS,
-        DELETE_DISPO_MENU
+        DELETE_DISPO_MENU,
+        GET_DISPO_MENUREF
     }
     private static HashMap<String, String> routesHash;
     private static Routes routesEntity;
@@ -87,6 +88,7 @@ public class Routes{
         routesHash.put("DELETE_HORARIO_MENU", "/chef/deletehorariomenus/");
         routesHash.put("DELETE_LISMENU_EMPRESAS", "/chef/deletelistamenusempresa/");
         routesHash.put("DELETE_DISPO_MENU", "/chef/deletedispomenu/");
+        routesHash.put("GET_DISPO_MENUREF", "/chef/getdispomenuref/");
     }
 
     public static Routes getRoutesClass(){

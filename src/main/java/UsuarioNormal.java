@@ -1,4 +1,6 @@
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -27,10 +29,19 @@ import java.util.stream.Collectors;
 
 public class UsuarioNormal extends Usuario implements Initializable{
     @FXML
-    private TextField lunes_val,martes_val,miercoles_val,jueves_val,viernes_val;
+    private TextField lunes_val,martes_val,miercoles_val,jueves_val,viernes_val,sabado_val,domingo_val;
+
+    @FXML
+    private ComboBox comboBoxTmenu;
+
+    @FXML
+    private AnchorPane paneDispoSuccess;
 
     @FXML
     private Label archivocargado, labelUsuario;
+
+    @FXML
+    private Tab reservaTab;
 
     @FXML
     private AnchorPane draggable, parentPane;
@@ -39,6 +50,34 @@ public class UsuarioNormal extends Usuario implements Initializable{
     private String ip = "35.188.211.209";
     private String puerto = "8080";
     private String urlRaiz = "http://" + ip + ":" + puerto;
+
+    public void tabReservas(){
+        if(reservaTab.isSelected()) {
+            try{
+                ObservableList<String> listatrue = FXCollections.observableArrayList();
+                JSONArray jsonArray3 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS_TRUE, UsuarioEntity.getNombre()));
+                if(jsonArray3 != null){
+                    for(int i = 0; i < jsonArray3.length(); i++){
+                        listatrue.add((String) jsonArray3.getJSONObject(i).get("menu"));
+                        comboBoxTmenu.setItems(listatrue);
+                    }
+                }else {
+                    System.out.println("F");
+                }
+            }catch (Exception e){
+
+            }
+        }else{
+            this.comboBoxTmenu.getSelectionModel().clearSelection();
+            lunes_val.setText("");
+            martes_val.setText("");
+            miercoles_val.setText("");
+            jueves_val.setText("");
+            viernes_val.setText("");
+            sabado_val.setText("");
+            domingo_val.setText("");
+        }
+    }
 
     public void ButtonUploadImageAction(MouseEvent event){
         FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.jpeg");
@@ -191,21 +230,36 @@ public class UsuarioNormal extends Usuario implements Initializable{
 
     public void modifyDispo(MouseEvent event) throws IOException {
 
-        JSONArray jsonArray = rest.PUT(
-                routes.getRoute(Routes.routesName.MODIFY_DISPONIBILIDAD, UsuarioEntity.getNombre()),
-                "empresaid", UsuarioEntity.getNombre(),
-                "empresa", UsuarioEntity.getNombre(),
-                "Lunes", lunes_val.getText(),
-                "Martes", martes_val.getText(),
-                "Miercoles", miercoles_val.getText(),
-                "Jueves", jueves_val.getText(),
-                "Viernes", viernes_val.getText()
-                );
-        if(jsonArray != null){
-            helper.showAlert("Disponibilidad actualizada satisfactoriamente", Alert.AlertType.CONFIRMATION);
-        }
-        else{
-            helper.showAlert("Ocurrió un error", Alert.AlertType.ERROR);
+        try{
+            // creacion disponibilidad menu
+            String respuesta = rest.POST(
+                    routes.getRoute(Routes.routesName.CREATE_DISPO_MENU),
+                    "id", UsuarioEntity.getNombre()+comboBoxTmenu.getValue().toString(),
+                    "empresa", UsuarioEntity.getNombre(),
+                    "menu", comboBoxTmenu.getValue().toString(),
+                    "lunesref", lunes_val.getText(),
+                    "martesref", martes_val.getText(),
+                    "miercolesref", miercoles_val.getText(),
+                    "juevesref", jueves_val.getText(),
+                    "viernesref", viernes_val.getText(),
+                    "sabadoref", sabado_val.getText(),
+                    "domingoref", domingo_val.getText(),
+                    "lunes", lunes_val.getText(),
+                    "martes", martes_val.getText(),
+                    "miercoles", miercoles_val.getText(),
+                    "jueves", jueves_val.getText(),
+                    "viernes", viernes_val.getText(),
+                    "sabado", sabado_val.getText(),
+                    "domingo", domingo_val.getText()
+            );
+
+            if(!respuesta.equals("sucess")){
+                helper.showAlert("Ocurrió un error al al guardar los datos, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+            }else {
+                paneDispoSuccess.setVisible(true);
+            }
+        }catch (Exception e){
+            helper.showAlert("Ocurrió un error al al guardar los datos, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
         }
     }
 
@@ -214,6 +268,25 @@ public class UsuarioNormal extends Usuario implements Initializable{
                 routes.getRoute(Routes.routesName.GET_EXCEL_DISPONIBILIDAD, UsuarioEntity.getNombre()),
                 "Reservas");
 
+    }
+
+    public void getDisponibilidadMenus(){
+        try{
+            JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_DISPO_MENUREF, UsuarioEntity.getNombre(), comboBoxTmenu.getValue().toString()));
+            if(jsonArray2 != null) {
+                lunes_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
+                martes_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
+                miercoles_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
+                jueves_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
+                viernes_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
+                sabado_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
+                domingo_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
+            }else {
+                System.out.println("oh my");
+            }
+        }catch (Exception e){
+
+        }
     }
 
     private String getExtension(String fileName){
@@ -243,5 +316,9 @@ public class UsuarioNormal extends Usuario implements Initializable{
     public void btnCerrarSesion(MouseEvent event) throws IOException {
         helper.show("logIn.fxml", parentPane);
         UsuarioEntity.destroy();
+    }
+
+    public void cerrarPopupDispoSuccess() {
+        paneDispoSuccess.setVisible(false);
     }
 }
