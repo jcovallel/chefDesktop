@@ -879,8 +879,10 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         this.btnEliminar.setVisible(false);
         this.btnSelectMenu.setDisable(true);
         try{
+            listaMenus.clear();
             JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS_EMPRESA, listaRestaurante.getSelectionModel().getSelectedItem().toString()));
             if(jsonArray2 != null){
+                //listaMenus.removeAll();
                 for(int i = 0; i < jsonArray2.length(); i++){
                     listaMenus.add(new MenuModel((Boolean) jsonArray2.getJSONObject(i).get("check"), (String) jsonArray2.getJSONObject(i).get("menu")));
                 }
@@ -895,8 +897,6 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             checkCol.setCellValueFactory(
                     new PropertyValueFactory<MenuModel,String>("remark")
             );
-
-
 
             tableview.setItems(listaMenus);
             /*
