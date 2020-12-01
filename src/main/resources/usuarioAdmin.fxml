@@ -424,7 +424,7 @@
                 </Tab>
                 <Tab fx:id="reservaTab" onSelectionChanged="#tabReserva" text="Reservas">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
+                        <AnchorPane fx:id="reservaAnchor" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                             <children>
                                 <Line endX="100.0" endY="140.0" layoutX="207.0" layoutY="215.0" startX="100.0" startY="-149.0" />
                                 <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="65.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
@@ -461,7 +461,7 @@
                                         <Image url="@images/Sunday.png" />
                                     </image>
                                 </ImageView>
-                                <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="50.0" layoutY="305.0" onMouseClicked="#cambiarDisponibilidad" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fx:id="cambioDispoImg" fitHeight="41.0" fitWidth="37.0" layoutX="50.0" layoutY="305.0" onMouseClicked="#cambiarDisponibilidad" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@images/change.png" />
                                     </image>
@@ -469,7 +469,7 @@
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
                                 </ImageView>
-                                <Label layoutX="93.0" layoutY="314.0" onMouseClicked="#cambiarDisponibilidad" text="Cambiar disponibilidad" textFill="#2a295c">
+                                <Label fx:id="cambioDispoTxt" layoutX="93.0" layoutY="314.0" onMouseClicked="#cambiarDisponibilidad" text="Cambiar disponibilidad" textFill="#2a295c">
                                     <font>
                                         <Font name="Segoe UI Bold" size="15.0" />
                                     </font>
@@ -547,7 +547,7 @@
                         <ComboBox fx:id="amFinEntrega" layoutX="515.0" layoutY="279.0" prefHeight="25.0" prefWidth="83.0" promptText="AM/PM" />
                         <ComboBox fx:id="minutoFinEntrega" layoutX="450.0" layoutY="279.0" prefHeight="25.0" prefWidth="64.0" promptText="MM" />
                         <ComboBox fx:id="horaFinEntrega" layoutX="380.0" layoutY="279.0" prefHeight="25.0" prefWidth="60.0" promptText="HH" />
-                        <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="368.0" layoutY="315.0" onMouseClicked="#cambiarHorarios" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="cambioHorarioImg" fitHeight="41.0" fitWidth="37.0" layoutX="368.0" layoutY="315.0" onMouseClicked="#cambiarHorarios" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/change.png" />
                            </image>
@@ -555,7 +555,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Label layoutX="411.0" layoutY="324.0" onMouseClicked="#cambiarHorarios" text="Cambiar horarios" textFill="#2a295c">
+                        <Label fx:id="cambioHorarioTxt" layoutX="411.0" layoutY="324.0" onMouseClicked="#cambiarHorarios" text="Cambiar horarios" textFill="#2a295c">
                            <font>
                               <Font name="Segoe UI Bold" size="15.0" />
                            </font>

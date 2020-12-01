@@ -28,7 +28,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     @FXML
     private AnchorPane paneEditarRestaurante, paneAgregarRestaurante1, paneAgregarRestaurante2, paneEliminarRestaurante, paneSinPermisos, parentPane,
-            paneEliminarTmenu, paneAgregarTmenu, paneEditarTmenu, paneAsignarMenu;
+            paneEliminarTmenu, paneAgregarTmenu, paneEditarTmenu, paneAsignarMenu, reservaAnchor;
 
     @FXML
     private ListView listaRestaurante, listaRestauranteComent, listaTmenu;
@@ -39,10 +39,11 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             minutoFinEntrega, amFinEntrega, ListaRestaurant, ListaMenuReservas;
 
     @FXML
-    private Label labelRestaurantes, labelAgregarMenu;
+    private Label labelRestaurantes, labelAgregarMenu, cambioHorarioTxt, cambioDispoTxt;
 
     @FXML
-    ImageView btnEditar, btnEliminar, btnAgregar, btnEliminarTmenu, btnAgregarTmenu, btnEditarTmenu;
+    ImageView btnEditar, btnEliminar, btnAgregar, btnEliminarTmenu, btnAgregarTmenu, btnEditarTmenu, cambioHorarioImg,
+            cambioDispoImg;
 
     @FXML
     private CheckBox checkLunes, checkMartes, checkMiercoles, checkJueves, checkViernes, checkSabado, checkDomingo;
@@ -92,22 +93,51 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             try{
                 JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
                 if(jsonArray2 != null && !jsonArray2.isEmpty()){
-                    System.out.println("1");
+                    reservaAnchor.setDisable(false);
+                    ListaMenuReservas.setDisable(true);
+                    horaInicioReserva.setDisable(true);
+                    minutoInicioReserva.setDisable(true);
+                    amInicioReserva.setDisable(true);
+                    horaFinReserva.setDisable(true);
+                    minutoFinReserva.setDisable(true);
+                    amFinReserva.setDisable(true);
+                    horaInicioEntrega.setDisable(true);
+                    minutoInicioEntrega.setDisable(true);
+                    amInicioEntrega.setDisable(true);
+                    horaFinEntrega.setDisable(true);
+                    minutoFinEntrega.setDisable(true);
+                    amFinEntrega.setDisable(true);
+                    cambioHorarioImg.setDisable(true);
+                    cambioHorarioTxt.setDisable(true);
+                    checkLunes.setDisable(true);
+                    checkMartes.setDisable(true);
+                    checkMiercoles.setDisable(true);
+                    checkJueves.setDisable(true);
+                    checkViernes.setDisable(true);
+                    checkSabado.setDisable(true);
+                    checkDomingo.setDisable(true);
+                    cambioDispoImg.setDisable(true);
+                    cambioDispoTxt.setDisable(true);
+
                     for(int i = 0; i < jsonArray2.length(); i++){
                         listaResta.add((String) jsonArray2.getJSONObject(i).get("nombre"));
                     }
                     this.ListaRestaurant.setItems(listaResta);
                 }else {
-                    System.out.println("2");
-                    //reservaTab.setDisable(true);
-                    //listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
-                    //listaTmenu.setDisable(true);
+                    reservaAnchor.setDisable(true);
                 }
             }catch (Exception e){
 
             }
         }else {
-
+            this.ListaRestaurant.getSelectionModel().clearSelection();
+            checkLunes.setSelected(false);
+            checkMartes.setSelected(false);
+            checkMiercoles.setSelected(false);
+            checkJueves.setSelected(false);
+            checkViernes.setSelected(false);
+            checkSabado.setSelected(false);
+            checkDomingo.setSelected(false);
         }
     }
 
@@ -584,6 +614,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                 JSONArray jarray = new JSONArray();
                 try{
                     JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
+                    JSONArray jarray3 = new JSONArray();
                     if(jsonArray2 != null){
                         for(int i = 0; i < jsonArray2.length(); i++){
                             String nombre = jsonArray2.getJSONObject(i).get("nombre").toString();
@@ -619,7 +650,15 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                                     "sabado", "0",
                                     "domingo", "0"
                             );
+                            //CREACION MENU EMPRESA
+                            JSONObject jObject = new JSONObject();
+                            jObject.put("id",nombre+txtNuevoTmenu.getText());
+                            jObject.put("empresa",nombre);
+                            jObject.put("menu",txtNuevoTmenu.getText());
+                            jObject.put("check",false);
+                            jarray.put(jObject);
                         }
+                        rest.POSTARRAY(routes.getRoute(Routes.routesName.CREATE_MENU_EMPRESA), jarray);
                     }else {
                         //listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
                         //listaTmenu.setDisable(true);
@@ -905,6 +944,17 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         try{
             JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_DIAS, ListaRestaurant.getValue().toString()));
             if(jsonArray2 != null){
+                checkLunes.setDisable(false);
+                checkMartes.setDisable(false);
+                checkMiercoles.setDisable(false);
+                checkJueves.setDisable(false);
+                checkViernes.setDisable(false);
+                checkSabado.setDisable(false);
+                checkDomingo.setDisable(false);
+                cambioDispoImg.setDisable(false);
+                cambioDispoTxt.setDisable(false);
+                ListaMenuReservas.setDisable(false);
+
                 checkLunes.setSelected((Boolean) jsonArray2.getJSONObject(0).get("lunes"));
                 checkMartes.setSelected((Boolean) jsonArray2.getJSONObject(0).get("martes"));
                 checkMiercoles.setSelected((Boolean) jsonArray2.getJSONObject(0).get("miercoles"));
