@@ -91,12 +91,15 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             ObservableList<String> listaResta = FXCollections.observableArrayList();
             try{
                 JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
-                if(jsonArray2 != null){
+                if(jsonArray2 != null && !jsonArray2.isEmpty()){
+                    System.out.println("1");
                     for(int i = 0; i < jsonArray2.length(); i++){
                         listaResta.add((String) jsonArray2.getJSONObject(i).get("nombre"));
                     }
                     this.ListaRestaurant.setItems(listaResta);
                 }else {
+                    System.out.println("2");
+                    //reservaTab.setDisable(true);
                     //listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
                     //listaTmenu.setDisable(true);
                 }
@@ -273,6 +276,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                             helper.showAlert("Ocurrió un error al registrar el sitio, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
                         }
                     }else {
+                        //CREACION MENU EMPRESA
                         JSONArray jarray = new JSONArray();
                         try{
                             JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS));
@@ -295,8 +299,19 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                         }catch(Exception e){
                             helper.showAlert("Ocurrió un error al consultar el listado de menus, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
                         }
-
-
+                        //DISPONIBILIDAD DIARIA DEL RESTAURANTE
+                        rest.POST(
+                                routes.getRoute(Routes.routesName.CREATE_DIAS_DISPONIBLES_EMPRESA),
+                                "id", txtNuevoRestaurante.getText(),
+                                "nombre", txtNuevoRestaurante.getText(),
+                                "lunes", "false",
+                                "martes", "false",
+                                "miercoles", "false",
+                                "jueves", "false",
+                                "viernes", "false",
+                                "sabado", "false",
+                                "domingo", "false"
+                        );
                     }
 
                 /*rest.PUT(
@@ -465,7 +480,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         }
     }
 
-    //ACTUALIZA LA LISTA DE SUPERVISORES Y RESTAURANTES
+    //ACTUALIZA LA LISTA DE MENUS
     private void cargarListaMenus(){
         listaTmenu.getItems().clear();
         try{
@@ -475,7 +490,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         }
         try{
             JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS));
-            if(jsonArray2 != null){
+            if(jsonArray2 != null && !jsonArray2.isEmpty()){
                 listaTmenu.setDisable(false);
                 for(int i = 0; i < jsonArray2.length(); i++){
                     listaTmenu.getItems().add((String) jsonArray2.getJSONObject(i).get("menu"));
@@ -564,6 +579,53 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                     helper.showAlert("Error: Menú ya registrado", Alert.AlertType.ERROR);
                 }else{
                     helper.showAlert("Ocurrió un error al agregar el menú, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+                }
+            }else {
+                JSONArray jarray = new JSONArray();
+                try{
+                    JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
+                    if(jsonArray2 != null){
+                        for(int i = 0; i < jsonArray2.length(); i++){
+                            String nombre = jsonArray2.getJSONObject(i).get("nombre").toString();
+                            //CREATE HORARIOS MENUS
+                            rest.POST(
+                                    routes.getRoute(Routes.routesName.CREATE_HORARIO),
+                                    "id", nombre+txtNuevoTmenu.getText(),
+                                    "empresa", nombre,
+                                    "menu", txtNuevoTmenu.getText(),
+                                    "hInicioRes", "empty",
+                                    "hFinRes", "empty",
+                                    "hInicioEnt", "empty",
+                                    "hFinEnt", "empty"
+                            );
+                            //Create disponibilidad por menus
+                            rest.POST(
+                                    routes.getRoute(Routes.routesName.CREATE_DISPO_MENU),
+                                    "id", nombre+txtNuevoTmenu.getText(),
+                                    "empresa", nombre,
+                                    "menu", txtNuevoTmenu.getText(),
+                                    "lunesref", "0",
+                                    "martesref", "0",
+                                    "miercolesref", "0",
+                                    "juevesref", "0",
+                                    "vienesref", "0",
+                                    "sabadoref", "0",
+                                    "domingoref", "0",
+                                    "lunes", "0",
+                                    "martes", "0",
+                                    "miercoles", "0",
+                                    "jueves", "0",
+                                    "viernes", "0",
+                                    "sabado", "0",
+                                    "domingo", "0"
+                            );
+                        }
+                    }else {
+                        //listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
+                        //listaTmenu.setDisable(true);
+                    }
+                }catch(Exception e){
+                    helper.showAlert("Ocurrió un error al consultar el listado de menus, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
                 }
             }
         } catch (Exception e) {

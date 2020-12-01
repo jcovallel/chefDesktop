@@ -32,7 +32,9 @@ public class Routes{
         GET_MENUS_EMPRESA,
         GET_DIAS,
         CREATE_DIAS,
-        GET_HORAS
+        GET_HORAS,
+        CREATE_DIAS_DISPONIBLES_EMPRESA,
+        CREATE_DISPO_MENU
     }
     private static HashMap<String, String> routesHash;
     private static Routes routesEntity;
@@ -75,6 +77,8 @@ public class Routes{
         routesHash.put("CREATE_DIAS", "/chef/creatediassitio/");
         routesHash.put("GET_HORAS", "/chef/gethorariomenu/");
         routesHash.put("CREATE_HORARIO", "/chef/createhorariomenus/");
+        routesHash.put("CREATE_DIAS_DISPONIBLES_EMPRESA", "/chef/creatediassitio/");
+        routesHash.put("CREATE_DISPO_MENU", "/chef/createdispomenu/");
     }
 
     public static Routes getRoutesClass(){
