@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class UsuarioAdmin extends Usuario implements Initializable{
     @FXML
-    private TextField txtNuevoNombre, txtNuevoCorreo1, txtNuevoRestaurante, txtEditarCorreo, txtNuevoTmenu, txtNuevoNombreTmenu;
+    private TextField txtNuevoNombre, txtNuevoCorreo1, txtNuevoCorreo2, txtNuevoRestaurante, txtEditarCorreo, txtNuevoTmenu, txtNuevoNombreTmenu;
 
     @FXML
     private AnchorPane paneEditarRestaurante, paneAgregarRestaurante1, paneAgregarRestaurante2, paneEliminarRestaurante, paneSinPermisos, parentPane,
@@ -75,6 +75,8 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         if(UsuarioEntity.getRol().equals(1)){
             labelRestaurantes.setText("Restaurantes y Supervisores");
             txtNuevoRestaurante.setPromptText("Escriba el nombre del restaurante o supervisor a añadir");
+        }else{
+            txtNuevoRestaurante.setPromptText("Escriba el nombre del restaurante a añadir");
         }
         btnEliminar.setVisible(false);
         btnEditar.setVisible(false);
@@ -189,7 +191,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                 jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
             }
             if(jsonArray2 != null){
-                if(jsonArray2.length()==1){
+                if(jsonArray2.length()==1 && UsuarioEntity.getRol().equals(1)){
                     listaRestaurante.setPlaceholder(new Label(listviewVacia));
                     listaRestaurante.setDisable(true);
                 }else {
@@ -288,19 +290,24 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     public void okAgregarRestaurante() {
         Boolean rolVacio = false;
         ListaRestauranteMouseClicked();
-        if(txtNuevoCorreo1.getText().isEmpty()){
+
+        if(txtNuevoCorreo1.getText().isEmpty() && txtNuevoCorreo2.getText().isEmpty()){
             helper.showAlert("Debe proporcionar un correo electronico", Alert.AlertType.ERROR);
-        }else if(!EmailValidator.getInstance().isValid(txtNuevoCorreo1.getText())){
+        }else if(!EmailValidator.getInstance().isValid(txtNuevoCorreo1.getText()) && !EmailValidator.getInstance().isValid(txtNuevoCorreo2.getText())){
             helper.showAlert("Debe proporcionar una direccion de correo electronico valida", Alert.AlertType.ERROR);
         }else {
             try{
                 Integer rol = 0;
-                if(comboboxRol.getValue().toString().equals("Supervisor")){
-                    rol = 2;
-                }else if(comboboxRol.getValue().toString().equals("Administrador contrato")){
+                if(UsuarioEntity.getRol()==1){
+                    if(comboboxRol.getValue().toString().equals("Supervisor")){
+                        rol = 2;
+                    }else if(comboboxRol.getValue().toString().equals("Administrador contrato")){
+                        rol = 3;
+                    }
+                }else{
                     rol = 3;
                 }
-
+                
                 try {
                     String respuesta;
                     respuesta = rest.POST(
@@ -319,42 +326,65 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                             helper.showAlert("Ocurrió un error al registrar el sitio, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
                         }
                     }else {
-                        //CREACION MENU EMPRESA
-                        JSONArray jarray = new JSONArray();
-                        try{
-                            JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS));
-                            if(jsonArray2 != null){
-                                listaTmenu.setDisable(false);
-                                for(int i = 0; i < jsonArray2.length(); i++){
-                                    JSONObject jObject = new JSONObject();
-                                    String menu = (String) jsonArray2.getJSONObject(i).get("menu");
-                                    jObject.put("id",txtNuevoRestaurante.getText()+menu);
-                                    jObject.put("empresa",txtNuevoRestaurante.getText());
-                                    jObject.put("menu",menu);
-                                    jObject.put("check",false);
-                                    jarray.put(jObject);
+                        if(rol==3){
+                            //CREACION MENU EMPRESA
+                            JSONArray jarray = new JSONArray();
+                            try{
+                                JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS));
+                                if(jsonArray2 != null){
+                                    listaTmenu.setDisable(false);
+                                    for(int i = 0; i < jsonArray2.length(); i++){
+                                        JSONObject jObject = new JSONObject();
+                                        String menu = (String) jsonArray2.getJSONObject(i).get("menu");
+                                        jObject.put("id",txtNuevoRestaurante.getText()+menu);
+                                        jObject.put("empresa",txtNuevoRestaurante.getText());
+                                        jObject.put("menu",menu);
+                                        jObject.put("check",false);
+                                        jarray.put(jObject);
+                                        // creacion disponibilidad menu
+                                        rest.POST(
+                                                routes.getRoute(Routes.routesName.CREATE_DISPO_MENU),
+                                                "id", txtNuevoRestaurante.getText()+menu,
+                                                "empresa", txtNuevoRestaurante.getText(),
+                                                "menu", menu,
+                                                "lunesref", "0",
+                                                "martesref", "0",
+                                                "miercolesref", "0",
+                                                "juevesref", "0",
+                                                "vienesref", "0",
+                                                "sabadoref", "0",
+                                                "domingoref", "0",
+                                                "lunes", "0",
+                                                "martes", "0",
+                                                "miercoles", "0",
+                                                "jueves", "0",
+                                                "viernes", "0",
+                                                "sabado", "0",
+                                                "domingo", "0"
+                                        );
+                                    }
+                                    rest.POSTARRAY(routes.getRoute(Routes.routesName.CREATE_MENU_EMPRESA), jarray);
+                                }else {
+                                    //listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
+                                    //listaTmenu.setDisable(true);
                                 }
-                                rest.POSTARRAY(routes.getRoute(Routes.routesName.CREATE_MENU_EMPRESA), jarray);
-                            }else {
-                                //listaTmenu.setPlaceholder(new Label("No se encontraron menus"));
-                                //listaTmenu.setDisable(true);
+                            }catch(Exception e){
+                                helper.showAlert("Ocurrió un error al consultar el listado de menus, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
                             }
-                        }catch(Exception e){
-                            helper.showAlert("Ocurrió un error al consultar el listado de menus, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
+                            //DISPONIBILIDAD DIARIA DEL RESTAURANTE
+                            rest.POST(
+                                    routes.getRoute(Routes.routesName.CREATE_DIAS_DISPONIBLES_EMPRESA),
+                                    "id", txtNuevoRestaurante.getText(),
+                                    "nombre", txtNuevoRestaurante.getText(),
+                                    "lunes", "false",
+                                    "martes", "false",
+                                    "miercoles", "false",
+                                    "jueves", "false",
+                                    "viernes", "false",
+                                    "sabado", "false",
+                                    "domingo", "false"
+                            );
                         }
-                        //DISPONIBILIDAD DIARIA DEL RESTAURANTE
-                        rest.POST(
-                                routes.getRoute(Routes.routesName.CREATE_DIAS_DISPONIBLES_EMPRESA),
-                                "id", txtNuevoRestaurante.getText(),
-                                "nombre", txtNuevoRestaurante.getText(),
-                                "lunes", "false",
-                                "martes", "false",
-                                "miercoles", "false",
-                                "jueves", "false",
-                                "viernes", "false",
-                                "sabado", "false",
-                                "domingo", "false"
-                        );
                     }
 
                 /*rest.PUT(
@@ -465,6 +495,30 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         );
         rest.GET(
                 routes.getRoute(
+                        Routes.routesName.DELETE_DISPO_DIAS,
+                        listaRestaurante.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_HORARIO_MENU,
+                        listaRestaurante.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_LISMENU_EMPRESAS,
+                        listaRestaurante.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_DISPO_MENU,
+                        listaRestaurante.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        /*rest.GET(
+                routes.getRoute(
                         Routes.routesName.DELETE_COMENTS,
                         listaRestaurante.getSelectionModel().getSelectedItem().toString()
                 )
@@ -486,7 +540,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                         Routes.routesName.DELETE_DISPOMODEL,
                         listaRestaurante.getSelectionModel().getSelectedItem().toString()
                 )
-        );
+        );*/
         cargarListaUsers();
         this.txtNuevoRestaurante.setDisable(false);
         txtMostrarBotonAgregar();

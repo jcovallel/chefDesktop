@@ -146,7 +146,7 @@
                            </children>
                         </AnchorPane>
 
-                        <AnchorPane fx:id="paneAgregarRestaurante2" layoutX="114.0" layoutY="77.0" prefHeight="234.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
+                        <AnchorPane fx:id="paneAgregarRestaurante2" layoutX="114.0" layoutY="77.0" prefHeight="160.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
                              <effect>
                                  <DropShadow offsetX="5.0" offsetY="5.0" />
                              </effect>
@@ -157,7 +157,7 @@
                                          <Font name="Segoe UI Bold" size="12.0" />
                                      </font>
                                  </Label>
-                                 <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="299.0" layoutY="190.0" onMouseClicked="#okAgregarRestaurante" pickOnBounds="true" preserveRatio="true">
+                                 <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="299.0" layoutY="145.0" onMouseClicked="#okAgregarRestaurante" pickOnBounds="true" preserveRatio="true">
                                      <image>
                                          <Image url="@images/ok.png" />
                                      </image>
@@ -173,7 +173,7 @@
                                          <Cursor fx:constant="HAND" />
                                      </cursor>
                                  </ImageView>
-                                 <Label layoutX="328.0" layoutY="194.0" onMouseClicked="#okAgregarRestaurante" text="Ok" textFill="#2a295c">
+                                 <Label layoutX="328.0" layoutY="149.0" onMouseClicked="#okAgregarRestaurante" text="Ok" textFill="#2a295c">
                                      <font>
                                          <Font name="Segoe UI Bold" size="20.0" />
                                      </font>
