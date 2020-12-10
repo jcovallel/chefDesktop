@@ -46,7 +46,7 @@ public class UsuarioNormal extends Usuario implements Initializable{
     @FXML
     private AnchorPane draggable, parentPane;
 
-    public String imagepath="vacio397";
+    public List <String> imagepath;
     private String ip = "35.188.211.209";
     private String puerto = "8080";
     private String urlRaiz = "http://" + ip + ":" + puerto;
@@ -83,10 +83,19 @@ public class UsuarioNormal extends Usuario implements Initializable{
         FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.jpeg");
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().add(imageFilter);
-        File selectedFile = fc.showOpenDialog(null);
-        if (selectedFile != null){
-            archivocargado.setText(selectedFile.getName());
-            imagepath=selectedFile.getAbsolutePath();
+        List <File> selectedFile = fc.showOpenMultipleDialog(null);
+        System.out.println("size: "+selectedFile.get(0));
+        System.out.println("size: "+selectedFile.get(1));
+        if (!selectedFile.isEmpty()){
+            for(int i=0;i<selectedFile.size();i++){
+                if(i==0){
+                    archivocargado.setText(selectedFile.get(0).getName());
+                }
+                if(i==1){
+                    archivocargado.setText(archivocargado.getText()+" y "+selectedFile.size()+" archivo(s) más");
+                }
+                imagepath.add(selectedFile.get(i).getAbsolutePath());
+            }
         }else {
             helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
         }
@@ -119,7 +128,7 @@ public class UsuarioNormal extends Usuario implements Initializable{
                 // Print files
                 event.getDragboard().getFiles().forEach(file -> {
                     archivocargado.setText(file.getName());
-                    imagepath=file.getAbsolutePath();
+                    //imagepath=file.getAbsolutePath();
                 });
                 success = true;
             }
@@ -159,7 +168,7 @@ public class UsuarioNormal extends Usuario implements Initializable{
     }
 
     public void ButtonUploadAction(MouseEvent event){
-        if(imagepath.equalsIgnoreCase("vacio397")){
+        if(imagepath.isEmpty()){
             helper.showAlert("Aún no se ha seleccionado ninguna imagen", Alert.AlertType.INFORMATION);
         }else {
             new Thread(new Runnable() {
@@ -173,16 +182,18 @@ public class UsuarioNormal extends Usuario implements Initializable{
                     builder.addTextBody("field1", "yes", ContentType.TEXT_PLAIN);
 
                     // This attaches the file to the POST:
-                    File f = new File(imagepath);
-                    try {
-                        builder.addBinaryBody(
-                                "imageFile",
-                                new FileInputStream(f),
-                                ContentType.APPLICATION_OCTET_STREAM,
-                                f.getName()
-                        );
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                    for(int i=0; i<imagepath.size();i++){
+                        File f = new File(imagepath.get(i));
+                        try {
+                            builder.addBinaryBody(
+                                    "imageFile",
+                                    new FileInputStream(f),
+                                    ContentType.APPLICATION_OCTET_STREAM,
+                                    f.getName()
+                            );
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     HttpEntity multipart = builder.build();
@@ -204,7 +215,7 @@ public class UsuarioNormal extends Usuario implements Initializable{
                                 Platform.runLater(new Runnable() {
                                     @Override
                                     public void run() {
-                                        imagepath="vacio397";
+                                        imagepath.clear();
                                         archivocargado.setText("No ha seleccionado ninguna imagen");
                                         helper.showAlert("¡Imagen cargada satisfactoriamente!", Alert.AlertType.CONFIRMATION);
                                     }
