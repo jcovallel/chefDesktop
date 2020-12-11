@@ -713,6 +713,62 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                             nuevoNombreTmenu
                     )
             );
+
+
+            JSONArray jarray = new JSONArray();
+            try {
+                JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
+                JSONArray jarray3 = new JSONArray();
+                if (jsonArray2 != null) {
+                    for (int i = 0; i < jsonArray2.length(); i++) {
+                        String nombre = jsonArray2.getJSONObject(i).get("nombre").toString();
+                        //CREATE HORARIOS MENUS
+                        rest.POST(
+                                routes.getRoute(Routes.routesName.CREATE_HORARIO),
+                                "id", nombre + txtNuevoTmenu.getText(),
+
+                                "menu", txtNuevoTmenu.getText(),
+                                "hInicioRes", "-------",
+                                "hFinRes", "-------",
+                                "hInicioEnt", "-------",
+                                "hFinEnt", "-------"
+                        );
+                        //Create disponibilidad por menus
+                        rest.POST(
+                                routes.getRoute(Routes.routesName.CREATE_DISPO_MENU),
+                                "id", nombre + txtNuevoTmenu.getText(),
+                                "empresa", nombre,
+                                "menu", txtNuevoTmenu.getText(),
+                                "lunesref", "0",
+                                "martesref", "0",
+                                "miercolesref", "0",
+                                "juevesref", "0",
+                                "vienesref", "0",
+                                "sabadoref", "0",
+                                "domingoref", "0",
+                                "lunes", "0",
+                                "martes", "0",
+                                "miercoles", "0",
+                                "jueves", "0",
+                                "viernes", "0",
+                                "sabado", "0",
+                                "domingo", "0"
+                        );
+                        //CREACION MENU EMPRESA
+                        JSONObject jObject = new JSONObject();
+                        jObject.put("id", nombre + txtNuevoTmenu.getText());
+                        jObject.put("empresa", nombre);
+                        jObject.put("menu", txtNuevoTmenu.getText());
+                        jObject.put("check", false);
+                        jarray.put(jObject);
+                    }
+                    rest.POSTARRAY(routes.getRoute(Routes.routesName.CREATE_MENU_EMPRESA), jarray);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+
         }
         cargarListaMenus();
         this.paneEditarTmenu.setVisible(false);

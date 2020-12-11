@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class UsuarioNormal extends Usuario implements Initializable{
@@ -46,8 +47,8 @@ public class UsuarioNormal extends Usuario implements Initializable{
     @FXML
     private AnchorPane draggable, parentPane;
 
-    public List <String> imagepath;
-    private String ip = "35.188.211.209";
+    public List <String> imagepath = new ArrayList<String>();
+    private String ip = "127.0.0.1";
     private String puerto = "8080";
     private String urlRaiz = "http://" + ip + ":" + puerto;
 
@@ -84,15 +85,13 @@ public class UsuarioNormal extends Usuario implements Initializable{
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().add(imageFilter);
         List <File> selectedFile = fc.showOpenMultipleDialog(null);
-        System.out.println("size: "+selectedFile.get(0));
-        System.out.println("size: "+selectedFile.get(1));
         if (!selectedFile.isEmpty()){
             for(int i=0;i<selectedFile.size();i++){
                 if(i==0){
                     archivocargado.setText(selectedFile.get(0).getName());
                 }
                 if(i==1){
-                    archivocargado.setText(archivocargado.getText()+" y "+selectedFile.size()+" archivo(s) más");
+                    archivocargado.setText(archivocargado.getText()+" y "+(selectedFile.size()-1)+" archivo(s) más");
                 }
                 imagepath.add(selectedFile.get(i).getAbsolutePath());
             }
@@ -123,12 +122,19 @@ public class UsuarioNormal extends Usuario implements Initializable{
         });
 
         draggable.setOnDragDropped(event -> {
+            AtomicInteger index = new AtomicInteger();
             boolean success = false;
             if (event.getGestureSource() != draggable && event.getDragboard().hasFiles()) {
                 // Print files
                 event.getDragboard().getFiles().forEach(file -> {
-                    archivocargado.setText(file.getName());
-                    //imagepath=file.getAbsolutePath();
+                    if(index.get()==0){
+                        archivocargado.setText(file.getName());
+                    }
+                    if(index.get()==1){
+                        archivocargado.setText(archivocargado.getText()+" y "+(event.getDragboard().getFiles().size()-1)+" archivo(s) más");
+                    }
+                    imagepath.add(file.getAbsolutePath());
+                    index.getAndIncrement();
                 });
                 success = true;
             }
