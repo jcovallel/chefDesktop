@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import org.apache.http.HttpEntity;
@@ -39,7 +40,10 @@ public class UsuarioNormal extends Usuario implements Initializable{
     private AnchorPane paneDispoSuccess;
 
     @FXML
-    private Label archivocargado, labelUsuario;
+    private Label archivocargado, labelUsuario, cambiarDispoLabel;
+
+    @FXML
+    private ImageView cambiarDispoImage;
 
     @FXML
     private Tab reservaTab;
@@ -53,6 +57,15 @@ public class UsuarioNormal extends Usuario implements Initializable{
     private String urlRaiz = "http://" + ip + ":" + puerto;
 
     public void tabReservas(){
+        lunes_val.setDisable(true);
+        martes_val.setDisable(true);
+        miercoles_val.setDisable(true);
+        jueves_val.setDisable(true);
+        viernes_val.setDisable(true);
+        sabado_val.setDisable(true);
+        domingo_val.setDisable(true);
+        cambiarDispoLabel.setDisable(true);
+        cambiarDispoImage.setDisable(true);
         if(reservaTab.isSelected()) {
             try{
                 ObservableList<String> listatrue = FXCollections.observableArrayList();
@@ -246,7 +259,6 @@ public class UsuarioNormal extends Usuario implements Initializable{
     }
 
     public void modifyDispo(MouseEvent event) throws IOException {
-
         try{
             // creacion disponibilidad menu
             String respuesta = rest.POST(
@@ -288,16 +300,40 @@ public class UsuarioNormal extends Usuario implements Initializable{
     }
 
     public void getDisponibilidadMenus(){
+        cambiarDispoLabel.setDisable(false);
+        cambiarDispoImage.setDisable(false);
         try{
             JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_DISPO_MENUREF, UsuarioEntity.getNombre(), comboBoxTmenu.getValue().toString()));
+            JSONArray jsonArray3 = rest.GET(routes.getRoute(Routes.routesName.GET_DIAS, UsuarioEntity.getNombre()));
             if(jsonArray2 != null) {
-                lunes_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
-                martes_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
-                miercoles_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
-                jueves_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
-                viernes_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
-                sabado_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
-                domingo_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
+                if((Boolean) jsonArray3.getJSONObject(0).get("lunes")){
+                    lunes_val.setDisable(false);
+                    lunes_val.setText(jsonArray2.getJSONObject(0).get("lunesref").toString());
+                }
+                if((Boolean) jsonArray3.getJSONObject(0).get("martes")){
+                    martes_val.setDisable(false);
+                    martes_val.setText(jsonArray2.getJSONObject(0).get("martesref").toString());
+                }
+                if((Boolean) jsonArray3.getJSONObject(0).get("miercoles")){
+                    miercoles_val.setDisable(false);
+                    miercoles_val.setText(jsonArray2.getJSONObject(0).get("miercolesref").toString());
+                }
+                if((Boolean) jsonArray3.getJSONObject(0).get("jueves")){
+                    jueves_val.setDisable(false);
+                    jueves_val.setText(jsonArray2.getJSONObject(0).get("juevesref").toString());
+                }
+                if((Boolean) jsonArray3.getJSONObject(0).get("viernes")){
+                    viernes_val.setDisable(false);
+                    viernes_val.setText(jsonArray2.getJSONObject(0).get("viernesref").toString());
+                }
+                if((Boolean) jsonArray3.getJSONObject(0).get("sabado")){
+                    sabado_val.setDisable(false);
+                    sabado_val.setText(jsonArray2.getJSONObject(0).get("sabadoref").toString());
+                }
+                if((Boolean) jsonArray3.getJSONObject(0).get("domingo")){
+                    domingo_val.setDisable(false);
+                    domingo_val.setText(jsonArray2.getJSONObject(0).get("domingoref").toString());
+                }
             }else {
                 System.out.println("oh my");
             }

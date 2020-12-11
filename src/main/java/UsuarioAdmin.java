@@ -264,14 +264,63 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         }
 
         if(ambosNULL!=2 && badMail!=true){
-            rest.PUT(
-                    routes.getRoute(
-                            Routes.routesName.MODIFY_RESTAURANTE,
-                            listaRestaurante.getSelectionModel().getSelectedItem().toString(),
-                            nuevoNombre,
-                            nuevoCorreo
-                    )
-            );
+            try{
+                rest.POST(
+                        routes.getRoute(Routes.routesName.MODIFY_RESTAURANTE),
+                        "id", listaRestaurante.getSelectionModel().getSelectedItem().toString(),
+                        "nombre", nuevoNombre,
+                        "correo", nuevoCorreo
+                );
+                if(!nuevoNombre.equals("NULL")){
+                    rest.POST(
+                            routes.getRoute(Routes.routesName.MODIFY_DIAS_SITIO),
+                            "id", listaRestaurante.getSelectionModel().getSelectedItem().toString(),
+                            "empresa", nuevoNombre
+                    );
+
+                    String[] dias = {"lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"};
+                    for(String diasIterator : dias){
+                        rest.POST(
+                                routes.getRoute(Routes.routesName.MODIFY_FRANJA_HORAS),
+                                "id", listaRestaurante.getSelectionModel().getSelectedItem().toString() + diasIterator,
+                                "empresa", nuevoNombre,
+                                "dia", diasIterator
+                        );
+                    }
+
+                    JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_MENUS));
+                    if(jsonArray2 != null) {
+                        for (int i = 0; i < jsonArray2.length(); i++) {
+                            String menu = (String) jsonArray2.getJSONObject(i).get("menu");
+                            //MODIFY disponibilidad por menus
+                            rest.POST(
+                                    routes.getRoute(Routes.routesName.MODIFY_DISPO_MENU),
+                                    "id", listaRestaurante.getSelectionModel().getSelectedItem().toString() + menu,
+                                    "empresa", nuevoNombre,
+                                    "menu", menu
+                            );
+
+                            //modify MENU EMPRESA
+                            rest.POST(
+                                    routes.getRoute(Routes.routesName.MODIFY_MENU_EMPRESA),
+                                    "id", listaRestaurante.getSelectionModel().getSelectedItem().toString() + menu,
+                                    "empresa", nuevoNombre,
+                                    "menu", menu
+                            );
+
+                            //MODIFY HORARIOS MENUS
+                            rest.POST(
+                                    routes.getRoute(Routes.routesName.MODIFY_HORARIO_MENUS),
+                                    "id", listaRestaurante.getSelectionModel().getSelectedItem().toString() + menu,
+                                    "empresa", nuevoNombre,
+                                    "menu", menu
+                            );
+                        }
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         if(badMail!=true){
             cargarListaUsers();
@@ -351,7 +400,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                                                 "martesref", "0",
                                                 "miercolesref", "0",
                                                 "juevesref", "0",
-                                                "vienesref", "0",
+                                                "viernesref", "0",
                                                 "sabadoref", "0",
                                                 "domingoref", "0",
                                                 "lunes", "0",
@@ -361,6 +410,18 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                                                 "viernes", "0",
                                                 "sabado", "0",
                                                 "domingo", "0"
+                                        );
+
+                                        //CREATE HORARIOS MENUS
+                                        rest.POST(
+                                                routes.getRoute(Routes.routesName.CREATE_HORARIO),
+                                                "id", txtNuevoRestaurante.getText()+menu,
+                                                "empresa", txtNuevoRestaurante.getText(),
+                                                "menu", menu,
+                                                "hInicioRes", "-------",
+                                                "hFinRes", "-------",
+                                                "hInicioEnt", "-------",
+                                                "hFinEnt", "-------"
                                         );
                                     }
                                     rest.POSTARRAY(routes.getRoute(Routes.routesName.CREATE_MENU_EMPRESA), jarray);
@@ -375,7 +436,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                             rest.POST(
                                     routes.getRoute(Routes.routesName.CREATE_DIAS_DISPONIBLES_EMPRESA),
                                     "id", txtNuevoRestaurante.getText(),
-                                    "nombre", txtNuevoRestaurante.getText(),
+                                    "empresa", txtNuevoRestaurante.getText(),
                                     "lunes", "false",
                                     "martes", "false",
                                     "miercoles", "false",
@@ -578,6 +639,12 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         rest.GET(
                 routes.getRoute(
                         Routes.routesName.DELETE_DISPO_MENU,
+                        listaRestaurante.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_DISPO_FRANJAH,
                         listaRestaurante.getSelectionModel().getSelectedItem().toString()
                 )
         );
@@ -800,7 +867,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                                     "martesref", "0",
                                     "miercolesref", "0",
                                     "juevesref", "0",
-                                    "vienesref", "0",
+                                    "viernesref", "0",
                                     "sabadoref", "0",
                                     "domingoref", "0",
                                     "lunes", "0",

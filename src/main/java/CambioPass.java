@@ -77,12 +77,11 @@ public class CambioPass extends Application{
             else{
 
                 try{
-                    rest.PUT(
-                            routes.getRoute(
-                                    Routes.routesName.MODIFY_USUARIO,
-                                    UsuarioEntity.getNombre(),
-                                    helper.hash(txtPass.getText()), "NULL"
-                            )
+                    rest.POST(
+                            routes.getRoute(Routes.routesName.MODIFY_USUARIO),
+                            "id", UsuarioEntity.getNombre(),
+                            "password", helper.hash(txtPass.getText()),
+                            "correo", "NULL"
                     );
                     JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_ROL, UsuarioEntity.getUsuario("", 0).getNombre()));
                     if(jsonArray.getJSONObject(0).get("response").toString().equals("2") || jsonArray.getJSONObject(0).get("response").toString().equals("1")){
