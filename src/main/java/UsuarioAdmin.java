@@ -706,69 +706,43 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         }
 
         if(nombreNULL==0){
-            rest.PUT(
-                    routes.getRoute(
-                            Routes.routesName.MODIFY_MENU,
-                            listaTmenu.getSelectionModel().getSelectedItem().toString(),
-                            nuevoNombreTmenu
-                    )
-            );
-
-
-            JSONArray jarray = new JSONArray();
             try {
+                rest.POST(
+                        routes.getRoute(Routes.routesName.MODIFY_MENU),
+                        "id", listaTmenu.getSelectionModel().getSelectedItem().toString(),
+                        "menu", nuevoNombreTmenu
+                );
+
                 JSONArray jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
-                JSONArray jarray3 = new JSONArray();
                 if (jsonArray2 != null) {
                     for (int i = 0; i < jsonArray2.length(); i++) {
                         String nombre = jsonArray2.getJSONObject(i).get("nombre").toString();
-                        //CREATE HORARIOS MENUS
+                        //MODIFY HORARIOS MENUS
                         rest.POST(
-                                routes.getRoute(Routes.routesName.CREATE_HORARIO),
-                                "id", nombre + txtNuevoTmenu.getText(),
-
-                                "menu", txtNuevoTmenu.getText(),
-                                "hInicioRes", "-------",
-                                "hFinRes", "-------",
-                                "hInicioEnt", "-------",
-                                "hFinEnt", "-------"
-                        );
-                        //Create disponibilidad por menus
+                                routes.getRoute(Routes.routesName.MODIFY_HORARIO_MENUS),
+                                "id", nombre + listaTmenu.getSelectionModel().getSelectedItem().toString(),
+                                "empresa",nombre,
+                                "menu", nuevoNombreTmenu
+                                );
+                        //MODIFY disponibilidad por menus
                         rest.POST(
-                                routes.getRoute(Routes.routesName.CREATE_DISPO_MENU),
-                                "id", nombre + txtNuevoTmenu.getText(),
-                                "empresa", nombre,
-                                "menu", txtNuevoTmenu.getText(),
-                                "lunesref", "0",
-                                "martesref", "0",
-                                "miercolesref", "0",
-                                "juevesref", "0",
-                                "vienesref", "0",
-                                "sabadoref", "0",
-                                "domingoref", "0",
-                                "lunes", "0",
-                                "martes", "0",
-                                "miercoles", "0",
-                                "jueves", "0",
-                                "viernes", "0",
-                                "sabado", "0",
-                                "domingo", "0"
+                                routes.getRoute(Routes.routesName.MODIFY_DISPO_MENU),
+                                "id", nombre + listaTmenu.getSelectionModel().getSelectedItem().toString(),
+                                "empresa",nombre,
+                                "menu", nuevoNombreTmenu
                         );
-                        //CREACION MENU EMPRESA
-                        JSONObject jObject = new JSONObject();
-                        jObject.put("id", nombre + txtNuevoTmenu.getText());
-                        jObject.put("empresa", nombre);
-                        jObject.put("menu", txtNuevoTmenu.getText());
-                        jObject.put("check", false);
-                        jarray.put(jObject);
+                        //modify MENU EMPRESA
+                        rest.POST(
+                                routes.getRoute(Routes.routesName.MODIFY_MENU_EMPRESA),
+                                "id", nombre + listaTmenu.getSelectionModel().getSelectedItem().toString(),
+                                "empresa",nombre,
+                                "menu", nuevoNombreTmenu
+                        );
                     }
-                    rest.POSTARRAY(routes.getRoute(Routes.routesName.CREATE_MENU_EMPRESA), jarray);
                 }
             }catch (Exception e){
                 e.printStackTrace();
             }
-
-
         }
         cargarListaMenus();
         this.paneEditarTmenu.setVisible(false);
@@ -898,6 +872,24 @@ public class UsuarioAdmin extends Usuario implements Initializable{
         rest.GET(
                 routes.getRoute(
                         Routes.routesName.DELETE_MENU,
+                        listaTmenu.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_HORARIO_MENU_BYMENU,
+                        listaTmenu.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_DISPO_MENU_BYMENU,
+                        listaTmenu.getSelectionModel().getSelectedItem().toString()
+                )
+        );
+        rest.GET(
+                routes.getRoute(
+                        Routes.routesName.DELETE_LISMENU_EMPRESAS_BYMENU,
                         listaTmenu.getSelectionModel().getSelectedItem().toString()
                 )
         );
