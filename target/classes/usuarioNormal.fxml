@@ -65,7 +65,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                        </ImageView>
-                       <Label layoutX="80.0" layoutY="306.0" onMouseClicked="#ButtonUploadAction" text="Cargar menú" textFill="#2a295c">
+                       <Label layoutX="80.0" layoutY="306.0" onMouseClicked="#ButtonUploadAction" text="Cargar menús" textFill="#2a295c">
                           <font>
                              <Font name="Segoe UI Bold" size="20.0" />
                           </font>

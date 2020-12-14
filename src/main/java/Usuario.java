@@ -103,17 +103,20 @@ public class Usuario extends Application{
             if(!nuevoCorreo.equals("NULL")){
                 if(jsonArray != null){
                     if(jsonArray.getJSONObject(0).get("acceso").toString().contains("true")){
-                        rest.PUT(
-                                routes.getRoute(
-                                        Routes.routesName.MODIFY_USUARIO,
-                                        UsuarioEntity.getNombre(),
-                                        nuevoPass,
-                                        nuevoCorreo
-                                )
-                        );
-                        panelConfirmarCuenta.setVisible(false);
-                        labelCuentaError.setText("La información se actualizó satisfactoriamente");
-                        paneCuentaError.setVisible(true);
+                        try{
+                            rest.POST(
+                                    routes.getRoute(Routes.routesName.MODIFY_USUARIO),
+                                    "id", UsuarioEntity.getNombre(),
+                                    "password", nuevoPass,
+                                    "correo", nuevoCorreo
+                            );
+                            panelConfirmarCuenta.setVisible(false);
+                            labelCuentaError.setText("La información se actualizó satisfactoriamente");
+                            paneCuentaError.setVisible(true);
+                        }catch (Exception e){
+                            labelCuentaError.setText("Ocurrió un error. Intente más tarde");
+                            paneCuentaError.setVisible(true);
+                        }
                     }
                     else{
                         labelCuentaError.setText("Contraseña incorrecta");
@@ -132,21 +135,23 @@ public class Usuario extends Application{
         }
         else{
             if(txtNuevoPass.getText().equals(txtNuevoPassAgain.getText())){
-
                 nuevoPass = helper.hash(txtNuevoPass.getText());
                 if(jsonArray != null){
                     if(jsonArray.getJSONObject(0).get("acceso").toString().contains("true")){
-                        rest.PUT(
-                                routes.getRoute(
-                                        Routes.routesName.MODIFY_USUARIO,
-                                        UsuarioEntity.getNombre(),
-                                        nuevoPass,
-                                        nuevoCorreo
-                                )
-                        );
-                        panelConfirmarCuenta.setVisible(false);
-                        labelCuentaError.setText("La información se actualizó satisfactoriamente");
-                        paneCuentaError.setVisible(true);
+                        try{
+                            rest.POST(
+                                    routes.getRoute(Routes.routesName.MODIFY_USUARIO),
+                                    "id", UsuarioEntity.getNombre(),
+                                    "password", nuevoPass,
+                                    "correo", nuevoCorreo
+                            );
+                            panelConfirmarCuenta.setVisible(false);
+                            labelCuentaError.setText("La información se actualizó satisfactoriamente");
+                            paneCuentaError.setVisible(true);
+                        }catch (Exception e){
+                            labelCuentaError.setText("Ocurrió un error. Intente más tarde");
+                            paneCuentaError.setVisible(true);
+                        }
                     }
                     else{
                         labelCuentaError.setText("Contraseña incorrecta");

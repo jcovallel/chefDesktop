@@ -255,6 +255,16 @@ public class UsuarioNormal extends Usuario implements Initializable{
                     }
                 }
             }).start();
+
+            try{
+                rest.POST(
+                        routes.getRoute(Routes.routesName.MODIFY_IMGNUM),
+                        "id", UsuarioEntity.getNombre(),
+                        "imgnum", String.valueOf(imagepath.size())
+                );
+            }catch (Exception e){
+
+            }
         }
     }
 

@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -5,22 +6,34 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.passay.*;
 import org.apache.commons.validator.routines.EmailValidator;
 
-import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class UsuarioAdmin extends Usuario implements Initializable{
     @FXML
@@ -28,7 +41,8 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     @FXML
     private AnchorPane paneEditarRestaurante, paneAgregarRestaurante1, paneAgregarRestaurante2, paneEliminarRestaurante, paneSinPermisos, parentPane,
-            paneEliminarTmenu, paneAgregarTmenu, paneEditarTmenu, paneAsignarMenu, reservaAnchor, paneDispoSuccess, paneAsignarMenuSuccess;
+            paneEliminarTmenu, paneAgregarTmenu, paneEditarTmenu, paneAsignarMenu, reservaAnchor, paneDispoSuccess, paneAsignarMenuSuccess,
+            draggable2;
 
     @FXML
     private ListView listaRestaurante, listaRestauranteComent, listaTmenu;
@@ -39,7 +53,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             minutoFinEntrega, amFinEntrega, ListaRestaurant, ListaMenuReservas;
 
     @FXML
-    private Label labelRestaurantes, labelAgregarMenu, cambioHorarioTxt, cambioDispoTxt;
+    private Label labelRestaurantes, labelAgregarMenu, cambioHorarioTxt, cambioDispoTxt, archivocargado2;
 
     @FXML
     ImageView btnEditar, btnEliminar, btnAgregar, btnEliminarTmenu, btnAgregarTmenu, btnEditarTmenu, cambioHorarioImg,
@@ -64,11 +78,17 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     ObservableList<MenuModel> listaMenus = FXCollections.observableArrayList();
 
+    List <String> imagepath = new ArrayList<String>();
+
     String listviewVacia;
+
+    private String ip = "127.0.0.1";
+    private String puerto = "8080";
+    private String urlRaiz = "http://" + ip + ":" + puerto;
 
     @Override
     public void tabComentarios() {
-
+        cargarListaComent();
     }
 
     public void tabRestaurantes() {
@@ -184,7 +204,8 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             helper.showAlert("Ocurrió un error inesperado ERR03T", Alert.AlertType.ERROR);//Error 03T error al realizar el delay
         }
         try{
-            JSONArray jsonArray2 = null;
+            String adminName = rest.GET(routes.getRoute(Routes.routesName.GET_ADMIN_NAME)).getJSONObject(0).get("nombre").toString();
+            JSONArray jsonArray2;
             if(UsuarioEntity.getRol().equals(1)){
                 jsonArray2 = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS));
             }else{
@@ -197,9 +218,9 @@ public class UsuarioAdmin extends Usuario implements Initializable{
                 }else {
                     listaRestaurante.setDisable(false);
                     for(int i = 0; i < jsonArray2.length(); i++){
-                        listaRestaurante.getItems().add((String) jsonArray2.getJSONObject(i).get("nombre"));
+                        listaRestaurante.getItems().add(jsonArray2.getJSONObject(i).get("nombre"));
                     }
-                    listaRestaurante.getItems().remove((String) "Administrador");
+                    listaRestaurante.getItems().remove(adminName);
                 }
             }else {
                 helper.showAlert("Ocurrió un error al consultar el listado de usuarios, verifique su conexión a internet. Si el error persiste comuníquese con el administrador del sistema", Alert.AlertType.ERROR);
@@ -978,7 +999,7 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     public void cuentaAceptarMouseClicked(){
         if(!txtNuevoPass.getText().isEmpty()){
             List<Rule> rules = new ArrayList();
-            rules.add(new LengthRule(8));
+            rules.add(new LengthRule(8, 28));
             rules.add(new CharacterRule(EnglishCharacterData.UpperCase, 1));
             rules.add(new CharacterRule(EnglishCharacterData.LowerCase, 1));
             rules.add(new CharacterRule(EnglishCharacterData.Digit, 2));
@@ -989,8 +1010,9 @@ public class UsuarioAdmin extends Usuario implements Initializable{
             if(!result.isValid()){
                 labelCuentaError.setText("La contraseña debe seguir los estandares impuestos");
                 paneCuentaError.setVisible(true);
+            }else{
+                panelConfirmarCuenta.setVisible(true);
             }
-            panelConfirmarCuenta.setVisible(true);
         }else{
             if(!txtCorreo.getText().isEmpty()){
                 panelConfirmarCuenta.setVisible(true);
@@ -1020,22 +1042,17 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     }
 
     private void cargarListaComent () {
-        /*if(!listaRestauranteComent.getItems().isEmpty()){
-            listaRestauranteComent.getItems().clear();
-        }*/
+        listaRestauranteComent.getItems().clear();
+        try{
+            TimeUnit.MILLISECONDS.sleep(250);
+        }catch (Exception e){
+            helper.showAlert("Ocurrió un error inesperado ERR03T", Alert.AlertType.ERROR);//Error 03T error al realizar el delay
+        }
         try{
             JSONArray jsonArray = rest.GET(routes.getRoute(Routes.routesName.GET_USUARIOS_ROL3));
             if(jsonArray != null ){
                 for(int i = 0; i < jsonArray.length(); i++){
                     listaRestauranteComent.getItems().add((String) jsonArray.getJSONObject(i).get("nombre"));
-                }
-                try{
-                    //listaRestaurante.refresh();
-                    //listaRestaurante.
-                    listaRestauranteComent.getItems().remove((String) "Administrador");
-                }
-                catch(Exception e){
-                    System.out.println("testando");
                 }
             }
             listaRestauranteComent.getItems().sort((Object c1, Object c2) -> c1.toString().compareTo((String) c2));
@@ -1346,5 +1363,163 @@ public class UsuarioAdmin extends Usuario implements Initializable{
     public void cerrarPopupAsignarMenuSuccess() {
         paneAsignarMenuSuccess.setVisible(false);
     }
+
+    //############################################### CARGA DE TIPS ##############################################################
+    public void ButtonUploadImageAction(MouseEvent event){
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.jpeg");
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().add(imageFilter);
+        List <File> selectedFile = fc.showOpenMultipleDialog(null);
+        if (!selectedFile.isEmpty()){
+            for(int i=0;i<selectedFile.size();i++){
+                if(i==0){
+                    archivocargado2.setText(selectedFile.get(0).getName());
+                }
+                if(i==1){
+                    archivocargado2.setText(archivocargado2.getText()+" y "+(selectedFile.size()-1)+" archivo(s) más");
+                }
+                imagepath.add(selectedFile.get(i).getAbsolutePath());
+            }
+        }else {
+            helper.showAlert("Ocurrió un error inesperado", Alert.AlertType.ERROR);
+        }
+    }
+
+    public void dragImagen(){
+        final List<String> validExtensions = Arrays.asList("jpg", "png", "jpeg");
+        draggable2.setOnDragOver(event -> {
+            // On drag over if the DragBoard has files
+            if (event.getGestureSource() != draggable2 && event.getDragboard().hasFiles()) {
+                // All files on the dragboard must have an accepted extension
+                if (!validExtensions.containsAll(
+                        event.getDragboard().getFiles().stream()
+                                .map(file -> getExtension(file.getName()))
+                                .collect(Collectors.toList()))) {
+
+                    event.consume();
+                    return;
+                }
+
+                // Allow for both copying and moving
+                event.acceptTransferModes(TransferMode.COPY);
+            }
+            event.consume();
+        });
+
+        draggable2.setOnDragDropped(event -> {
+            AtomicInteger index = new AtomicInteger();
+            boolean success = false;
+            if (event.getGestureSource() != draggable2 && event.getDragboard().hasFiles()) {
+                // Print files
+                event.getDragboard().getFiles().forEach(file -> {
+                    if(index.get()==0){
+                        archivocargado2.setText(file.getName());
+                    }
+                    if(index.get()==1){
+                        archivocargado2.setText(archivocargado2.getText()+" y "+(event.getDragboard().getFiles().size()-1)+" archivo(s) más");
+                    }
+                    imagepath.add(file.getAbsolutePath());
+                    index.getAndIncrement();
+                });
+                success = true;
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
+    }
+
+    public void ButtonUploadAction(MouseEvent event) throws IOException {
+        if(imagepath.isEmpty()){
+            helper.showAlert("Aún no se ha seleccionado ninguna imagen", Alert.AlertType.INFORMATION);
+        }else {
+            String adminName = rest.GET(routes.getRoute(Routes.routesName.GET_ADMIN_NAME)).getJSONObject(0).get("nombre").toString();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //Do post (read, from link below)
+                    CloseableHttpClient httpClient = HttpClients.createDefault();
+                    HttpPost uploadFile = new HttpPost(urlRaiz + routes.getRoute(Routes.routesName.UPLOAD_IMAGE, adminName));
+
+                    MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                    builder.addTextBody("field1", "yes", ContentType.TEXT_PLAIN);
+
+                    // This attaches the file to the POST:
+                    for(int i=0; i<imagepath.size();i++){
+                        File f = new File(imagepath.get(i));
+                        try {
+                            builder.addBinaryBody(
+                                    "imageFile",
+                                    new FileInputStream(f),
+                                    ContentType.APPLICATION_OCTET_STREAM,
+                                    f.getName()
+                            );
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    HttpEntity multipart = builder.build();
+                    uploadFile.setEntity(multipart);
+                    CloseableHttpResponse response = null;
+                    try {
+                        response = httpClient.execute(uploadFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    HttpEntity responseEntity = response.getEntity();
+
+                    //Update of fragment from that article about POST in Java:
+                    if (responseEntity != null) {
+                        InputStream instream = null;
+                        try {
+                            instream = responseEntity.getContent();
+                            if(EntityUtils.toString(responseEntity).equalsIgnoreCase("exitosa")){
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        imagepath.clear();
+                                        archivocargado2.setText("No ha seleccionado ninguna imagen");
+                                        helper.showAlert("¡Imagen cargada satisfactoriamente!", Alert.AlertType.CONFIRMATION);
+                                    }
+                                });
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            //If you need to update of UI here, use Platform.runLater(Runnable);
+                        } finally {
+                            try {
+                                instream.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }).start();
+
+            try{
+                rest.POST(
+                        routes.getRoute(Routes.routesName.MODIFY_IMGNUM),
+                        "id", adminName,
+                        "imgnum", String.valueOf(imagepath.size())
+                );
+            }catch (Exception e){
+
+            }
+        }
+    }
+
+    private String getExtension(String fileName){
+        String extension = "";
+
+        int i = fileName.lastIndexOf('.');
+        if (i > 0 && i < fileName.length() - 1) //if the name is not empty
+            return fileName.substring(i + 1).toLowerCase();
+
+        return extension;
+    }
+    //###########################################################################################################################
 }
 

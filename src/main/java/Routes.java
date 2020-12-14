@@ -49,7 +49,9 @@ public class Routes{
         DELETE_DISPO_MENU_BYMENU,
         MODIFY_DIAS_SITIO,
         MODIFY_FRANJA_HORAS,
-        DELETE_DISPO_FRANJAH
+        DELETE_DISPO_FRANJAH,
+        MODIFY_IMGNUM,
+        GET_ADMIN_NAME
     }
     private static HashMap<String, String> routesHash;
     private static Routes routesEntity;
@@ -109,6 +111,8 @@ public class Routes{
         routesHash.put("MODIFY_DIAS_SITIO", "/chef/modifydiassitio/");
         routesHash.put("MODIFY_FRANJA_HORAS", "/chef/modifyhours/");
         routesHash.put("DELETE_DISPO_FRANJAH", "/chef/deletedispofranjah/");
+        routesHash.put("MODIFY_IMGNUM", "/chef/modifyimgnum/");
+        routesHash.put("GET_ADMIN_NAME", "/chef/getadminname/");
     }
 
     public static Routes getRoutesClass(){
