@@ -15,7 +15,8 @@ public class Main extends Application {
         primaryStage.setTitle("KitchenWorksDesktop");
         //primaryStage.getIcons().add(new Image("\\images\\cubiertos.png"));
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("images/cubiertos.png")));
-        primaryStage.setScene(new Scene(logIn, 600, 400));
+        //primaryStage.setScene(new Scene(logIn, 600, 400));
+        primaryStage.setScene(new Scene(logIn, 650, 400));
         primaryStage.show();
     }
 

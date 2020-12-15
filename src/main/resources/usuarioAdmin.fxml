@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UsuarioAdmin">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UsuarioAdmin">
     <center>
         <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
@@ -17,7 +17,7 @@
                     <content>
                         <AnchorPane fx:id="parentPane" minHeight="0.0" minWidth="0.0" onMouseClicked="#ListaRestauranteMouseClicked" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                      <children>
-                        <ListView fx:id="listaRestaurante" layoutX="16.0" layoutY="64.0" onMouseClicked="#ListaRestauranteMouseClicked" prefHeight="234.0" prefWidth="565.0" />
+                        <ListView fx:id="listaRestaurante" layoutX="16.0" layoutY="64.0" onMouseClicked="#ListaRestauranteMouseClicked" prefHeight="234.0" prefWidth="620.0" />
                         <ImageView fx:id="btnEliminar" fitHeight="39.0" fitWidth="34.0" layoutX="547.0" layoutY="317.0" onMouseClicked="#eliminarRestaurante" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/delete_bin.png" />
@@ -184,7 +184,7 @@
                              </children>
                          </AnchorPane>
 
-                        <AnchorPane layoutX="-3.0" layoutY="-4.0" onMouseClicked="#ListaRestauranteMouseClicked" prefHeight="60.0" prefWidth="607.0" style="-fx-background-color: #2a295c;">
+                        <AnchorPane layoutX="-3.0" layoutY="-4.0" onMouseClicked="#ListaRestauranteMouseClicked" prefHeight="60.0" prefWidth="658.0" style="-fx-background-color: #2a295c;">
                            <children>
                               <Label fx:id="labelRestaurantes" layoutX="14.0" layoutY="18.0" onMouseClicked="#ListaRestauranteMouseClicked" text="Restaurantes" textFill="WHITE">
                                  <font>
@@ -310,7 +310,7 @@
                     <content>
                         <AnchorPane fx:id="PROVISIONAL" minHeight="0.0" minWidth="0.0" onMouseClicked="#ListaTmenuMouseClicked" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                             <children>
-                                <ListView fx:id="listaTmenu" layoutX="16.0" layoutY="64.0" onMouseClicked="#ListaTmenuMouseClicked" prefHeight="234.0" prefWidth="565.0" />
+                                <ListView fx:id="listaTmenu" layoutX="16.0" layoutY="64.0" onMouseClicked="#ListaTmenuMouseClicked" prefHeight="234.0" prefWidth="621.0" />
                                 <ImageView fx:id="btnEliminarTmenu" fitHeight="39.0" fitWidth="34.0" layoutX="547.0" layoutY="317.0" onMouseClicked="#eliminarTmenu" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@images/delete_bin.png" />
@@ -409,7 +409,7 @@
                                         </Label>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane layoutX="-3.0" layoutY="-4.0" onMouseClicked="#ListaTmenuMouseClicked" prefHeight="60.0" prefWidth="607.0" style="-fx-background-color: #2a295c;">
+                                <AnchorPane layoutX="-3.0" layoutY="-4.0" onMouseClicked="#ListaTmenuMouseClicked" prefHeight="60.0" prefWidth="657.0" style="-fx-background-color: #2a295c;">
                                     <children>
                                         <Label fx:id="labelTmenu" layoutX="14.0" layoutY="18.0" onMouseClicked="#ListaTmenuMouseClicked" text="Tipos de Menú" textFill="WHITE">
                                             <font>
@@ -516,7 +516,7 @@
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
                                 </Label>
-                                <AnchorPane prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #2a295c;">
+                                <AnchorPane prefHeight="60.0" prefWidth="650.0" style="-fx-background-color: #2a295c;">
                                     <children>
                                         <Label layoutX="14.0" layoutY="16.0" text="Administrar Tipos de Menú y Disponibilidad" textFill="WHITE">
                                             <font>
@@ -557,7 +557,7 @@
                               <Font name="Segoe UI Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label layoutX="443.0" layoutY="248.0" text=":">
+                        <Label layoutX="460.0" layoutY="248.0" text=":">
                            <font>
                               <Font name="Segoe UI Bold" size="16.0" />
                            </font>
@@ -572,18 +572,18 @@
                               <Font name="Segoe UI Semibold" size="13.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="amInicioEntrega" layoutX="515.0" layoutY="245.0" prefHeight="25.0" prefWidth="83.0" promptText="AM/PM" />
-                        <ComboBox fx:id="minutoInicioEntrega" layoutX="450.0" layoutY="245.0" prefHeight="25.0" prefWidth="64.0" promptText="MM" />
-                        <ComboBox fx:id="horaInicioEntrega" layoutX="380.0" layoutY="245.0" prefHeight="25.0" prefWidth="60.0" promptText="HH" />
-                        <Label layoutX="443.0" layoutY="282.0" text=":">
+                        <ComboBox fx:id="amInicioEntrega" layoutX="550.0" layoutY="245.0" prefHeight="25.0" prefWidth="93.0" promptText="AM/PM" />
+                        <ComboBox fx:id="minutoInicioEntrega" layoutX="470.0" layoutY="245.0" prefHeight="25.0" prefWidth="74.0" promptText="MM" />
+                        <ComboBox fx:id="horaInicioEntrega" layoutX="385.0" layoutY="245.0" prefHeight="25.0" prefWidth="70.0" promptText="HH" />
+                        <Label layoutX="460.0" layoutY="282.0" text=":">
                            <font>
                               <Font name="Segoe UI Bold" size="16.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="amFinEntrega" layoutX="515.0" layoutY="279.0" prefHeight="25.0" prefWidth="83.0" promptText="AM/PM" />
-                        <ComboBox fx:id="minutoFinEntrega" layoutX="450.0" layoutY="279.0" prefHeight="25.0" prefWidth="64.0" promptText="MM" />
-                        <ComboBox fx:id="horaFinEntrega" layoutX="380.0" layoutY="279.0" prefHeight="25.0" prefWidth="60.0" promptText="HH" />
-                        <ImageView fx:id="cambioHorarioImg" fitHeight="41.0" fitWidth="37.0" layoutX="368.0" layoutY="315.0" onMouseClicked="#cambiarHorarios" pickOnBounds="true" preserveRatio="true">
+                        <ComboBox fx:id="amFinEntrega" layoutX="550.0" layoutY="279.0" prefHeight="25.0" prefWidth="93.0" promptText="AM/PM" />
+                        <ComboBox fx:id="minutoFinEntrega" layoutX="470.0" layoutY="279.0" prefHeight="25.0" prefWidth="74.0" promptText="MM" />
+                        <ComboBox fx:id="horaFinEntrega" layoutX="385.0" layoutY="279.0" prefHeight="25.0" prefWidth="70.0" promptText="HH" />
+                        <ImageView fx:id="cambioHorarioImg" fitHeight="41.0" fitWidth="37.0" layoutX="398.0" layoutY="315.0" onMouseClicked="#cambiarHorarios" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/change.png" />
                            </image>
@@ -591,7 +591,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Label fx:id="cambioHorarioTxt" layoutX="411.0" layoutY="324.0" onMouseClicked="#cambiarHorarios" text="Cambiar horarios" textFill="#2a295c">
+                        <Label fx:id="cambioHorarioTxt" layoutX="445.0" layoutY="324.0" onMouseClicked="#cambiarHorarios" text="Cambiar horarios" textFill="#2a295c">
                            <font>
                               <Font name="Segoe UI Bold" size="15.0" />
                            </font>
@@ -602,7 +602,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label layoutX="443.0" layoutY="154.0" text=":">
+                        <Label layoutX="460.0" layoutY="154.0" text=":">
                            <font>
                               <Font name="Segoe UI Bold" size="16.0" />
                            </font>
@@ -617,17 +617,17 @@
                               <Font name="Segoe UI Semibold" size="13.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="amInicioReserva" layoutX="515.0" layoutY="151.0" prefHeight="25.0" prefWidth="83.0" promptText="AM/PM" />
-                        <ComboBox fx:id="minutoInicioReserva" layoutX="450.0" layoutY="151.0" prefHeight="25.0" prefWidth="64.0" promptText="MM" />
-                        <ComboBox fx:id="horaInicioReserva" layoutX="380.0" layoutY="151.0" prefHeight="25.0" prefWidth="60.0" promptText="HH" />
-                        <Label layoutX="443.0" layoutY="188.0" text=":">
+                        <ComboBox fx:id="amInicioReserva" layoutX="550.0" layoutY="151.0" prefHeight="25.0" prefWidth="93.0" promptText="AM/PM" />
+                        <ComboBox fx:id="minutoInicioReserva" layoutX="470.0" layoutY="151.0" prefHeight="25.0" prefWidth="74.0" promptText="MM" />
+                        <ComboBox fx:id="horaInicioReserva" layoutX="385.0" layoutY="151.0" prefHeight="25.0" prefWidth="70.0" promptText="HH" />
+                        <Label layoutX="460.0" layoutY="188.0" text=":">
                            <font>
                               <Font name="Segoe UI Bold" size="16.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="amFinReserva" layoutX="515.0" layoutY="185.0" prefHeight="25.0" prefWidth="83.0" promptText="AM/PM" />
-                        <ComboBox fx:id="minutoFinReserva" layoutX="450.0" layoutY="185.0" prefHeight="25.0" prefWidth="64.0" promptText="MM" />
-                        <ComboBox fx:id="horaFinReserva" layoutX="380.0" layoutY="185.0" prefHeight="25.0" prefWidth="60.0" promptText="HH" />
+                        <ComboBox fx:id="amFinReserva" layoutX="550.0" layoutY="185.0" prefHeight="25.0" prefWidth="93.0" promptText="AM/PM" />
+                        <ComboBox fx:id="minutoFinReserva" layoutX="470.0" layoutY="185.0" prefHeight="25.0" prefWidth="74.0" promptText="MM" />
+                        <ComboBox fx:id="horaFinReserva" layoutX="385.0" layoutY="185.0" prefHeight="25.0" prefWidth="70.0" promptText="HH" />
                                 <AnchorPane fx:id="paneDispoSuccess" layoutX="114.0" layoutY="77.0" prefHeight="131.0" prefWidth="373.0" style="-fx-background-color: white;" visible="false">
                                     <effect>
                                         <DropShadow offsetX="5.0" offsetY="5.0" />
@@ -671,7 +671,7 @@
                     <content>
                         <AnchorPane fx:id="parentPaneTips" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                             <children>
-                                <AnchorPane fx:id="draggable2" layoutX="18.0" layoutY="76.0" onDragEntered="#dragImagen" onMouseDragged="#dragImagen" prefHeight="163.0" prefWidth="564.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: segments(5, 5, 5, 5)  line-cap round;">
+                                <AnchorPane fx:id="draggable2" layoutX="18.0" layoutY="76.0" onDragEntered="#dragImagen" onMouseDragged="#dragImagen" prefHeight="163.0" prefWidth="613.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-style: segments(5, 5, 5, 5)  line-cap round;">
                                     <children>
                                         <Label layoutX="94.0" layoutY="28.0" prefHeight="72.0" prefWidth="376.0" text="Arrastre y suelte aquí las imagenes de los&#10;tips que desea cargar" textAlignment="CENTER">
                                             <font>
@@ -727,7 +727,7 @@
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
                                 </Label>
-                                <AnchorPane layoutY="-6.0" prefHeight="66.0" prefWidth="600.0" style="-fx-background-color: #2a295c;">
+                                <AnchorPane layoutY="-6.0" prefHeight="66.0" prefWidth="650.0" style="-fx-background-color: #2a295c;">
                                     <children>
                                         <Label layoutX="14.0" layoutY="21.0" text="Carga Tips Nutricionales" textFill="WHITE">
                                             <font>
@@ -744,23 +744,23 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                             <children>
-                        <ListView fx:id="listaRestauranteComent" layoutX="392.0" layoutY="89.0" onMouseClicked="#ListaRestauranteComentMouseClicked" prefHeight="263.0" prefWidth="190.0" />
-                        <Label layoutX="392.0" layoutY="68.0" text="Restaurantes">
+                        <ListView fx:id="listaRestauranteComent" layoutX="438.0" layoutY="86.0" onMouseClicked="#ListaRestauranteComentMouseClicked" prefHeight="263.0" prefWidth="190.0" />
+                        <Label layoutX="438.0" layoutY="65.0" text="Restaurantes">
                            <font>
                               <Font name="Segoe UI Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="tableCalificacion" layoutX="21.0" layoutY="62.0" prefHeight="290.0" prefWidth="365.0">
+                        <TableView fx:id="tableCalificacion" layoutX="21.0" layoutY="62.0" prefHeight="290.0" prefWidth="394.0">
                           
                         </TableView>
-                        <AnchorPane layoutX="-3.0" layoutY="-4.0" prefHeight="60.0" prefWidth="607.0" style="-fx-background-color: #2a295c;">
+                        <AnchorPane layoutX="-3.0" layoutY="-4.0" prefHeight="60.0" prefWidth="657.0" style="-fx-background-color: #2a295c;">
                            <children>
                               <Label layoutX="14.0" layoutY="18.0" text="Calificaciones y comentarios" textFill="WHITE">
                                  <font>
                                     <Font name="Segoe UI Bold" size="20.0" />
                                  </font>
                               </Label>
-                              <ImageView fitHeight="35.0" fitWidth="28.0" layoutX="485.0" layoutY="16.0" onMouseClicked="#descargarReporteCalificaciones" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="35.0" fitWidth="28.0" layoutX="524.0" layoutY="16.0" onMouseClicked="#descargarReporteCalificaciones" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/download_white.png" />
                                  </image>
@@ -768,7 +768,7 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </ImageView>
-                              <Label layoutX="513.0" layoutY="15.0" onMouseClicked="#descargarReporteCalificaciones" prefHeight="30.0" prefWidth="62.0" text="Descargar reporte" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                              <Label layoutX="552.0" layoutY="15.0" onMouseClicked="#descargarReporteCalificaciones" prefHeight="30.0" prefWidth="62.0" text="Descargar reporte" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                                  <font>
                                     <Font name="Segoe UI Bold" size="12.0" />
                                  </font>
@@ -806,7 +806,7 @@
                                 </ImageView>
                                 <PasswordField fx:id="txtNuevoPass" layoutX="59.0" layoutY="195.0" onKeyTyped="#txtNuevoPassActionPerformed" prefHeight="40.0" prefWidth="320.0" promptText="Nueva contraseña" style="-fx-background-radius: 0px;" />
                                 <PasswordField fx:id="txtNuevoPassAgain" layoutX="59.0" layoutY="242.0" prefHeight="40.0" prefWidth="320.0" promptText="Escriba la contraseña de nuevo" style="-fx-background-radius: 0px;" visible="false" />
-                                <Label layoutX="386.0" layoutY="137.0" lineSpacing="2.0" prefHeight="99.0" prefWidth="200.0" text="Modifique su información y luego haga clic sobre el botón de Ok. En caso de no requerir cambiar la contraseña, por favor deje este campo vacío" wrapText="true">
+                                <Label layoutX="407.0" layoutY="137.0" lineSpacing="2.0" prefHeight="99.0" prefWidth="210.0" text="Modifique su información y luego haga clic sobre el botón de Ok. En caso de no requerir cambiar la contraseña, por favor deje este campo vacío" wrapText="true">
                                     <font>
                                         <Font name="Segoe UI" size="14.0" />
                                     </font>
@@ -860,14 +860,14 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <AnchorPane layoutX="-6.0" layoutY="-4.0" prefHeight="60.0" prefWidth="607.0" style="-fx-background-color: #2a295c;">
+                        <AnchorPane layoutX="-6.0" layoutY="-4.0" prefHeight="60.0" prefWidth="660.0" style="-fx-background-color: #2a295c;">
                            <children>
                                       <Label layoutX="14.0" layoutY="18.0" text="Administrador" textFill="WHITE">
                                           <font>
                                               <Font name="Segoe UI Bold" size="20.0" />
                                           </font>
                                       </Label>
-                              <Label layoutX="479.0" layoutY="22.0" onMouseClicked="#btnCerrarSesion" text="Cerrar sesión" textFill="WHITE">
+                              <Label layoutX="519.0" layoutY="22.0" onMouseClicked="#btnCerrarSesion" text="Cerrar sesión" textFill="WHITE">
                                  <font>
                                     <Font name="Segoe UI Bold" size="16.0" />
                                  </font>
