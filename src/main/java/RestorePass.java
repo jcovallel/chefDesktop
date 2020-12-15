@@ -25,6 +25,10 @@ public class RestorePass extends Application implements Initializable {
 
     ObservableList<String> listaLugares = FXCollections.observableArrayList();
 
+    @FXML
+    public void btnCancelarRestorePassActionPerformed() throws IOException {
+        helper.show("logIn.fxml", parentPane);
+    }
 
     public void closePopupRestorePass(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
         this.paneCorreoEnviado.setVisible(false);

@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="paneRestorePass" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2a295c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RestorePass">
+<AnchorPane fx:id="paneRestorePass" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2a295c;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RestorePass">
     <children>
         <Text fill="WHITE" layoutX="309.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recuperar contraseña">
             <font>
@@ -112,5 +112,20 @@
             </Label>
          </children>
       </AnchorPane>
+      <Button fx:id="btnCancelar" ellipsisString="" layoutX="293.0" layoutY="315.0" mnemonicParsing="false" onAction="#btnCancelarRestorePassActionPerformed" prefHeight="47.0" prefWidth="121.0" style="-fx-background-color: white; -fx-background-radius: 0px;" text="Cancelar" textFill="#2a295c">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="Segoe UI Bold" size="15.0" />
+         </font>
+         <effect>
+            <InnerShadow blurType="ONE_PASS_BOX" height="21.26" radius="10.005" width="20.76">
+               <color>
+                  <Color red="0.16529999673366547" green="0.16200000047683716" blue="0.36000001430511475" opacity="0.591304361820221" />
+               </color>
+            </InnerShadow>
+         </effect>
+      </Button>
     </children>
 </AnchorPane>
