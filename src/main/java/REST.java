@@ -12,10 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class REST {
-    //IP de Julio
-    //private String ip = "35.239.78.54";
-    private final String ip = "127.0.0.1";
-    //private final String ip = "35.188.211.209"; SODEXO
+    //private final String ip = "127.0.0.1";
+    private final String ip = "35.188.211.209"; //SODEXO
     private final String puerto = "8080";
     private final String urlRaiz = "http://" + ip + ":" + puerto;
     JSONArray jsonArray = null;

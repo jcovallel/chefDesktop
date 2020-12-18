@@ -52,7 +52,8 @@ public class UsuarioNormal extends Usuario implements Initializable{
     private AnchorPane draggable, parentPane;
 
     public List <String> imagepath = new ArrayList<String>();
-    private String ip = "127.0.0.1";
+    //private String ip = "127.0.0.1";
+    private final String ip = "35.188.211.209"; //SODEXO
     private String puerto = "8080";
     private String urlRaiz = "http://" + ip + ":" + puerto;
 

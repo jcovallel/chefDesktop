@@ -82,7 +82,8 @@ public class UsuarioAdmin extends Usuario implements Initializable{
 
     String listviewVacia;
 
-    private String ip = "127.0.0.1";
+    //private String ip = "127.0.0.1";
+    private final String ip = "35.188.211.209"; //SODEXO
     private String puerto = "8080";
     private String urlRaiz = "http://" + ip + ":" + puerto;
 
